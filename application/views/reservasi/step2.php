@@ -20,8 +20,8 @@
                 <label for="dokter" class="col-sm-2 control-label">Dokter</label>
                 <div class="col-sm-6 col-md-4">
                     <?php 
-                        $option[''] = '-Pilih Dokter-';
-                        
+                        $option='';
+                        $option[''] = '-Pilih Dokter-';                        
                         echo form_dropdown('dokter', $option, '', 'class="form-control" id="dokter" required');
                     ?>
                 </div>
@@ -30,8 +30,8 @@
                 <label for="poliklinik" class="col-sm-2 control-label">Poliklinik</label>
                 <div class="col-sm-6 col-md-4">
                     <?php 
-                        $option[''] = '-Pilih Poliklinik-';
-                        
+                        $option='';
+                        $option[''] = '-Pilih Poliklinik-';                        
                         echo form_dropdown('poliklinik', $option, '', 'class="form-control" id="poliklinik" required');
                     ?>
                 </div>
@@ -75,16 +75,59 @@
 </div>
 <script>
     $("#jnslayan").change(function(){
-    var val=this.value;
-    console.log(val);
-    if (val == 1) {
-        $(".dokter").fadeOut(800, function(){ 
-            $(".dokter").hide();
-	});        
-    } else {
+    var val=$(this).val();
+    var dokter = $('#dokter');
+    if (val == 2) {  
         $(".dokter").fadeIn(800, function(){ 
             $(".dokter").show();
 	});
+        $.ajax({
+            url : "<?php echo site_url('reservasi/ajax_getdokter')?>",
+            type: "GET",
+            dataType: "JSON",
+            success: function(data)
+            {
+                dokter.empty();
+                dokter.append('<option value="">-Pilih Dokter-</option>');
+                for (var i = 0; i < data.length; i++) {
+                    dokter.append('<option value="' + data[i].id_dokter + '">' + data[i].nama_dokter + '</option>');
+                }
+                //dokter.change();
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error data dokter tidak di temukan');
+            }
+        });              
+    } else {
+        dokter.empty();
+        dokter.append('<option value="">-Pilih Dokter-</option>');
+        $(".dokter").fadeOut(800, function(){ 
+            $(".dokter").hide();
+	});
     }
-});
+    });
+    
+    $("#dokter").change(function(){
+        var iddokter=$(this).val();
+        var jenis=$('#jnslayan').val();
+        var klinik=$('#poliklinik');
+        $.ajax({
+            url : "<?php echo site_url('reservasi/ajax_jadwal/')?>" + iddokter + "/" + jenis,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data)
+            {
+                klinik.empty();
+                klinik.append('<option value="">-Pilih Poliklinik-</option>');
+                for (var i = 0; i < data.length; i++) {
+                    klinik.append('<option value='+data[i].id_klinik+'>'+data[i].nama_klinik+'</option>');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error data dokter tidak di temukan');
+            }
+        });
+    });
 </script>

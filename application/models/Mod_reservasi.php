@@ -20,14 +20,15 @@
     function getdokter() {
         $this->db->from('refdokter');
         $qry = $this->db->get();
-        return $qry->row();
+        return $qry->result();
     }    
-    function getklinik($jenis) {
+    function getklinik($iddokter,$jenis) {
         $this->db->from('refklinik');
-        $this->db->where('jenis', $jenis);
-        $this->db->or_where('jenis', 3);
+        $this->db->join('jadwal', 'refklinik.id_klinik=jadwal.id_klinik');
+        $this->db->where('id_dokter', $iddokter);
+        $this->db->where("(tipe_layanan = 3 or tipe_layanan=$jenis)");
         $res = $this->db->get();
-        return $res->row();
+        return $res->result();
     }    
     function getklinikbydok($dokter) {
         $this->db->from('refklinik');
