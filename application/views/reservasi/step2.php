@@ -1,5 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-
 <div class="box box-warning">
     <div class="box-header with-border">
         <h3 class="box-title">Pilih Jadwal & Poliklinik Tujuan <small>(step-2)</small></h3>
@@ -17,7 +16,7 @@
                     ?>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group dokter">
                 <label for="dokter" class="col-sm-2 control-label">Dokter</label>
                 <div class="col-sm-6 col-md-4">
                     <?php 
@@ -74,3 +73,18 @@
       <!-- /.box-footer -->
     </form>
 </div>
+<script>
+    $("#jnslayan").change(function(){
+    var val=this.value;
+    console.log(val);
+    if (val == 1) {
+        $(".dokter").fadeOut(800, function(){ 
+            $(".dokter").hide();
+	});        
+    } else {
+        $(".dokter").fadeIn(800, function(){ 
+            $(".dokter").show();
+	});
+    }
+});
+</script>

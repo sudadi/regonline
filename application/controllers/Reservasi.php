@@ -37,7 +37,7 @@ class Reservasi extends CI_Controller {
                 $norm = $this->input->post('norm');
                 $tgllahir = $this->input->post('tgllahir');
                 if ($this->val_step1($norm, $tgllahir)) {
-
+                    //$this->mod_reservasi->
 
                     $data['page'] = 'reservasi/step2';
                     $data['action'] = site_url('reservasi/step3');
