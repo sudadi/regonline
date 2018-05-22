@@ -15,34 +15,31 @@ class Reservasi extends CI_Controller {
         $this->load->view('reservasi/reservasi', $data);
     }
 
-    private function val_step1 ($norm, $tgllahir) {	
-        $datpas = $this->mod_reservasi->cekdatpas($norm, $tgllahir);
-        if ($datpas) {
-            $datresv = $this->mod_reservasi->cekreserv($norm, 0);
-            if ($datresv) {
-                $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
-                return false;
-            } else {
-                $this->session->set_flashdata('success', 'Data valid');
-                return true;
-            }
-        } else {
-            $this->session->set_flashdata('error', 'Data pasien tidak ditemukan');
-            return false;
-        }
-    }
-
-
     public function step2 () {
         if ($this->input->post()) {
             $norm = $this->input->post('norm');
             $tgllahir = $this->input->post('tgllahir');
-            if ($this->val_step1($norm, $tgllahir)) {
+            $datapas = $this->mod_reservasi->cekdatpas($norm, $tgllahir);
+            if ($datapas) {
+                $dataresv = $this->mod_reservasi->cekreserv($norm, 0);
+                if ($dataresv) {
+                    $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
+                    $reserv = false;
+                } else {
+                    $this->session->set_flashdata('success', 'Data valid');
+                    $reserv = true;
+                }
+            } else {
+                $this->session->set_flashdata('error', 'Data pasien tidak ditemukan');
+                $reserv = false;
+            }
+            if ($reserv) {
                 //$this->mod_reservasi->
 
                 $data['page'] = 'reservasi/step2';
                 $data['action'] = site_url('reservasi/step3');
-                $data['content']='';
+                $data['content']['norm']=$norm;
+                $data['content']['namapas']=$datapas->nama;
                 $this->load->view('reservasi/reservasi', $data);
             } else {
                 redirect('reservasi');

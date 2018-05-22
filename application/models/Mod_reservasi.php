@@ -26,7 +26,11 @@
         $this->db->select('refklinik.id_klinik, refklinik.nama_klinik');
         $this->db->from('refklinik');
         $this->db->join('jadwal', 'refklinik.id_klinik=jadwal.id_klinik');
-        $this->db->where('id_dokter', $iddokter);
+        if ($iddokter=='reg'){
+            $this->db->where("id_dokter=111 or id_dokter=222");
+        } else {
+            $this->db->where('id_dokter', $iddokter);
+        }
         $this->db->where("(tipe_layanan = 3 or tipe_layanan=$jenis)");
         $this->db->group_by('refklinik.id_klinik');
         $res = $this->db->get();

@@ -29,7 +29,7 @@
 <body class="hold-transition skin-yellow sidebar-mini">
 <div class="wrapper">
 <?php 
-	$this->load->view('reservasi/navbar'); 
+	$this->load->view('reservasi/navbar',$content); 
 	$this->load->view('reservasi/sidebar');
 ?>  
 	<!-- Content Wrapper. Contains page content -->
