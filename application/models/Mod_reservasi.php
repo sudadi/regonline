@@ -23,19 +23,26 @@
         return $qry->result();
     }    
     function getklinik($iddokter,$jenis) {
+        $this->db->select('refklinik.id_klinik, refklinik.nama_klinik');
         $this->db->from('refklinik');
         $this->db->join('jadwal', 'refklinik.id_klinik=jadwal.id_klinik');
         $this->db->where('id_dokter', $iddokter);
         $this->db->where("(tipe_layanan = 3 or tipe_layanan=$jenis)");
+        $this->db->group_by('refklinik.id_klinik');
         $res = $this->db->get();
         return $res->result();
     }    
-    function getklinikbydok($dokter) {
-        $this->db->from('refklinik');
-        $this->db->join('tjadwal', 'refklinik.id_klinik=tjadwal.id_klinik');
-        $this->db->join('refdokter', 'refklinik.id_dokter=refdokter.id_dokter');
+    function getjadwal($klinik,$dokter,$jenis) {
+        $this->db->from('jadwal');
         $this->db->where('id_dokter', $dokter);
+        $this->db->where('id_klinik', $klinik);
+        $this->db->where('jnslayan', $jenis);
         $res = $this->db->get();
-        return $res->row();
+        return $res->result_array();
+    }
+    function getkuotatgl($jadwaltgl) {
+        $this->db->from('treservasi');
+        $this->db->where("date(waktu_rsv)='$jadwaltgl'");
+        return  $this->db->count_all_results();
     }
  }

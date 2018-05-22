@@ -41,7 +41,6 @@
                 <div class="col-sm-6 col-md-4">
                     <?php 
                         $option[''] = '-Pilih Tanggal-';
-                        
                         echo form_dropdown('tglcekin', $option, '', 'class="form-control" id="tglcekin" required');
                     ?>
                 </div>
@@ -56,19 +55,12 @@
                     ?>
                 </div>
             </div>
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-                    <div class="checkbox">
-                     <!--  <label>
-                            <input type="checkbox"> Remember me
-                      </label> -->
-                    </div>
-              </div>
-            </div>
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
+          <div class="col-sm-12 col-md-6">
             <button type="submit" class="btn btn-info pull-right">Simpan</button>
+          </div>
       </div>
       <!-- /.box-footer -->
     </form>
@@ -113,7 +105,7 @@
         var jenis=$('#jnslayan').val();
         var klinik=$('#poliklinik');
         $.ajax({
-            url : "<?php echo site_url('reservasi/ajax_jadwal/')?>" + iddokter + "/" + jenis,
+            url : "<?php echo site_url('reservasi/ajax_klinik/')?>" + iddokter + "/" + jenis,
             type: "GET",
             dataType: "JSON",
             success: function(data)
@@ -128,6 +120,31 @@
             {
                 alert('Error data dokter tidak di temukan');
             }
+        });
+    });
+    
+    $("#poliklinik").change(function() {
+        var klinik=$(this).val();
+        var iddokter=$('#dokter').val();
+        var jenis=$('#jnslayan').val();
+        var tglcekin=$('#tglcekin');
+        var jamcekin=$('#jamcekin');
+        $.ajax({
+            url : "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data)
+            {
+                tglcekin.empty();
+                tglcekin.append('<option value="">-Pilih Tanggal-</option>');
+            for (var i = 0; i < data.length; i++) {
+                    tglcekin.append('<option value='+data[i].jadwaltgl+'>'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error data tidak di temukan');
+            }    
         });
     });
 </script>
