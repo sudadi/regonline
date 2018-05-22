@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23 Mei 2018 pada 00.14
--- Versi Server: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Waktu pembuatan: 22 Bulan Mei 2018 pada 22.56
+-- Versi server: 10.1.31-MariaDB
+-- Versi PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -66,7 +68,9 @@ CREATE TABLE `jadwal` (
 
 INSERT INTO `jadwal` (`id_jadwal`, `id_dokter`, `id_klinik`, `jnslayan`, `id_hari`, `jam_mulai`, `jam_selesai`, `kuota_perjam`, `status`) VALUES
 (1, 1, 1, 2, 1, '07:00:00', '14:00:00', 30, 1),
-(2, 1, 1, 2, 4, '07:00:00', '15:00:00', 30, 1);
+(2, 1, 1, 2, 4, '07:00:00', '15:00:00', 30, 1),
+(3, 111, 1, 1, 1, '08:00:00', '15:00:00', 4, 1),
+(4, 222, 3, 1, 1, '08:00:00', '15:00:00', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -146,7 +150,9 @@ INSERT INTO `refdokter` (`id_dokter`, `nama_dokter`, `status`) VALUES
 (47, 'dr. Romanianto, Sp.OT(K)', 1),
 (48, 'dr. Hendra Cahya Kumara, Sp.OT', 1),
 (49, 'dr. DANANG KUNTO ADI, Sp.An., M,Kes. ', 1),
-(52, 'dr. Seti Aji Hadinoto, Sp.OT', 1);
+(52, 'dr. Seti Aji Hadinoto, Sp.OT', 1),
+(111, 'Dokter Sp. ORTOPEDI', 1),
+(222, 'Dokter Sp. Rehabilitasi Medik', 1);
 
 -- --------------------------------------------------------
 
@@ -306,13 +312,13 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 --
 
 --
--- Indexes for table `groups`
+-- Indeks untuk tabel `groups`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `jadwal`
+-- Indeks untuk tabel `jadwal`
 --
 ALTER TABLE `jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
@@ -320,37 +326,37 @@ ALTER TABLE `jadwal`
   ADD KEY `id_klinik` (`id_klinik`);
 
 --
--- Indexes for table `login_attempts`
+-- Indeks untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `refdokter`
+-- Indeks untuk tabel `refdokter`
 --
 ALTER TABLE `refdokter`
   ADD PRIMARY KEY (`id_dokter`);
 
 --
--- Indexes for table `refklinik`
+-- Indeks untuk tabel `refklinik`
 --
 ALTER TABLE `refklinik`
   ADD PRIMARY KEY (`id_klinik`);
 
 --
--- Indexes for table `tgl_libur`
+-- Indeks untuk tabel `tgl_libur`
 --
 ALTER TABLE `tgl_libur`
   ADD PRIMARY KEY (`id_libur`);
 
 --
--- Indexes for table `tpasien`
+-- Indeks untuk tabel `tpasien`
 --
 ALTER TABLE `tpasien`
   ADD PRIMARY KEY (`norm`);
 
 --
--- Indexes for table `treservasi`
+-- Indeks untuk tabel `treservasi`
 --
 ALTER TABLE `treservasi`
   ADD PRIMARY KEY (`id_rsv`),
@@ -358,13 +364,13 @@ ALTER TABLE `treservasi`
   ADD KEY `id_jadwal` (`id_jadwal`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users_groups`
+-- Indeks untuk tabel `users_groups`
 --
 ALTER TABLE `users_groups`
   ADD PRIMARY KEY (`id`),
@@ -373,54 +379,63 @@ ALTER TABLE `users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `groups`
+-- AUTO_INCREMENT untuk tabel `groups`
 --
 ALTER TABLE `groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `jadwal`
+-- AUTO_INCREMENT untuk tabel `jadwal`
 --
 ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
--- AUTO_INCREMENT for table `login_attempts`
+-- AUTO_INCREMENT untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `refdokter`
+-- AUTO_INCREMENT untuk tabel `refdokter`
 --
 ALTER TABLE `refdokter`
-  MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
+
 --
--- AUTO_INCREMENT for table `refklinik`
+-- AUTO_INCREMENT untuk tabel `refklinik`
 --
 ALTER TABLE `refklinik`
   MODIFY `id_klinik` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=570;
+
 --
--- AUTO_INCREMENT for table `tgl_libur`
+-- AUTO_INCREMENT untuk tabel `tgl_libur`
 --
 ALTER TABLE `tgl_libur`
   MODIFY `id_libur` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `treservasi`
+-- AUTO_INCREMENT untuk tabel `treservasi`
 --
 ALTER TABLE `treservasi`
   MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
--- AUTO_INCREMENT for table `users_groups`
+-- AUTO_INCREMENT untuk tabel `users_groups`
 --
 ALTER TABLE `users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
@@ -445,6 +460,7 @@ ALTER TABLE `treservasi`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `users_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
