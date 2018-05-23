@@ -80,16 +80,42 @@
 <script>
     $("#jnspasien").change(function() {
         var jnspasien=$(this).val();
-        if (jnspasien==5){
+        if (jnspasien==5){ //jika bpjs
             $('#jnslayan').val(1).change();
             $(".jnslayan").fadeOut(800, function(){ 
                 $(".jnslayan").hide();
+            });
+            $(".dokter").fadeOut(800, function(){ 
+                $(".dokter").hide();
+            });
+            var jenis=$('#jnslayan').val();
+            var klinik=$('#poliklinik');
+            var url = "<?php echo site_url('reservasi/ajax_klinik/')?>0/" + jenis;
+            $.ajax({
+                url : url,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data)
+                {
+                    klinik.empty();
+                    klinik.append('<option value="">-Pilih Poliklinik-</option>');
+                    for (var i = 0; i < data.length; i++) {
+                        klinik.append('<option value='+data[i].id_klinik+'>'+data[i].nama_klinik+'</option>');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error data dokter tidak di temukan');
+                }
             });
         } else {
             $(".jnslayan").fadeIn(800, function(){ 
                 $(".jnslayan").show();
             });
             $('#jnslayan').val('');
+            $(".dokter").fadeIn(800, function(){ 
+                $(".dokter").show();
+            });
         }
     });
     $("#jnslayan").change(function(){
@@ -118,7 +144,7 @@
                 $(".dokter").show();
             });             
         } else {
-            $('#dokter').val('').change();
+            $('#dokter').val('');
             $(".dokter").fadeOut(400, function(){ 
                 $(".dokter").hide();
             });
@@ -129,58 +155,50 @@
         var iddokter=$(this).val();
         var jenis=$('#jnslayan').val();
         var klinik=$('#poliklinik');
-        if (iddokter==''){
-            var url = "<?php echo site_url('reservasi/ajax_klinik/')?>reg/" + jenis;
+        if (jenis==1){
+            var url = "<?php echo site_url('reservasi/ajax_klinik/')?>0/"+jenis;
         } else {
-            var url ="<?php echo site_url('reservasi/ajax_klinik/')?>" + iddokter + "/" + jenis;
-        }
-        if ($('#poliklinik').val()==1 || $('#poliklinik').val()==3){
-        
-        }else{
-            $.ajax({
-                url : url,
-                type: "GET",
-                dataType: "JSON",
-                success: function(data)
-                {
-                    klinik.empty();
-                    klinik.append('<option value="">-Pilih Poliklinik-</option>');
-                    for (var i = 0; i < data.length; i++) {
-                        klinik.append('<option value='+data[i].id_klinik+'>'+data[i].nama_klinik+'</option>');
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Error data dokter tidak di temukan');
+            var url ="<?php echo site_url('reservasi/ajax_klinik/')?>"+iddokter+"/"+jenis;
+        }        
+        $.ajax({
+            url : url,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data)
+            {
+                klinik.empty();
+                klinik.append('<option value="">-Pilih Poliklinik-</option>');
+                for (var i = 0; i < data.length; i++) {
+                    klinik.append('<option value='+data[i].id_klinik+'>'+data[i].nama_klinik+'</option>');
                 }
-            });
-        }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error data dokter tidak di temukan');
+            }
+        });
     });
     
     $("#poliklinik").change(function() {
         var klinik=$(this).val();
         var jenis=$('#jnslayan').val();
         var tglcekin=$('#tglcekin');
-        var jamcekin=$('#jamcekin');
-        if ($('#dokter').val()==''){
-            if(klinik ==1) {
-                $('#dokter').val(111);
-            }else{
-                $('#dokter').val(222);
-            }
-        }
-        
+        var jamcekin=$('#jamcekin');        
         var iddokter=$('#dokter').val();
-        console.log(iddokter+" "+klinik+" "+jenis);
+        if ($('#jnspasien').val() == 5) {
+            var url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis;
+        }else {
+            var url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis;
+        }
         $.ajax({
-            url : "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis,
+            url : url,
             type: "GET",
             dataType: "JSON",
             success: function(data)
             {
                 tglcekin.empty();
                 tglcekin.append('<option value="">-Pilih Tanggal-</option>');
-            for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < data.length; i++) {
                     tglcekin.append('<option value='+data[i].jadwaltgl+'>'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
                 }
             },
@@ -192,7 +210,22 @@
     });
     $("#tglcekin").change(function() {
         var tglcekin=$(this).val();
-        
+        var dow = new Date(tglcekin).getDay();
+        var jenis=$('#jnslayan').val();
+        var klinik=$('#poliklinik').val();
+        $.ajax({
+            url : "<?php echo site_url('reservasi/ajax_dokterbytgl/')?>"+klinik+"/"+jenis+"/"+dow,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data){
+               $('#dokter').val(data.id_dokter);        
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error data tidak di temukan');
+            } 
+        });
+        $ajax        
     });
     
 </script>

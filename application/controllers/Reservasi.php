@@ -51,7 +51,10 @@ class Reservasi extends CI_Controller {
         $data = $this->mod_reservasi->getdokter();
         echo json_encode($data);
     }
-    
+    public function ajax_dokterbytgl($klinik,$jenis,$dow) {
+        $data = $this->mod_reservasi->getdokterbytgl($klinik,$jenis,$dow);
+        echo json_encode($data); 
+    }    
     public function ajax_klinik($iddokter, $jenis) {
         $data = $this->mod_reservasi->getklinik($iddokter, $jenis);
         echo json_encode($data); 
@@ -67,7 +70,7 @@ class Reservasi extends CI_Controller {
             $endtime = $dtjadwal[$i]['jam_selesai'];
             $perhari = ($endtime - $starttime) * $perjam;
             while ($startdate < $enddate) {
-                $jadwal[]=array('jadwaltgl'=>date("Y/m/d", $startdate), 'hari'=>$hari, 'perhari'=>$perhari);
+                $jadwal[]=array('jadwaltgl'=>date("Y/m/d", $startdate), 'hari'=>$hari, 'perhari'=>$perhari, 'iddokter'=>$dtjadwal[$i]['id_dokter']);
                 $startdate = strtotime("+1 week", $startdate);
             }            
         }  

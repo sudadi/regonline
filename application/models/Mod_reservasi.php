@@ -22,13 +22,17 @@
         $qry = $this->db->get();
         return $qry->result();
     }    
+    function getdokterbytgl($klinik,$jenis,$dow){
+        $this->db->from('jadwal');
+        $this->db->where("id_klinik=$klinik and jnslayan=$jenis and id_hari=$dow");
+        $res = $this->db->get();
+        return $res->row(); 
+    }
     function getklinik($iddokter,$jenis) {
         $this->db->select('refklinik.id_klinik, refklinik.nama_klinik');
         $this->db->from('refklinik');
         $this->db->join('jadwal', 'refklinik.id_klinik=jadwal.id_klinik');
-        if ($iddokter=='reg'){
-            $this->db->where("id_dokter=111 or id_dokter=222");
-        } else {
+        if ($iddokter){
             $this->db->where('id_dokter', $iddokter);
         }
         $this->db->where("(tipe_layanan = 3 or tipe_layanan=$jenis)");
@@ -38,7 +42,9 @@
     }    
     function getjadwal($klinik,$dokter,$jenis) {
         $this->db->from('jadwal');
+        if ($dokter){
         $this->db->where('id_dokter', $dokter);
+        }
         $this->db->where('id_klinik', $klinik);
         $this->db->where('jnslayan', $jenis);
         $res = $this->db->get();
