@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23 Mei 2018 pada 23.33
--- Versi Server: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Waktu pembuatan: 23 Bulan Mei 2018 pada 21.24
+-- Versi server: 10.1.31-MariaDB
+-- Versi PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -235,11 +237,15 @@ CREATE TABLE `treservasi` (
   `notelp` varchar(15) NOT NULL,
   `waktu_rsv` datetime NOT NULL,
   `id_jadwal` int(11) NOT NULL,
+  `id_klinik` int(4) NOT NULL,
+  `id_dokter` int(8) NOT NULL,
+  `nourut` int(4) NOT NULL,
+  `kode_cekin` varchar(10) DEFAULT NULL,
   `cara_bayar` int(11) NOT NULL,
   `sebab` tinyint(4) NOT NULL,
-  `status` tinyint(2) NOT NULL COMMENT '0.reservasi; 1. checkin; 2.Batat',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0.reservasi; 1. checkin; 2.Batat',
   `tgl_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `sync` tinyint(1) NOT NULL
+  `sync` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -300,13 +306,13 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 --
 
 --
--- Indexes for table `groups`
+-- Indeks untuk tabel `groups`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `jadwal`
+-- Indeks untuk tabel `jadwal`
 --
 ALTER TABLE `jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
@@ -314,37 +320,37 @@ ALTER TABLE `jadwal`
   ADD KEY `id_klinik` (`id_klinik`);
 
 --
--- Indexes for table `login_attempts`
+-- Indeks untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `refdokter`
+-- Indeks untuk tabel `refdokter`
 --
 ALTER TABLE `refdokter`
   ADD PRIMARY KEY (`id_dokter`);
 
 --
--- Indexes for table `refklinik`
+-- Indeks untuk tabel `refklinik`
 --
 ALTER TABLE `refklinik`
   ADD PRIMARY KEY (`id_klinik`);
 
 --
--- Indexes for table `tgl_libur`
+-- Indeks untuk tabel `tgl_libur`
 --
 ALTER TABLE `tgl_libur`
   ADD PRIMARY KEY (`id_libur`);
 
 --
--- Indexes for table `tpasien`
+-- Indeks untuk tabel `tpasien`
 --
 ALTER TABLE `tpasien`
   ADD PRIMARY KEY (`norm`);
 
 --
--- Indexes for table `treservasi`
+-- Indeks untuk tabel `treservasi`
 --
 ALTER TABLE `treservasi`
   ADD PRIMARY KEY (`id_rsv`),
@@ -352,13 +358,13 @@ ALTER TABLE `treservasi`
   ADD KEY `id_jadwal` (`id_jadwal`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users_groups`
+-- Indeks untuk tabel `users_groups`
 --
 ALTER TABLE `users_groups`
   ADD PRIMARY KEY (`id`),
@@ -367,54 +373,63 @@ ALTER TABLE `users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `groups`
+-- AUTO_INCREMENT untuk tabel `groups`
 --
 ALTER TABLE `groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `jadwal`
+-- AUTO_INCREMENT untuk tabel `jadwal`
 --
 ALTER TABLE `jadwal`
   MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
--- AUTO_INCREMENT for table `login_attempts`
+-- AUTO_INCREMENT untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `refdokter`
+-- AUTO_INCREMENT untuk tabel `refdokter`
 --
 ALTER TABLE `refdokter`
   MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
+
 --
--- AUTO_INCREMENT for table `refklinik`
+-- AUTO_INCREMENT untuk tabel `refklinik`
 --
 ALTER TABLE `refklinik`
   MODIFY `id_klinik` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=570;
+
 --
--- AUTO_INCREMENT for table `tgl_libur`
+-- AUTO_INCREMENT untuk tabel `tgl_libur`
 --
 ALTER TABLE `tgl_libur`
   MODIFY `id_libur` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `treservasi`
+-- AUTO_INCREMENT untuk tabel `treservasi`
 --
 ALTER TABLE `treservasi`
   MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
--- AUTO_INCREMENT for table `users_groups`
+-- AUTO_INCREMENT untuk tabel `users_groups`
 --
 ALTER TABLE `users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
@@ -439,6 +454,7 @@ ALTER TABLE `treservasi`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `users_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
