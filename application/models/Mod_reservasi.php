@@ -17,8 +17,11 @@
         $qry = $this->db->get();
         if ($qry->num_rows() > 0) return $qry->row(); 
     }	
-    function getdokter() {
+    function getdokter($jenis) {
         $this->db->from('refdokter');
+        $this->db->join('jadwal','refdokter.id_dokter=jadwal.id_dokter');
+        $this->db->group_by('jadwal.id_dokter');
+        $this->db->where('jnslayan', $jenis);
         $qry = $this->db->get();
         return $qry->result();
     }    
@@ -50,9 +53,17 @@
         $res = $this->db->get();
         return $res->result_array();
     }
-    function getkuotatgl($jadwaltgl) {
+    function getkuotatgl($jadwaltgl,$klinik,$dokter) {
         $this->db->from('treservasi');
         $this->db->where("date(waktu_rsv)='$jadwaltgl'");
+        $this->db->where('id_klinik',$klinik);
+        if ($dokter){
+            $this->db->where('id_dokter',$dokter);
+        }
         return  $this->db->count_all_results();
+    }
+    function getkuotajam($klinik,$dokter,$tglcekin,$jamcekin) {
+        $this->db->from('treservasi');
+        
     }
  }

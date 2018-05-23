@@ -47,8 +47,8 @@ class Reservasi extends CI_Controller {
         }
     }
 
-    public function ajax_getdokter() {
-        $data = $this->mod_reservasi->getdokter();
+    public function ajax_getdokter($jenis) {
+        $data = $this->mod_reservasi->getdokter($jenis);
         echo json_encode($data);
     }
     public function ajax_dokterbytgl($klinik,$jenis,$dow) {
@@ -63,20 +63,21 @@ class Reservasi extends CI_Controller {
         $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
-            $startdate = strtotime($hari);
+            $startdate = strtotime("+1 days", strtotime($hari));
             $enddate = strtotime("+2 weeks", $startdate);
             $perjam=$dtjadwal[$i]['kuota_perjam'];
             $starttime = $dtjadwal[$i]['jam_mulai'];
             $endtime = $dtjadwal[$i]['jam_selesai'];
             $perhari = ($endtime - $starttime) * $perjam;
             while ($startdate < $enddate) {
-                $jadwal[]=array('jadwaltgl'=>date("Y/m/d", $startdate), 'hari'=>$hari, 'perhari'=>$perhari, 'iddokter'=>$dtjadwal[$i]['id_dokter']);
+                $jadwal[]=array('jadwaltgl'=>date("Y/m/d", $startdate), 'hari'=>$hari, 'perhari'=>$perhari, 
+                    'iddokter'=>$dtjadwal[$i]['id_dokter'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
+                    'terpakai'=>$this->mod_reservasi->getkuotatgl(date("Y/m/d", $startdate), $klinik, $iddokter));
                 $startdate = strtotime("+1 week", $startdate);
             }            
         }  
         sort($jadwal);
-        for ($i=0; $i<count($jadwal); $i++){
-            $jadwal[$i]['terpakai'] = $this->mod_reservasi->getkuotatgl($jadwal[$i]['jadwaltgl']);
+        for ($i=0; $i<count($jadwal); $i++){            
             $jadwal[$i]['sisa'] = $jadwal[$i]['perhari'] - $jadwal[$i]['terpakai'];
         }
         echo json_encode($jadwal);
@@ -87,5 +88,8 @@ class Reservasi extends CI_Controller {
 //        echo '<br>'.date('l Y/m/d',$endDate);
 //        for($i = strtotime('Monday', strtotime($startDate)); $i <= $endDate; $i = strtotime('+1 week', $i))
 //        echo date('l Y-m-d', $i);
+    }
+    public function ajax_jamcekin($klinik,$dokter,$tglcekin,$idjadwal) {
+        
     }
 }

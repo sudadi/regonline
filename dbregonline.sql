@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Bulan Mei 2018 pada 22.56
--- Versi server: 10.1.31-MariaDB
--- Versi PHP: 5.6.35
+-- Generation Time: 23 Mei 2018 pada 23.33
+-- Versi Server: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -28,7 +26,6 @@ SET time_zone = "+00:00";
 -- Struktur dari tabel `groups`
 --
 
-DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `id` mediumint(8) UNSIGNED NOT NULL,
   `name` varchar(20) NOT NULL,
@@ -49,7 +46,6 @@ INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 -- Struktur dari tabel `jadwal`
 --
 
-DROP TABLE IF EXISTS `jadwal`;
 CREATE TABLE `jadwal` (
   `id_jadwal` int(11) NOT NULL,
   `id_dokter` int(8) NOT NULL,
@@ -70,7 +66,7 @@ INSERT INTO `jadwal` (`id_jadwal`, `id_dokter`, `id_klinik`, `jnslayan`, `id_har
 (1, 1, 1, 2, 1, '07:00:00', '14:00:00', 30, 1),
 (2, 1, 1, 2, 4, '07:00:00', '15:00:00', 30, 1),
 (3, 111, 1, 1, 1, '08:00:00', '15:00:00', 4, 1),
-(4, 222, 3, 1, 1, '08:00:00', '15:00:00', 4, 1);
+(4, 111, 1, 1, 2, '08:00:00', '15:00:00', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -78,7 +74,6 @@ INSERT INTO `jadwal` (`id_jadwal`, `id_dokter`, `id_klinik`, `jnslayan`, `id_har
 -- Struktur dari tabel `login_attempts`
 --
 
-DROP TABLE IF EXISTS `login_attempts`;
 CREATE TABLE `login_attempts` (
   `id` int(11) UNSIGNED NOT NULL,
   `ip_address` varchar(45) NOT NULL,
@@ -92,7 +87,6 @@ CREATE TABLE `login_attempts` (
 -- Struktur dari tabel `refdokter`
 --
 
-DROP TABLE IF EXISTS `refdokter`;
 CREATE TABLE `refdokter` (
   `id_dokter` int(8) NOT NULL,
   `nama_dokter` varchar(100) NOT NULL,
@@ -160,7 +154,6 @@ INSERT INTO `refdokter` (`id_dokter`, `nama_dokter`, `status`) VALUES
 -- Struktur dari tabel `refklinik`
 --
 
-DROP TABLE IF EXISTS `refklinik`;
 CREATE TABLE `refklinik` (
   `id_klinik` int(4) NOT NULL,
   `nama_klinik` varchar(100) NOT NULL,
@@ -197,7 +190,6 @@ INSERT INTO `refklinik` (`id_klinik`, `nama_klinik`, `tipe_layanan`, `status`) V
 -- Struktur dari tabel `tgl_libur`
 --
 
-DROP TABLE IF EXISTS `tgl_libur`;
 CREATE TABLE `tgl_libur` (
   `id_libur` int(11) NOT NULL,
   `tanggal` date NOT NULL,
@@ -210,7 +202,6 @@ CREATE TABLE `tgl_libur` (
 -- Struktur dari tabel `tpasien`
 --
 
-DROP TABLE IF EXISTS `tpasien`;
 CREATE TABLE `tpasien` (
   `norm` varchar(10) NOT NULL,
   `nama` varchar(200) NOT NULL,
@@ -238,7 +229,6 @@ INSERT INTO `tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `alamat`
 -- Struktur dari tabel `treservasi`
 --
 
-DROP TABLE IF EXISTS `treservasi`;
 CREATE TABLE `treservasi` (
   `id_rsv` bigint(20) NOT NULL,
   `norm` varchar(10) NOT NULL,
@@ -258,7 +248,6 @@ CREATE TABLE `treservasi` (
 -- Struktur dari tabel `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
   `ip_address` varchar(45) NOT NULL,
@@ -292,7 +281,6 @@ INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`
 -- Struktur dari tabel `users_groups`
 --
 
-DROP TABLE IF EXISTS `users_groups`;
 CREATE TABLE `users_groups` (
   `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
@@ -312,13 +300,13 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 --
 
 --
--- Indeks untuk tabel `groups`
+-- Indexes for table `groups`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `jadwal`
+-- Indexes for table `jadwal`
 --
 ALTER TABLE `jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
@@ -326,37 +314,37 @@ ALTER TABLE `jadwal`
   ADD KEY `id_klinik` (`id_klinik`);
 
 --
--- Indeks untuk tabel `login_attempts`
+-- Indexes for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `refdokter`
+-- Indexes for table `refdokter`
 --
 ALTER TABLE `refdokter`
   ADD PRIMARY KEY (`id_dokter`);
 
 --
--- Indeks untuk tabel `refklinik`
+-- Indexes for table `refklinik`
 --
 ALTER TABLE `refklinik`
   ADD PRIMARY KEY (`id_klinik`);
 
 --
--- Indeks untuk tabel `tgl_libur`
+-- Indexes for table `tgl_libur`
 --
 ALTER TABLE `tgl_libur`
   ADD PRIMARY KEY (`id_libur`);
 
 --
--- Indeks untuk tabel `tpasien`
+-- Indexes for table `tpasien`
 --
 ALTER TABLE `tpasien`
   ADD PRIMARY KEY (`norm`);
 
 --
--- Indeks untuk tabel `treservasi`
+-- Indexes for table `treservasi`
 --
 ALTER TABLE `treservasi`
   ADD PRIMARY KEY (`id_rsv`),
@@ -364,13 +352,13 @@ ALTER TABLE `treservasi`
   ADD KEY `id_jadwal` (`id_jadwal`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `users_groups`
+-- Indexes for table `users_groups`
 --
 ALTER TABLE `users_groups`
   ADD PRIMARY KEY (`id`),
@@ -379,63 +367,54 @@ ALTER TABLE `users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `groups`
+-- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
--- AUTO_INCREMENT untuk tabel `jadwal`
+-- AUTO_INCREMENT for table `jadwal`
 --
 ALTER TABLE `jadwal`
   MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
--- AUTO_INCREMENT untuk tabel `login_attempts`
+-- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 --
--- AUTO_INCREMENT untuk tabel `refdokter`
+-- AUTO_INCREMENT for table `refdokter`
 --
 ALTER TABLE `refdokter`
   MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
-
 --
--- AUTO_INCREMENT untuk tabel `refklinik`
+-- AUTO_INCREMENT for table `refklinik`
 --
 ALTER TABLE `refklinik`
   MODIFY `id_klinik` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=570;
-
 --
--- AUTO_INCREMENT untuk tabel `tgl_libur`
+-- AUTO_INCREMENT for table `tgl_libur`
 --
 ALTER TABLE `tgl_libur`
   MODIFY `id_libur` int(11) NOT NULL AUTO_INCREMENT;
-
 --
--- AUTO_INCREMENT untuk tabel `treservasi`
+-- AUTO_INCREMENT for table `treservasi`
 --
 ALTER TABLE `treservasi`
   MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT;
-
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
--- AUTO_INCREMENT untuk tabel `users_groups`
+-- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
@@ -460,7 +439,6 @@ ALTER TABLE `treservasi`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `users_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
