@@ -1,0 +1,101 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<div class="box box-warning">
+    <div class="box-header with-border">
+        <h3 class="box-title">Kelengkapan Data <small>(step-3)</small></h3>
+    </div>
+    <?=form_open($action, 'name="formstep3" id="formstep3" class="form-horizontal form-label-left"'); ?>
+    <div class="box-body">
+        <div class="form-group">
+            <label for="norm" class="col-sm-2 control-label">Pasien</label>
+            <div class="col-sm-4 col-md-2">
+                <?php
+                echo form_input('norm', $norm, 'class="form-control" id="norm" readonly');
+                ?>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <?php
+                echo form_input('namapas', $namapas, 'class="form-control" id="namapas" readonly');
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+           <label for="alamat" class="col-sm-2 control-label">Alamat</label>
+           <div class="col-sm-8 col-md-8">
+               <?php
+               echo form_input('alamat', $alamat, 'class="form-control" id="alamat" readonly');
+               ?>
+           </div>
+        </div>
+        <div class="form-group">
+           <label for="notelp" class="col-sm-2 control-label">No. Telp *</label>
+           <div class="col-sm-4 col-md-4">
+               <?php
+               echo form_input('notelp', '', 'class="form-control" id="notelp" placeholder="081xxxxxxxxx" required');
+               ?>
+           </div>
+        </div>
+        <div class="form-group">
+            <label for="sebab" class="col-sm-2 control-label">Sebab Sakit *</label>
+            <div class="col-sm-4 col-md-4">
+                <?php 
+                    $option[''] = '-Pilih Sebab Sakit-';
+                    $option[1] = 'Sakit';
+                    $option[2] = 'Kecelakaan';
+                    echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
+                ?>
+            </div>
+        </div>
+        <!-- /.box-body -->
+      <div class="box-footer">
+          <div class="col-sm-12 col-md-6">
+              <button type="button" name="back" id="back" class="btn btn-warning">Kembali</button>
+                &nbsp;&nbsp;<button type="submit" name="reserv" id="reserv" class="btn btn-info pull-right">Reservasi</button>
+          </div>
+      </div>
+      <!-- /.box-footer -->
+</div>
+<div class="box box-warning">
+    <div class="box-header with-border">
+        <h3 class="box-title">Review Data Reservasi</h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group">
+            <label for="jnspasien" class="col-sm-2 control-label">Jenis Pasien</label>
+            <div class="col-sm-4 col-md-4">
+                <?php 
+                    echo form_input('jnspasien', $crbayar, 'class="form-control" readonly');
+                ?>
+            </div>
+            <label for="jnspasien" class="col-sm-2 control-label">Jenis Layanan</label>
+            <div class="col-sm-4 col-md-4">
+                <?php 
+                    echo form_input('jnspasien', $crbayar, 'class="form-control" readonly');
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nmklinik" class="col-sm-2 control-label">Poliklinik</label>
+            <div class="col-sm-4 col-md-4">
+                <?php 
+                    echo form_input('nmklinik', $nmklinik, 'class="form-control" readonly');
+                ?>
+            </div>
+            <label for="nmdokter" class="col-sm-2 control-label">Dokter</label>
+            <div class="col-sm-4 col-md-4">
+                <?php 
+                    echo form_input('nmdokter', $nmdokter, 'class="form-control" readonly');
+                ?>
+            </div>
+        </div>
+</div>    
+    
+<?php 
+    echo form_hidden('tgllahir', $tgllahir);
+echo form_close();
+?>
+<script>
+    $('#back').click(function(){
+        $('form[name=formstep3]').attr('action','<?php echo site_url("reservasi/step2");?>');
+        $('form[name=formstep3]').submit();
+    });
+</script>

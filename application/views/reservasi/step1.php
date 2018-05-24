@@ -31,7 +31,9 @@
 	  </div>
 	  <!-- /.box-body -->
 	  <div class="box-footer">
+              <div class="col-sm-12 col-md-6">
 		<button type="submit" class="btn btn-info pull-right">Validasi</button>
+              </div>
 	  </div>
 	  <!-- /.box-footer -->
 	</form>

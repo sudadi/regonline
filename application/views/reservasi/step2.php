@@ -10,7 +10,7 @@
             <div class="col-sm-6 col-md-4">
                 <?php 
                     $option[''] = '-Pilih Jenis Pasien-';
-                    $option[2] = 'Pasien Umun';
+                    $option[2] = 'Pasien Umum';
                     $option[5] = 'Pasien BPJS';
                     echo form_dropdown('jnspasien', $option, '', 'class="form-control" id="jnspasien" required');
                 ?>
@@ -67,10 +67,14 @@
             </div>
         </div>
       </div>
+      <?php 
+        echo form_hidden('norm', $norm);
+        echo form_hidden('tgllahir', $tgllahir);
+      ?>
       <!-- /.box-body -->
       <div class="box-footer">
           <div class="col-sm-12 col-md-6">
-            <button type="submit" class="btn btn-info pull-right">Simpan</button>
+            <button type="submit" class="btn btn-info pull-right">Lanjut</button>
           </div>
       </div>
       <!-- /.box-footer -->
@@ -127,7 +131,7 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert('Error data dokter tidak di temukan');
+                    alert('Error : Masukkan data secara urut..!');
                 }
             }); 
             var klinik=$('#poliklinik');
@@ -145,7 +149,7 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert('Error data dokter tidak di temukan');
+                    alert('Error : Masukkan data secara urut..!');
                 }
             });
         }
@@ -175,7 +179,7 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert('Error data dokter tidak di temukan');
+                    alert('Error : Masukkan data secara urut..!');
                 }
             });
         }   
@@ -202,7 +206,7 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert('Error data tidak di temukan');
+                    alert('Error : Masukkan data secara urut..!');
                 }    
             });
         }
@@ -227,7 +231,7 @@
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error data tidak di temukan');
+                alert('Error : Masukkan data secara urut..!');
             } 
         });       
     });

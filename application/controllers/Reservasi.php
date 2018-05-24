@@ -14,7 +14,9 @@ class Reservasi extends CI_Controller {
         $data['content']='';
         $this->load->view('reservasi/reservasi', $data);
     }
-
+    private function cekvalpas($norm,$tgllahir) {
+        
+    }
     public function step2 () {
         if ($this->input->post()) {
             $norm = $this->input->post('norm');
@@ -39,11 +41,14 @@ class Reservasi extends CI_Controller {
                 $data['page'] = 'reservasi/step2';
                 $data['action'] = site_url('reservasi/step3');
                 $data['content']['norm']=$norm;
+                $data['content']['tgllahir']=$tgllahir;
                 $data['content']['namapas']=$datapas->nama;
                 $this->load->view('reservasi/reservasi', $data);
             } else {
                 redirect('reservasi');
             }
+        } else {
+            redirect('reservasi');
         }
     }
 
@@ -107,5 +112,51 @@ class Reservasi extends CI_Controller {
             $starttime = strtotime("+1 hours", $starttime);
         }
          echo json_encode($kuotaperjam);
+    }
+    public function step3() {
+        if ($this->input->post()){   
+            $norm = $this->input->post('norm');
+            $tgllahir = $this->input->post('tgllahir');
+            $datapas = $this->mod_reservasi->cekdatpas($norm, $tgllahir);
+            if ($datapas) {
+                $dataresv = $this->mod_reservasi->cekreserv($norm, 0);
+                if ($dataresv) {
+                    $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
+                    $reserv = false;
+                } else {
+                    $this->session->set_flashdata('success', 'Data valid');
+                    $reserv = true;
+                }
+            } else {
+                $this->session->set_flashdata('error', 'Data pasien tidak ditemukan');
+                $reserv = false;
+            }
+            if ($reserv) {
+                $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
+                $klinik= $this->mod_reservasi->getklinikbyid($this->input->post('poliklinik'));
+                $datatgl= explode("|",$this->input->post('tglcekin'));
+                $tglcekin= $datatgl[2];
+                $jamcekin= $this->input->post('jamcekin');
+                $data['content']['idjadwal']= $datatgl[0];
+                $data['content']['iddokter']= $this->input->post('dokter');
+                $data['content']['nmdokter']= $dokter->nama_dokter;
+                $data['content']['idklinik']= $this->input->post('poliklinik');
+                $data['content']['nmklinik']= $klinik->nama_klinik;
+                $data['content']['crbayar']= $this->input->post('jnspasien');
+                $data['content']['jnslayan']= $this->input->post('jnslayan');
+                $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($tglcekin.' '.$jamcekin));
+                $data['content']['norm']= $datapas->norm;
+                $data['content']['namapas']=$datapas->nama;
+                $data['content']['tgllahir']=$datapas->tgl_lahir;
+                $data['content']['alamat']=$datapas->alamat;
+                $data['page'] = 'reservasi/step3';
+                $data['action'] = site_url('reservasi/reserved');
+                $this->load->view('reservasi/reservasi', $data);
+            }else {
+                redirect('reservasi');
+            }
+        } else {
+            redirect('reservasi');
+        }
     }
 }

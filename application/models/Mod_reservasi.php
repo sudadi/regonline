@@ -31,6 +31,12 @@
         $res = $this->db->get();
         return $res->row(); 
     }
+    function getdokterbyid($iddokter) {
+        $this->db->from('refdokter');
+        $this->db->where('id_dokter',$iddokter);
+        $qry= $this->db->get();
+        return $qry->row();
+    }
     function getklinik($iddokter,$jenis) {
         $this->db->select('refklinik.id_klinik, refklinik.nama_klinik');
         $this->db->from('refklinik');
@@ -42,7 +48,13 @@
         $this->db->group_by('refklinik.id_klinik');
         $res = $this->db->get();
         return $res->result();
-    }    
+    }  
+    function getklinikbyid($idklinik) {
+        $this->db->from('refklinik');
+        $this->db->where('id_klinik',$idklinik);
+        $qry= $this->db->get();
+        return $qry->row();
+    }
     function getjadwal($klinik,$dokter,$jenis) {
         $this->db->from('jadwal');
         if ($dokter){
