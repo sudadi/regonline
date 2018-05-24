@@ -62,7 +62,6 @@
             <div class="col-sm-6 col-md-4">
                 <?php 
                     $option[''] = '-Pilih Waktu-';
-
                     echo form_dropdown('jamcekin', $option, '', 'class="form-control" id="jamcekin" required');
                 ?>
             </div>
@@ -197,7 +196,8 @@
                     tglcekin.empty();
                     tglcekin.append('<option value="">-Pilih Tanggal-</option>');
                     for (var i = 0; i < data.length; i++) {
-                        tglcekin.append('<option value="'+data[i].djadwal+'|'+data[i].iddokter+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].iddokter+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                    console.log(data[i].idjadwal);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown)
@@ -208,22 +208,28 @@
         }
     });
     $("#tglcekin").change(function() {
-        var cekin=$(this).val();
-        var iddokter = cekin.split('|');
-        $('#dokter').val(iddokter[1]);
-        console.log(iddokter[1]);
-//        $.ajax({
-//            url : "<?php echo site_url('reservasi/ajax_dokterbytgl/')?>"+klinik+"/"+jenis+"/"+dow,
-//            type: "GET",
-//            dataType: "JSON",
-//            success: function(data){
-//                      
-//            },
-//            error: function (jqXHR, textStatus, errorThrown)
-//            {
-//                alert('Error data tidak di temukan');
-//            } 
-//        });       
+        var dtcekin=$(this).val();
+        var cekin = dtcekin.split('|');
+        var jamcekin=$("#jamcekin");
+        $('#dokter').val(cekin[1]);
+        var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[2];
+        console.log(url);
+        $.ajax({
+            url : url,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data){
+                jamcekin.empty();
+                jamcekin.append('<option value="">-Pilih Waktu Kunjungan-</option>');
+                for (var i = 0; i < data.length; i++) {
+                    jamcekin.append('<option value="'+data[i].jsm+'">'+data[i].jam+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error data tidak di temukan');
+            } 
+        });       
     });
     
 </script>

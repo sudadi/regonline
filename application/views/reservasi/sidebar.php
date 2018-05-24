@@ -5,25 +5,25 @@
     <section class="sidebar">
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
-          <a href="#">
+        <li>
+          <a href="<?=base_url('reservasi');?>">
             <i class="fa fa-dashboard"></i> <span>Reservasi</span>
           </a>
         </li>
-        <li class="treeview">
-          <a href="#">
+        <li>
+          <a href="<?=base_url('informasi');?>">
             <i class="fa fa-info-circle"></i>
             <span>Info Ortopedi</span>
           </a>
         </li>
-		<li class="treeview">
-          <a href="#">
+		<li>
+          <a href="<?=base_url('help');?>">
             <i class="fa fa-support"></i>
             <span>Bantuan</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="<?=base_url('ketentuan');?>">
             <i class="fa fa-exclamation-triangle"></i> <span>Syarat & Ketentuan</span>
             <!-- <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>

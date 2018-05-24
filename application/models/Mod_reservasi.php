@@ -64,6 +64,13 @@
     }
     function getkuotajam($klinik,$dokter,$tglcekin,$jamcekin) {
         $this->db->from('treservasi');
-        
+        $this->db->where("id_klinik=$klinik and id_dokter=$dokter and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
+        return $this->db->count_all_results();
+    }
+    function getjadwalbyid($idjadwal) {
+        $this->db->from('jadwal');
+        $this->db->where('id_jadwal', $idjadwal);
+        $qry = $this->db->get();
+        return $qry->row();
     }
  }
