@@ -85,4 +85,14 @@
         $qry = $this->db->get();
         return $qry->row();
     }
+    function getjnspasien($idjenis) {
+        $this->db->from('jenis_pasien');
+        $this->db->where('jenis_flag',1);
+        $this->db->where('jenis_id',$idjenis);
+        return $this->db->get()->row();
+    }
+    function getsebabsakit() {
+        $this->db->from('sebab_sakit');
+        return $this->db->get()->result_array();
+    }
  }

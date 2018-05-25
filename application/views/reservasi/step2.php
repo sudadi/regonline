@@ -226,7 +226,7 @@
                 jamcekin.empty();
                 jamcekin.append('<option value="">-Pilih Waktu Kunjungan-</option>');
                 for (var i = 0; i < data.length; i++) {
-                    jamcekin.append('<option value="'+data[i].jsm+'">'+data[i].jam+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                    jamcekin.append('<option value="'+data[i].jam+'">'+data[i].jam+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
                 }
             },
             error: function (jqXHR, textStatus, errorThrown)

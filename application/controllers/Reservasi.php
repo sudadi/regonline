@@ -132,19 +132,26 @@ class Reservasi extends CI_Controller {
                 $reserv = false;
             }
             if ($reserv) {
+                $jenispas= $this->mod_reservasi->getjnspasien($this->input->post('jnspasien'));
                 $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
                 $klinik= $this->mod_reservasi->getklinikbyid($this->input->post('poliklinik'));
                 $datatgl= explode("|",$this->input->post('tglcekin'));
-                $tglcekin= $datatgl[2];
-                $jamcekin= $this->input->post('jamcekin');
                 $data['content']['idjadwal']= $datatgl[0];
+                $data['content']['tglcekin']= $datatgl[2];
+                $data['content']['jamcekin']= $this->input->post('jamcekin');
                 $data['content']['iddokter']= $this->input->post('dokter');
                 $data['content']['nmdokter']= $dokter->nama_dokter;
                 $data['content']['idklinik']= $this->input->post('poliklinik');
                 $data['content']['nmklinik']= $klinik->nama_klinik;
-                $data['content']['crbayar']= $this->input->post('jnspasien');
+                $data['content']['jnspasien']= $this->input->post('jnspasien');
+                $data['content']['jenispas']= $jenispas->jenis_nama;
                 $data['content']['jnslayan']= $this->input->post('jnslayan');
-                $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($tglcekin.' '.$jamcekin));
+                if($this->input->post('jnslayan')==1) {
+                    $data['content']['layanan']= "Reguler";
+                } else {
+                    $data['content']['layanan']= "Eksekutif";
+                }
+                $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($datatgl[2].' '.$this->input->post('jamcekin')));
                 $data['content']['norm']= $datapas->norm;
                 $data['content']['namapas']=$datapas->nama;
                 $data['content']['tgllahir']=$datapas->tgl_lahir;

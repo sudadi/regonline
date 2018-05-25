@@ -38,10 +38,12 @@
             <label for="sebab" class="col-sm-2 control-label">Sebab Sakit *</label>
             <div class="col-sm-4 col-md-4">
                 <?php 
-                    $option[''] = '-Pilih Sebab Sakit-';
-                    $option[1] = 'Sakit';
-                    $option[2] = 'Kecelakaan';
-                    echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
+                $option[''] = '-Pilih Sebab Sakit-';
+                $ssakit= $this->mod_reservasi->getsebabsakit();
+                foreach ($ssakit as $key => $value){
+                    $option[$value['ss_id']] = $value['ss_nama'];
+                } 
+                echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
                 ?>
             </div>
         </div>
@@ -60,33 +62,48 @@
     </div>
     <div class="box-body">
         <div class="form-group">
-            <label for="jnspasien" class="col-sm-2 control-label">Jenis Pasien</label>
-            <div class="col-sm-4 col-md-4">
+            <label for="jenispas" class="col-sm-1 control-label">Pasien</label>
+            <div class="col-sm-4 col-md-3">
                 <?php 
-                    echo form_input('jnspasien', $crbayar, 'class="form-control" readonly');
+                    echo form_input('jenispas', $jenispas, 'class="form-control" readonly');
                 ?>
             </div>
-            <label for="jnspasien" class="col-sm-2 control-label">Jenis Layanan</label>
-            <div class="col-sm-4 col-md-4">
-                <?php 
-                    echo form_input('jnspasien', $crbayar, 'class="form-control" readonly');
-                ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="nmklinik" class="col-sm-2 control-label">Poliklinik</label>
+            <label for="nmklinik" class="col-sm-1 control-label">Klinik</label>
             <div class="col-sm-4 col-md-4">
                 <?php 
                     echo form_input('nmklinik', $nmklinik, 'class="form-control" readonly');
                 ?>
             </div>
-            <label for="nmdokter" class="col-sm-2 control-label">Dokter</label>
+            <label for="tglcekin" class="col-sm-1 control-label">Tanggal</label>
+            <div class="col-sm-4 col-md-2">
+                <?php 
+                    echo form_input('tglcekin', $tglcekin, 'class="form-control" readonly');
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="layanan" class="col-sm-1 control-label">Layanan</label>
+            <div class="col-sm-4 col-md-3">
+                <?php 
+                    echo form_input('layanan', $layanan, 'class="form-control" readonly');
+                ?>
+            </div>
+            <label for="nmdokter" class="col-sm-1 control-label">Dokter</label>
             <div class="col-sm-4 col-md-4">
                 <?php 
                     echo form_input('nmdokter', $nmdokter, 'class="form-control" readonly');
                 ?>
             </div>
+            <label for="jamcekin" class="col-sm-1 control-label">Jam</label>
+            <div class="col-sm-4 col-md-2">
+                <?php 
+                    echo form_input('jamcekin', $jamcekin, 'class="form-control" readonly');
+                ?>
+            </div>
         </div>
+        <div class="form-group">
+        </div>
+    </div>
 </div>    
     
 <?php 
