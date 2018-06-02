@@ -64,41 +64,29 @@
         <div class="form-group">
             <label for="jenispas" class="col-sm-1 control-label">Pasien</label>
             <div class="col-sm-4 col-md-3">
-                <?php 
-                    echo form_input('jenispas', $jenispas, 'class="form-control" readonly');
-                ?>
+                <?php echo form_input('jenispas', $jenispas, 'class="form-control" readonly');?>
             </div>
             <label for="nmklinik" class="col-sm-1 control-label">Klinik</label>
             <div class="col-sm-4 col-md-4">
-                <?php 
-                    echo form_input('nmklinik', $nmklinik, 'class="form-control" readonly');
-                ?>
+                <?php echo form_input('nmklinik', $nmklinik, 'class="form-control" readonly');?>
             </div>
             <label for="tglcekin" class="col-sm-1 control-label">Tanggal</label>
             <div class="col-sm-4 col-md-2">
-                <?php 
-                    echo form_input('tglcekin', $tglcekin, 'class="form-control" readonly');
-                ?>
+                <?php echo form_input('tglcekin', $tglcekin, 'class="form-control" readonly');?>
             </div>
         </div>
         <div class="form-group">
             <label for="layanan" class="col-sm-1 control-label">Layanan</label>
             <div class="col-sm-4 col-md-3">
-                <?php 
-                    echo form_input('layanan', $layanan, 'class="form-control" readonly');
-                ?>
+                <?php echo form_input('layanan', $layanan, 'class="form-control" readonly');?>
             </div>
             <label for="nmdokter" class="col-sm-1 control-label">Dokter</label>
             <div class="col-sm-4 col-md-4">
-                <?php 
-                    echo form_input('nmdokter', $nmdokter, 'class="form-control" readonly');
-                ?>
+                <?php echo form_input('nmdokter', $nmdokter, 'class="form-control" readonly');?>
             </div>
             <label for="jamcekin" class="col-sm-1 control-label">Jam</label>
             <div class="col-sm-4 col-md-2">
-                <?php 
-                    echo form_input('jamcekin', $jamcekin, 'class="form-control" readonly');
-                ?>
+                <?php echo form_input('jamcekin', $jamcekin, 'class="form-control" readonly');?>
             </div>
         </div>
         <div class="form-group">
@@ -108,6 +96,10 @@
     
 <?php 
     echo form_hidden('tgllahir', $tgllahir);
+    echo form_hidden('idjadwal', $idjadwal);
+    echo form_hidden('idklinik', $idklinik);
+    echo form_hidden('iddokter', $iddokter);
+    echo form_hidden('jnspasien', $jnspasien);
 echo form_close();
 ?>
 <script>

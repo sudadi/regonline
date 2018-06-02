@@ -95,4 +95,8 @@
         $this->db->from('sebab_sakit');
         return $this->db->get()->result_array();
     }
+    function getlibur() {
+        $this->db->from('tgl_libur');
+        return $this->db->get()->result_array();
+    }
  }
