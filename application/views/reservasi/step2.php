@@ -20,8 +20,8 @@
             <label for="jnslayan" class="col-sm-2 control-label">Jenis Layanan</label>
             <div class="col-sm-6 col-md-4">
                 <?php 
-                    $option='';
-                    $option[''] = '-Pilih Jenis Layanan-';
+                    unset($option);
+                    $option[''] = "-Pilih Jenis Layanan-";
                     $option[1] = 'Reguler';
                     $option[2] = 'Eksekutif';
                     echo form_dropdown('jnslayan', $option, '', 'class="form-control" id="jnslayan" required');
@@ -32,7 +32,7 @@
             <label for="dokter" class="col-sm-2 control-label">Dokter</label>
             <div class="col-sm-6 col-md-4">
                 <?php 
-                    $option='';
+                    unset($option);
                     $option[''] = '-Pilih Dokter-';                        
                     echo form_dropdown('dokter', $option, '', 'class="form-control" id="dokter" required');
                 ?>
@@ -42,7 +42,7 @@
             <label for="poliklinik" class="col-sm-2 control-label">Poliklinik</label>
             <div class="col-sm-6 col-md-4">
                 <?php 
-                    $option='';
+                    unset($option);
                     $option[''] = '-Pilih Poliklinik-';                        
                     echo form_dropdown('poliklinik', $option, '', 'class="form-control" id="poliklinik" required');
                 ?>
@@ -52,6 +52,7 @@
             <label for="tglcekin" class="col-sm-2 control-label">Tgl. Pelayanan</label>
             <div class="col-sm-6 col-md-4">
                 <?php 
+                    unset($option);
                     $option[''] = '-Pilih Tanggal-';
                     echo form_dropdown('tglcekin', $option, '', 'class="form-control" id="tglcekin" required');
                 ?>
@@ -61,6 +62,7 @@
             <label for="jamcekin" class="col-sm-2 control-label">Jam Pelayanan</label>
             <div class="col-sm-6 col-md-4">
                 <?php 
+                    unset($option);
                     $option[''] = '-Pilih Waktu-';
                     echo form_dropdown('jamcekin', $option, '', 'class="form-control" id="jamcekin" required');
                 ?>

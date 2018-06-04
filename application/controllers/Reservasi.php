@@ -19,7 +19,7 @@ class Reservasi extends CI_Controller {
                 redirect ('reservasi/final');
         }
         $data['page'] = 'reservasi/step1';
-        $data['action'] = site_url('reservasi/step1');
+        $data['action'] = site_url('reservasi');
         $data['content']='';
         $this->load->view('reservasi/reservasi', $data);
     }
@@ -78,7 +78,7 @@ class Reservasi extends CI_Controller {
             $perjam=$dtjadwal[$i]['kuota_perjam'];
             $starttime = $dtjadwal[$i]['jam_mulai'];
             $endtime = $dtjadwal[$i]['jam_selesai'];
-            $perhari = ($endtime - $starttime) * $perjam;
+            $perhari = (strtotime($endtime) - strtotime($starttime))/60 * $perjam;
             while ($startdate < $enddate) {
                 $newdate = date("Y-m-d", $startdate); 
                 $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
