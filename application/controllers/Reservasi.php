@@ -13,10 +13,11 @@ class Reservasi extends CI_Controller {
             $norm = $this->input->post('norm');
             $tgllahir = $this->input->post('tgllahir');
             $this->cekvalpas($norm,$tgllahir);
-            if ($this->session->userdata('status')=='1')
+            if ($this->session->userdata('status')=='1'){
                 redirect('reservasi/step2');
-            else if ($this->session->userdata('status')=='2')
+            }else if ($this->session->userdata('status')=='2'){
                 redirect ('reservasi/final');
+            }
         }
         $data['page'] = 'reservasi/step1';
         $data['action'] = site_url('reservasi');
@@ -29,6 +30,7 @@ class Reservasi extends CI_Controller {
             $this->session->set_userdata('norm', $norm);
             $this->session->set_userdata('tgllahir', $tgllahir);
             $this->session->set_userdata('namapas', $datapas->nama);
+            $this->session->set_userdata('alamat', $datapas->alamat);
             $dataresv = $this->mod_reservasi->cekreserv($norm, '0');
             if ($dataresv) {
                 $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
@@ -73,19 +75,19 @@ class Reservasi extends CI_Controller {
         $dtlibur = $this->mod_reservasi->getlibur();
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
-            $startdate = strtotime("+1 days", strtotime($hari));
+            $startdate = strtotime($hari);
             $enddate = strtotime("+2 weeks", $startdate);
             $perjam=$dtjadwal[$i]['kuota_perjam'];
             $starttime = $dtjadwal[$i]['jam_mulai'];
             $endtime = $dtjadwal[$i]['jam_selesai'];
-            $perhari = (strtotime($endtime) - strtotime($starttime))/60 * $perjam;
+            $perhari = floor((strtotime($endtime) - strtotime($starttime))/(60*60)) * $perjam;
             while ($startdate < $enddate) {
                 $newdate = date("Y-m-d", $startdate); 
                 $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
-                if ($tglcek || $tglcek ===0) {
+                if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
                       //nothing          
                 } else {
-                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>$hari, 'perhari'=>$perhari, 
+                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 'perhari'=>$perhari, 
                     'iddokter'=>$dtjadwal[$i]['id_dokter'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
                     'terpakai'=>$this->mod_reservasi->getkuotatgl(date("Y/m/d", $startdate), $klinik, $iddokter));
                 }
@@ -150,10 +152,10 @@ class Reservasi extends CI_Controller {
                     $data['content']['layanan']= "Eksekutif";
                 }
                 $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($datatgl[2].' '.$this->input->post('jamcekin')));
-                $data['content']['norm']= $datapas->norm;
-                $data['content']['namapas']=$datapas->nama;
-                $data['content']['tgllahir']=$datapas->tgl_lahir;
-                $data['content']['alamat']=$datapas->alamat;
+                $data['content']['norm']= $this->session->userdata('norm');
+                $data['content']['namapas']=$this->session->userdata('namapas');
+                $data['content']['tgllahir']=$this->session->userdata('tgllahir');
+                $data['content']['alamat']=$this->session->userdata('alamat');
                 $data['page'] = 'reservasi/step3';
                 $data['action'] = site_url('reservasi/simpan');
                 $this->load->view('reservasi/reservasi', $data);
@@ -174,7 +176,7 @@ class Reservasi extends CI_Controller {
                 'id_dokter'=>$this->input->post('iddokter'),
                 'cara_bayar'=>$this->input->post('jnspasien'),
                 'sebab'=>$this->input->post('sebab'));
-            $this->db->insert('reservasi', $datares);
+            $this->db->insert('treservasi', $datares);
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
                 redirect('reservasi/final');
