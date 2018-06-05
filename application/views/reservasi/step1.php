@@ -1,11 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-
-<?php $new = $this->mod_reservasi->getlibur();
- var_dump($new);
-$key = array_search('2018-06-29', array_column($new, 'tanggal'));
-var_dump($key);
-if ($key || $key ===0)  echo ' OKe : '. $key;
-else  echo "false" ; ?>
 <div class="box box-warning">
 	<div class="box-header with-border">
 		<h3 class="box-title">Verifikasi Rekam Medis Pasien <small>(step-1)</small></h3>

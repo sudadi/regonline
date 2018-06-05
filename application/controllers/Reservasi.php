@@ -13,9 +13,9 @@ class Reservasi extends CI_Controller {
             $norm = $this->input->post('norm');
             $tgllahir = $this->input->post('tgllahir');
             $this->cekvalpas($norm,$tgllahir);
-            if ($this->session->userdata('status')=='1'){
+            if ($this->session->userdata('status')=='0'){
                 redirect('reservasi/step2');
-            }else if ($this->session->userdata('status')=='2'){
+            }else if ($this->session->userdata('status')=='1'){
                 redirect ('reservasi/final');
             }
         }
@@ -31,21 +31,21 @@ class Reservasi extends CI_Controller {
             $this->session->set_userdata('tgllahir', $tgllahir);
             $this->session->set_userdata('namapas', $datapas->nama);
             $this->session->set_userdata('alamat', $datapas->alamat);
-            $dataresv = $this->mod_reservasi->cekreserv($norm, '0');
+            $dataresv = $this->mod_reservasi->cekreserv($norm, '1');
             if ($dataresv) {
                 $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
-                $this->session->set_userdata('status', '2');
+                $this->session->set_userdata('status', '1');
             } else {
                 $this->session->set_flashdata('success', 'Data valid');
-                $this->session->set_userdata('status', '1');
+                $this->session->set_userdata('status', '0');
             }
         } else {
             $this->session->set_flashdata('error', 'Data pasien tidak ditemukan');
-            $this->session->set_userdata('status', '0');
+            //$this->session->set_userdata('status', '0');
         }
     }
     public function step2 () {
-        if ($this->session->userdata('status')=='1') {
+        if ($this->session->userdata('status')=='0') {
             //$this->mod_reservasi->
             $data['page'] = 'reservasi/step2';
             $data['action'] = site_url('reservasi/step3');
@@ -131,7 +131,7 @@ class Reservasi extends CI_Controller {
             $norm = $this->input->post('norm');
             $tgllahir = $this->input->post('tgllahir');
             $this->cekvalpas($norm, $tgllahir);
-            if ($this->session->userdata('status')=='1') {
+            if ($this->session->userdata('status')=='0') {
                 $jenispas= $this->mod_reservasi->getjnspasien($this->input->post('jnspasien'));
                 $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
                 $klinik= $this->mod_reservasi->getklinikbyid($this->input->post('poliklinik'));
@@ -167,23 +167,43 @@ class Reservasi extends CI_Controller {
         }
     }
     public function simpan() {
-        if ($this->input->post()){
+        if ($this->input->post() && $this->session->userdata('status')=='0'){
             $waktursv=date('Y/m/d H:i:s', strtotime($this->input->post('tglcekin').$this->input->post('jamcekin')));
+            $idklinik=$this->input->post('idklinik');
+            $dataklinik= $this->mod_reservasi->getklinikbyid($idklinik);
+            $kodeklinik=$dataklinik->kode_poli;
             $datares= array('norm'=>$this->input->post('norm'),
                 'notelp'=>$this->input->post('notelp'),
                 'waktu_rsv'=>$waktursv,'id_jadwal'=>$this->input->post('idjadwal'),
-                'id_klinik'=>$this->input->post('idklinik'),
+                'id_klinik'=>$idklinik,
                 'id_dokter'=>$this->input->post('iddokter'),
                 'cara_bayar'=>$this->input->post('jnspasien'),
-                'sebab'=>$this->input->post('sebab'));
+                'sebab'=>$this->input->post('sebab'),
+                'status'=>1);
             $this->db->insert('treservasi', $datares);
             if ($this->db->affected_rows()>0){
+                $this->session->set_userdata('status', '1');
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
-                redirect('reservasi/final');
+                $idres=$this->db->insert_id();
+                $nores=$kodeklinik.'-'.$idres;
+                $this->db->update('treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                redirect('reservasi/finish/'.$idres);
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
             }                
             redirect('usulan');
         }
     }
+    public function finish($idres) {
+        if ($this->session->userdata('status')=='1'){
+            $datares= $this->mod_reservasi->getreserv($idres);
+            $data['page'] = 'reservasi/finish';
+            $data['action'] = site_url('reservasi');
+            $data['content']['nores']=$datares->nores;
+            $data['content']['waktures']=$datares->waktu_rsv;
+            $this->load->view('reservasi/reservasi', $data);
+        }
+    }
+    
 }
+

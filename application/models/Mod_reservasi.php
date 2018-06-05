@@ -99,4 +99,9 @@
         $this->db->from('tgl_libur');
         return $this->db->get()->result_array();
     }
+    function getreserv($idres) {
+        $this->db->from('treservasi');
+        $this->db->where('id_rsv', $idres);
+        return $this->db->get()->row();
+    }
  }
