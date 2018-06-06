@@ -170,6 +170,7 @@ class Reservasi extends CI_Controller {
         if ($this->input->post() && $this->session->userdata('status')=='0'){
             $waktursv=date('Y/m/d H:i:s', strtotime($this->input->post('tglcekin').$this->input->post('jamcekin')));
             $idklinik=$this->input->post('idklinik');
+            $nmklinik=$this->input->post('nmklinik');
             $dataklinik= $this->mod_reservasi->getklinikbyid($idklinik);
             $kodeklinik=$dataklinik->kode_poli;
             $datares= array('norm'=>$this->input->post('norm'),
@@ -187,6 +188,7 @@ class Reservasi extends CI_Controller {
                 $idres=$this->db->insert_id();
                 $nores=$kodeklinik.'-'.$idres;
                 $this->db->update('treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                $this->session->set_userdata('nmklinik',$nmklinik);
                 redirect('reservasi/finish/'.$idres);
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
@@ -199,6 +201,9 @@ class Reservasi extends CI_Controller {
             $datares= $this->mod_reservasi->getreserv($idres);
             $data['page'] = 'reservasi/finish';
             $data['action'] = site_url('reservasi');
+            $data['content']['norm']= $this->session->userdata('norm');
+            $data['content']['namapas']=$this->session->userdata('namapas');
+            $data['content']['nmklinik']=$this->session->userdata('nmklinik');
             $data['content']['nores']=$datares->nores;
             $data['content']['waktures']=$datares->waktu_rsv;
             $this->load->view('reservasi/reservasi', $data);
