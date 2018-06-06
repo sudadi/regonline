@@ -18,6 +18,7 @@
         if ($qry->num_rows() > 0) return $qry->row(); 
     }	
     function getdokter($jenis) {
+        $this->db->select('refdokter.id_dokter, refdokter.nama_dokter');
         $this->db->from('refdokter');
         $this->db->join('jadwal','refdokter.id_dokter=jadwal.id_dokter');
         $this->db->group_by('jadwal.id_dokter');

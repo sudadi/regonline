@@ -3,7 +3,7 @@
     <div class="box-header with-border">
         <h3 class="box-title">Kelengkapan Data <small>(step-3)</small></h3>
     </div>
-    <?=form_open($action, 'name="formstep3" id="formstep3" class="form-horizontal form-label-left"'); ?>
+    <?=form_open($action, 'name="formstep3" id="formstep3" class="form-horizontal form-label-left" onsubmit="return Validasi();"'); ?>
     <div class="box-body">
         <div class="form-group">
             <label for="norm" class="col-sm-2 control-label">Pasien</label>
@@ -27,7 +27,7 @@
            </div>
         </div>
         <div class="form-group">
-           <label for="notelp" class="col-sm-2 control-label">No. Telp *</label>
+           <label for="notelp" class="col-sm-2 control-label">No. HP *</label>
            <div class="col-sm-4 col-md-4">
                <?php
                echo form_input('notelp', '', 'class="form-control" id="notelp" placeholder="081xxxxxxxxx" required');
@@ -102,9 +102,30 @@
     echo form_hidden('jnspasien', $jnspasien);
 echo form_close();
 ?>
-<script>
+<script type="text/javascript">
     $('#back').click(function(){
         $('form[name=formstep3]').attr('action','<?php echo site_url("reservasi/step2");?>');
         $('form[name=formstep3]').submit();
     });
+
+    function Validasi(){
+        var angka = "0123456789";
+        var x = 0;
+        var notelepon=document.getElementById('notelp').value;
+        if (notelepon ==""){
+          alert("Ada form yang belum terisi");
+        }
+        if (notelepon.length<10 || notelepon.length>15) {
+            alert("Mohon masukkan no telepon dengan benar");
+            return false;
+        }
+        for (var i=0; i <notelepon.length; i++) {
+            digitb = "" + notelepon.substring(i, i+1);
+            if (angka.indexOf(digitb) == "-1") {
+                window.alert("Karakter pada No Telepon yang dimasukkan salah (harus angka semua)");
+                return false;
+            }
+        }
+        return true;
+    }
 </script>

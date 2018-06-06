@@ -179,7 +179,7 @@ class Reservasi extends CI_Controller {
                 'id_dokter'=>$this->input->post('iddokter'),
                 'cara_bayar'=>$this->input->post('jnspasien'),
                 'sebab'=>$this->input->post('sebab'),
-                'status'=>1);
+                'status'=>1, 'user_id'=>2);
             $this->db->insert('treservasi', $datares);
             if ($this->db->affected_rows()>0){
                 $this->session->set_userdata('status', '1');
