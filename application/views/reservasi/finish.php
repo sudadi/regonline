@@ -4,7 +4,7 @@
         <h3 class="box-title">Reservasi Berhasil <small>(finish)</small></h3>
     </div>
     <div class="box-body">
-        <div class="col-sm-6 col-md-offset-3">
+        <div class="col-sm-6 col-md-offset-3 col-lg-3 col-lg-offset-4">
         <div class="box box-widget widget-user-2">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-green-gradient">
@@ -12,17 +12,31 @@
                 <img class="img-circle" src="<?=base_url('assets/dist/img/rso.jpg');?>" alt="Pasien">
               </div>
               <!-- /.widget-user-image -->
-              <h3 class="widget-user-username"><?php echo $namapas."bla bla bla bla bla bla";?></h3>
+              <h3 class="widget-user-username"><?php echo $namapas;?></h3>
               <h5 class="widget-user-desc"><?php echo "nmklinik";?></h5>
             </div>
             <div class="box-footer no-padding">
-              <ul class="nav nav-stacked">
-                <li><a href="#">No. RM <span class="pull-right badge bg-blue"><?php echo "<img src='.base_url().'barcode/bikin_barcode/'.$norm'>";?></span></a></li>
-                <li><a href="#">ID. REG <span class="pull-right badge bg-aqua">5</span></a></li>
-                <li><a href="#">JADWAL <span class="pull-right badge bg-green">12</span></a></li>
-                <li><a href="#">JAM <span class="pull-right badge bg-red">842</span></a></li>
-                <li><a href="#">No. URUT <span class="pull-right badge bg-red">842</span></a></li>
-              </ul>
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-4">No. RM </div>
+                    <div class="col-sm-8"><?php echo "<img src='".base_url()."barcode.php?&size=30&text=".$norm."&print=true'>";?></div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-4">ID. REG</div>
+                    <div class="col-sm-8"><?=$nores;?></div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-4">JADWAL</div>
+                    <div class="col-sm-8"> </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-4">JAM </div>
+                    <div class="col-sm-8"> </div>
+                    
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-4">No. URUT </div>
+                    <div class="col-sm-8"> </div>
+                </div>
             </div>
           </div>
         </div>
