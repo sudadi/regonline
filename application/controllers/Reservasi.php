@@ -16,7 +16,7 @@ class Reservasi extends CI_Controller {
             if ($this->session->userdata('status')=='0'){
                 redirect('reservasi/step2');
             }else if ($this->session->userdata('status')=='1'){
-                redirect ('reservasi/final');
+                
             }
         }
         $data['page'] = 'reservasi/step1';
@@ -35,6 +35,9 @@ class Reservasi extends CI_Controller {
             if ($dataresv) {
                 $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
                 $this->session->set_userdata('status', '1');
+                $dataklinik=$this->mod_reservasi->getklinikbyid($dataresv->id_klinik);
+                $this->session->set_userdata('nmklinik',$dataklinik->nama_klinik);
+                redirect ('reservasi/finish/'.$dataresv->id_rsv);
             } else {
                 $this->session->set_flashdata('success', 'Data valid');
                 $this->session->set_userdata('status', '0');
