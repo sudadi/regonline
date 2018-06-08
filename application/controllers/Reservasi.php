@@ -19,6 +19,7 @@ class Reservasi extends CI_Controller {
                 
             }
         }
+        $this->session->sess_destroy();
         $data['page'] = 'reservasi/step1';
         $data['action'] = site_url('reservasi');
         $data['content']='';
@@ -210,6 +211,8 @@ class Reservasi extends CI_Controller {
             $data['content']['nores']=$datares->nores;
             $data['content']['waktures']=$datares->waktu_rsv;
             $this->load->view('reservasi/reservasi', $data);
+        } else {
+            redirect('reservasi');
         }
     }
     

@@ -105,4 +105,7 @@
         $this->db->where('id_rsv', $idres);
         return $this->db->get()->row();
     }
+    function getantrian($idklinik, $tglres) {
+        $this->db->select();
+    }
  }

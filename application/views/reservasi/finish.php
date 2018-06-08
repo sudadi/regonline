@@ -34,10 +34,10 @@
                     <div class="col-xs-7 text-bold"><?php echo date('H:i:s', strtotime($waktures));?></div>
                     
                 </div>
-                <div class="form-group col-xs-12">
+<!--                <div class="form-group col-xs-12">
                     <div class="col-xs-5 text-bold">No. URUT </div>
                     <div class="col-xs-7 text-bold"> </div>
-                </div>
+                </div>-->
             </div>
             <div class="box-footer no-padding bg-blue-active">
                 <div class="form-group col-xs-12">
@@ -47,14 +47,14 @@
             </div>
             <div class="form-group col-xs-12"></div>
             <div class="pull-right">
-                    <button class="btn btn-success" value="Selesai">Selesai</button>
+                <a href="<?=base_url();?>"><button class="btn btn-success" value="Selesai">Selesai</button></a>
             </div>
           </div>
         </div>
     </div> 
     <!--<input type="button" onclick="printDiv('printableArea')" value="print a div!" />-->
     <div class="form-group">
-        <div class="alert alert-info alert-dismissible">
+        <div class="alert alert-warning alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h4><i class="icon fa fa-info"></i> Perhatian!</h4>
             <p class="text-justify">Tunjukkan tampilan halaman ini saat check-in kepada petugas pendaftaran.
