@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
+<aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <ul class="sidebar-menu" data-widget="tree">
@@ -33,4 +33,19 @@
       </ul>
     </section>
     <!-- /.sidebar -->
-  </aside>
+</aside>
+<script>
+  var url = window.location;
+  // for sidebar menu entirely but not cover treeview
+  $('ul.sidebar-menu a').filter(function() {
+     return this.href == url;
+  }).parent().addClass('active');
+  //Top bar
+  $('ul.navbar-nav a').filter(function() {
+     return this.href == url;
+  }).parent().addClass('active');
+  // for treeview
+  $('ul.treeview-menu a').filter(function() {
+     return this.href == url;
+  }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+</script>
