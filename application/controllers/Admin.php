@@ -96,21 +96,68 @@ class Admin extends CI_Controller
         $this->data['content']='';
         $this->load->view('admin/main', $this->data);
     }
-     public function jadwal() {
-        $this->data['page']='admin/jadwal';
-        $this->data['content']='';
-        $this->load->view('admin/main', $this->data);
+    public function jadwal() {
+        if ($this->input->get('hapus')) {
+            $id= $this->input->get('hapus');
+            $this->db->delete('jadwal', 'id_jadwal='.$id);
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah dihapus');    
+                redirect('admin/jadwal');
+            } else {
+                $this->session->set_flashdata('error', 'Data GAGAL dihapus');
+            }            
+        }
+        $this->load->library('pagination');
+        $jmldata= $this->mod_setting->getjmljadwal();
+        $config['base_url'] = base_url().'admin/jadwal/';
+        $config['total_rows'] = $jmldata;
+        $config['per_page'] = 10;
+        $config['num_links'] = 2;
+        $config['uri_segment']=3;
+        $config['full_tag_open'] = "<ul class='pagination pagination-sm' style='position:relative; top:-25px;'>";
+        $config['full_tag_close'] ="</ul>";
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
+        $config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
+        $config['next_tag_open'] = "<li>";
+        $config['next_tagl_close'] = "</li>";
+        $config['prev_tag_open'] = "<li>";
+        $config['prev_tagl_close'] = "</li>";
+        $config['first_tag_open'] = "<li>";
+        $config['first_tagl_close'] = "</li>";
+        $config['last_tag_open'] = "<li>";
+        $config['last_tagl_close'] = "</li>";
+        $this->pagination->initialize($config);	
+        $data['content']['jadwal']= $this->mod_setting->getjadwal($config['per_page'],$this->uri->segment('3'));
+        
+        $data['page']='admin/jadwal';
+        $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
+        $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
+        $data['content']['jnslayan']= $this->mod_setting->getjnslayan();
+        $this->load->view('admin/main', $data);
     }
     public function libur() {
         if ($this->input->get('hapus')) {
             $id= $this->input->get('hapus');
             $this->db->delete('tgl_libur', 'id_libur='.$id);
-            redirect('admin/libur');
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah dihapus');    
+                redirect('admin/libur');
+            } else {
+                $this->session->set_flashdata('error', 'Data GAGAL dihapus');
+            }            
         }
         if($this->input->post()){
             $tgl= $this->input->post('tgl');
             $ket= $this->input->post('ket');
-            $this->db->insert('tgl_libur', array('tanggal'=>$tgl,'ket'=>$ket));
+            if ($this->input->post('edit')){
+                $idlibur= $this->input->post('idlibur');
+                $status= $this->input->post('status');
+                $this->db->update('tgl_libur', array('tanggal'=>$tgl,'status'=>$status,'ket'=>$ket), 'id_libur='.$idlibur);
+            }else{
+                $this->db->insert('tgl_libur', array('tanggal'=>$tgl,'ket'=>$ket));
+            }
             if ($this->db->affected_rows()>0){
                $this->session->set_flashdata('success', 'Data sudah tersimpan');
                redirect('admin/libur', 'refres');

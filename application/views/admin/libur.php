@@ -44,13 +44,13 @@
                                         //$no = $this->uri->segment('3') + 1;
                                         foreach($dtlibur as $libur){ 
                                         ?>
-                                        <tr>
+                                        <tr onclick="isidata(this);">
                                             <td><?=$libur->id_libur;?></td>
                                             <td><?=$libur->tanggal;?></td>
                                             <td><?= $libur->status ? '<span class="btn btn-xs btn-success">Aktif</span>':'<span class="btn btn-xs btn-default">Non Aktif</span>';?></td>
                                             <td><?=$libur->ket;?></td>
                                             <td>
-                                                <a href="<?=base_url('admin/libur/?edit='.$libur->id_libur);?>"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
+                                                <a href="#" data-toggle="modal" data-target="#modal-edit"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
                                                 <a href="<?=base_url('admin/libur/?hapus='.$libur->id_libur);?>" onclick="return confirm('Yakin menghapus data ini ?')">
                                                     <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Hapus</span></a>
                                             </td>
@@ -66,7 +66,7 @@
         </div>
     </section>
 </div>
-<div class="modal modal-info fade" id="modal-addlibur">
+<div class="modal fade" id="modal-addlibur">
     <?=form_open($action, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -90,10 +90,57 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
             </div>
         </div>
     </div>
     <?=form_close();?>
 </div>
+<div class="modal fade" id="modal-edit">
+    <?=form_open($action, 'id="formedit" class="form-horizontal form-label-left"'); ?>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Tanggal Libur</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Tgl.</label>
+                    <div class="col-sm-4">
+                        <?=form_input(array('name'=>'tgl','type'=>'date', 'id'=>'tgl'), '', 'class="form-control" required');?>
+                    </div>                    
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Ket.</label>
+                    <div class="col-sm-10">
+                        <?=form_input(array('name'=>'ket','id'=>'ket'), '', 'class="form-control" required');?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Status</label>
+                    <div class="col-sm-10">
+                        <?=form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Aktif','2'=>'Non Aktif'),'', 'class="form-control" required');?>
+                    </div>
+                </div>
+            </div>
+            <?php echo form_input(array('name'=>'idlibur','id'=>'idlibur','type'=>'hidden'));
+                echo form_hidden('edit', TRUE);?>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+    <?=form_close();?>
+</div>
+<script>
+    function isidata(row){
+        var x=row.cells;
+        $('#idlibur').val(x[0].innerHTML);
+        $('#tgl').val(x[1].innerHTML);
+        $('#ket').val(x[3].innerHTML);
+    }
+</script>
