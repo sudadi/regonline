@@ -107,6 +107,31 @@ class Admin extends CI_Controller
                 $this->session->set_flashdata('error', 'Data GAGAL dihapus');
             }            
         }
+        if($this->input->post()){
+            $dokter= $this->input->post('dokter');
+            $klinik= $this->input->post('klinik');
+            $jnslayan= $this->input->post('jnslayan');
+            $hari = $this->input->post('hari');
+            $mulai = $this->input->post('mulai');
+            $selesai = $this->input->post('selesai');
+            $status = $this->input->post('status');
+            $kuota = $this->input->post('kuota');
+            if ($this->input->post('edit')){
+                $idjadwal= $this->input->post('edit');
+                $status= $this->input->post('status');
+                $this->db->update('jadwal', array('id_dokter'=>$dokter,'id_klinik'=>$klinik,'jnslayan'=>$jnslayan,'kuota_perjam'=>$kuota,
+                    'id_hari'=>$hari,'jam_mulai'=>$mulai,'jam_selesai'=>$selesai,'status'=>$status), 'id_jadwal='.$idjadwal);
+            }else{
+                $this->db->insert('jadwal', array('id_dokter'=>$dokter,'id_klinik'=>$klinik,'jnslayan'=>$jnslayan,
+                    'kuota_perjam'=>$kuota,'id_hari'=>$hari,'jam_mulai'=>$mulai,'jam_selesai'=>$selesai,'status'=>$status));
+            }
+            if ($this->db->affected_rows()>0){
+               $this->session->set_flashdata('success', 'Data sudah tersimpan');
+               redirect('admin/jadwal', 'refres');
+            } else {
+                $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
+            }
+        }
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getjmljadwal();
         $config['base_url'] = base_url().'admin/jadwal/';
@@ -129,13 +154,21 @@ class Admin extends CI_Controller
         $config['last_tag_open'] = "<li>";
         $config['last_tagl_close'] = "</li>";
         $this->pagination->initialize($config);	
-        $data['content']['jadwal']= $this->mod_setting->getjadwal($config['per_page'],$this->uri->segment('3'));
+        $data['content']['jadwal']= $this->mod_setting->getjadwalfull($config['per_page'],$this->uri->segment('3'));
         
         $data['page']='admin/jadwal';
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
         $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
         $data['content']['jnslayan']= $this->mod_setting->getjnslayan();
+        $data['content']['action']='admin/jadwal';
         $this->load->view('admin/main', $data);
+    }
+    public function ajaxjadwal($idjadwal) {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        $data = $this->mod_setting->getjadwal($idjadwal);
+        echo json_encode($data); 
     }
     public function libur() {
         if ($this->input->get('hapus')) {
@@ -198,4 +231,3 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $this->data);
     }
 }
-?>

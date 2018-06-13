@@ -149,10 +149,6 @@
 <script src="<?=base_url('assets/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 <!-- daterangepicker -->
 <script src="<?=base_url('assets/bower_components/moment/min/moment.min.js');?>"></script>
-<script src="<?=base_url('assets/bower_components/bootstrap-daterangepicker/daterangepicker.js');?>"></script>
-
-<!-- datepicker -->
-<script src="<?=base_url('assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');?>"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="<?=base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
 <script src="<?=base_url('assets/bower_components/toastr/build/toastr.min.js');?>"></script>
