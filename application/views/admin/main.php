@@ -9,6 +9,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="<?=base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
+    <link rel="stylesheet" href="<?=base_url('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?=base_url('assets/bower_components/font-awesome/css/font-awesome.min.css');?>">
     <!-- Ionicons -->
@@ -152,7 +153,8 @@
 <!-- Bootstrap WYSIHTML5 -->
 <script src="<?=base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
 <script src="<?=base_url('assets/bower_components/toastr/build/toastr.min.js');?>"></script>
-
+<script src="<?=base_url('assets/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
+<script src="<?=base_url('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
 <!-- AdminLTE App -->
 <script src="<?=base_url('assets/dist/js/adminlte.min.js');?>"></script>
 <script>
@@ -169,21 +171,24 @@
     
     });
 </script>
-<!--<script>
+<script>
   $(document).ready(function () {
     $('.sidebar-menu').tree()
   })
-</script>-->
+</script>
 <!-- iCheck -->
 <script src="<?=base_url('assets/plugins/iCheck/icheck.min.js');?>"></script>
 <script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' /* optional */
+    $(function () {
+      $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' /* optional */
+      });
     });
-  });
+    $(function () {
+     $('#dttable').DataTable();
+    });
 </script>
 </body>
 </html>

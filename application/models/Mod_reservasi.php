@@ -108,4 +108,7 @@
     function getantrian($idklinik, $tglres) {
         $this->db->select();
     }
+    function getresfull($where) {
+        return $this->db->get_where('vreservasi', $where)->result();
+    }
  }

@@ -77,9 +77,11 @@ class Admin extends CI_Controller
         }
     }  
     public function reservasi() {
-        $this->data['page']='admin/reservasi';
-        $this->data['content']='';
-        $this->load->view('admin/main', $this->data);
+        $this->load->model('mod_reservasi');
+        $data['page']='admin/reservasi';
+        $data['content']['datares']= $this->mod_reservasi->getresfull("waktu_rsv>={date('Y-m-d')}");
+        $data['content']['action']='admin/reservasi';
+        $this->load->view('admin/main', $data);
     }
     public function datares() {
         $this->data['page']='admin/datares';
