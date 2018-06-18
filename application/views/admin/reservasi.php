@@ -12,7 +12,7 @@
     </section>
     <section class="content">
         <div class="row">
-             <div class="col-md-12 col-sm-12 col-xs-12">
+             <div class="col-md-12 col-sm-12 col-xs-12 ">
                 <div class="box box-danger">
                     <div class="box-header with-border">
                         <h3 class="box-title">Reservasi <small> SMS/WA</small></h3>
@@ -20,7 +20,10 @@
                     <div class="box-body">
                         <div class="col-sm-12">
                             <div class="col-sm-2">
-                                <?=form_button('tambah', '<span class="fa fa-plus"></span> Tambah', 'class="btn btn-info" data-toggle="modal" data-target="#modal-reservasi"') ;?>
+                                <?=form_button(array('name'=>'wa'), '<span class="fa fa-whatsapp"></span> Reservasi WA', 'class="btn btn-success reservasi" onclick="showmodal(this);"');?>
+                            </div>
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <?=form_button('sms', '<span class="fa fa-envelope-o"></span> Reservasi SMS', 'class="btn btn-primary reservasi" onclick="showmodal(this);"') ;?>
                             </div>
                         </div>
                         <div class="clearfix"></div><p/>
@@ -82,3 +85,125 @@
         </div>
     </section>
 </div>
+<div class="modal fade" id="modal-reservasi">
+    <?=form_open($action, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Reservasi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">No. RM</label>
+                    <div class="col-sm-2">
+                        <div class="input-group">
+                            <?=form_input(array('name'=>'norm','id'=>'norm'), '', 'class="form-control" required');?>
+                            <div class="input-group-btn">
+                                <button id="shownorm" class="btn btn-default"><i class="fa fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="control-label col-sm-2">Nama</label>
+                    <div class="col-sm-6">
+                        <?=form_input('nama', '', 'class="form-control" readonly required');?>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="jnspasien" class="col-sm-2 control-label">Jenis Pasien</label>
+                    <div class="col-sm-4">
+                        <?php 
+                            $option[''] = '-Pilih Jenis Pasien-';
+                            $option[2] = 'Pasien Umum';
+                            $option[5] = 'Pasien BPJS';
+                            echo form_dropdown('jnspasien', $option, '', 'class="form-control" id="jnspasien" required');
+                        ?>
+                    </div>
+                    <label for="jnslayan" class="col-sm-2 control-label">Jenis Layanan</label>
+                    <div class="col-sm-4">
+                        <?php 
+                            unset($option);
+                            $option[''] = "-Pilih Jenis Layanan-";
+                            $option[1] = 'Reguler';
+                            $option[2] = 'Eksekutif';
+                            echo form_dropdown('jnslayan', $option, '', 'class="form-control" id="jnslayan" required');
+                        ?>
+                    </div>
+                </div>
+                <div class="form-group dokter">
+                    <label for="dokter" class="col-sm-2 control-label">Dokter</label>
+                    <div class="col-sm-4">
+                        <?php 
+                            unset($option);
+                            $option[''] = '-Pilih Dokter-';                        
+                            echo form_dropdown('dokter', $option, '', 'class="form-control" id="dokter" required');
+                        ?>
+                    </div>
+                    <label for="poliklinik" class="col-sm-2 control-label">Poliklinik</label>
+                    <div class="col-sm-4">
+                        <?php 
+                            unset($option);
+                            $option[''] = '-Pilih Poliklinik-';                        
+                            echo form_dropdown('poliklinik', $option, '', 'class="form-control" id="poliklinik" required');
+                        ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tglcekin" class="col-sm-2 control-label">Tgl. Pelayanan</label>
+                    <div class="col-sm-4">
+                        <?php 
+                            unset($option);
+                            $option[''] = '-Pilih Tanggal-';
+                            echo form_dropdown('tglcekin', $option, '', 'class="form-control" id="tglcekin" required');
+                        ?>
+                    </div>
+                    <label for="jamcekin" class="col-sm-2 control-label">Jam Pelayanan</label>
+                    <div class="col-sm-4">
+                        <?php 
+                            unset($option);
+                            $option[''] = '-Pilih Waktu-';
+                            echo form_dropdown('jamcekin', $option, '', 'class="form-control" id="jamcekin" required');
+                        ?>
+                    </div>
+                </div>
+                <?=form_input(array('name'=>'jenisres','type'=>'hidden'));?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+    <?=form_close();?>
+</div>
+<script>
+    function showmodal(elm){
+        var jenisres=$(elm).attr('name');
+        if (jenisres === 'wa'){
+            $('.modal-title').html('Reservasi WA');
+            $("input[name*='jenisres']").val("WA");
+        } else {
+            $('.modal-title').html('Reservasi SMS');
+            $("input[name*='jenisres']").val("SMS");
+        }
+        $('#modal-reservasi').modal();
+    }
+    $('#norm').keypress(function(e) {
+        if(e.which === 13) {
+            $('#shownorm').click();
+            return false;  
+        }
+    });
+    $('#shownorm').click(function(){
+        var norm=$('#norm').val();
+        if (norm.length < 6){
+            alert('No. RM SALAH, minimal 6 digit angka.');
+            return false;
+        } else {
+            
+        }
+        $(location).attr('href','http://localhost/regonline/admin')
+    });
+</script>
