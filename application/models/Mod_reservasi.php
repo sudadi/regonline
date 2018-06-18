@@ -102,6 +102,7 @@
     }
     function getreserv($idres) {
         $this->db->from('treservasi');
+        $this->db->join('tpasien', 'treservasi.norm=tpasien.norm');
         $this->db->where('id_rsv', $idres);
         return $this->db->get()->row();
     }

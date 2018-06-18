@@ -69,7 +69,7 @@
                                             <td><?=$res->status ? '<span class="btn btn-xs btn-success">Aktif</span>':'<span class="btn btn-xs btn-default">Non Aktif</span>';?></td>
                                             <td><span class="btn btn-xs btn-info"><?=$res->sync?'True':'False';?></span></td>
                                             <td class="text-nowrap">
-                                                <a href="#" data-toggle="modal" data-target="#modal-edit"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
+                                                <a href="#" onclick="editdata(<?=$res->id_rsv;?>)"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
                                                 <a href="<?=base_url('admin/reservasi/?hapus='.$res->id_rsv);?>" onclick="return confirm('Yakin menghapus data ini ?')">
                                                     <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Hapus</span></a>
                                             </td>
@@ -97,15 +97,15 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label col-sm-2">No. RM</label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="input-group">
-                            <?=form_input(array('name'=>'norm','id'=>'norm'), '', 'class="form-control" required');?>
+                            <?=form_input(array('name'=>'norm','id'=>'norm','type'=>'number'), '', 'class="form-control" required');?>
                             <div class="input-group-btn">
                                 <button id="shownorm" class="btn btn-default"><i class="fa fa-eye"></i></button>
                             </div>
                         </div>
                     </div>
-                    <label class="control-label col-sm-2">Nama</label>
+                    <label class="control-label col-sm-1">Nama</label>
                     <div class="col-sm-6">
                         <?=form_input('nama', '', 'class="form-control" readonly required');?>
                     </div>
@@ -135,24 +135,28 @@
                 <div class="form-group dokter">
                     <label for="dokter" class="col-sm-2 control-label">Dokter</label>
                     <div class="col-sm-4">
-                        <?php 
-                            unset($option);
-                            $option[''] = '-Pilih Dokter-';                        
-                            echo form_dropdown('dokter', $option, '', 'class="form-control" id="dokter" required');
-                        ?>
+                        <?php
+                        unset($option);
+                        $option[''] = 'Pilih Dokter';
+                        foreach ($dokter as $dok) {
+                            $option[$dok->id_dokter] = $dok->nama_dokter;
+                        }
+                        echo form_dropdown('dokter', $option, '', 'class="form-control" required');?>
                     </div>
                     <label for="poliklinik" class="col-sm-2 control-label">Poliklinik</label>
                     <div class="col-sm-4">
-                        <?php 
-                            unset($option);
-                            $option[''] = '-Pilih Poliklinik-';                        
-                            echo form_dropdown('poliklinik', $option, '', 'class="form-control" id="poliklinik" required');
-                        ?>
+                        <?php
+                        unset($option);
+                        $option[''] = 'Pilih Klinik';
+                        foreach ($klinik as $poli) {
+                            $option[$poli->id_klinik] = $poli->nama_klinik;
+                        }
+                        echo form_dropdown('klinik', $option, '', 'class="form-control" required');?>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tglcekin" class="col-sm-2 control-label">Tgl. Pelayanan</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 tglcekin">
                         <?php 
                             unset($option);
                             $option[''] = '-Pilih Tanggal-';
@@ -160,7 +164,7 @@
                         ?>
                     </div>
                     <label for="jamcekin" class="col-sm-2 control-label">Jam Pelayanan</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 jamcekin">
                         <?php 
                             unset($option);
                             $option[''] = '-Pilih Waktu-';
@@ -168,7 +172,8 @@
                         ?>
                     </div>
                 </div>
-                <?=form_input(array('name'=>'jenisres','type'=>'hidden'));?>
+                <?=form_input(array('name'=>'jenisres','type'=>'hidden'));
+                    echo form_input(array('name'=>'edit','type'=>'hidden'));?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -206,4 +211,34 @@
         }
         $(location).attr('href','http://localhost/regonline/admin')
     });
+    function editdata(idrsv){
+        $.ajax({
+            url : "<?php echo site_url('admin/ajaxresv/')?>"+idrsv,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data)
+            {
+                var d = new Date(data.waktu_rsv);
+                var tglresv = d.format("yyyy-mm-dd");
+                var jamresv = d.format("HH:MM");
+                $('.tglcekin').html('<input type="date" name="tglcekin" required />');
+                $('.jamcekin').html('<input type="time" name="jamcekin" required />');
+                $('#norm').val(data.norm);
+                $('input[name*=nama]').val(data.nama);
+                $('input[name*=jnspasien]').val(data.cara_bayar);
+                $('select[name=dokter]').val(data.id_dokter);
+                $('select[name=klinik]').val(data.id_klinik);
+                $('select[name=jnslayan]').val(data.jnslayan);
+                $('select[name=tglcekin]').val(tglresv);
+                $('select[name=jamcekin]').val(jamresv);
+                $('input[name*=jenisres]').val(data.jenisresv);
+                $('#edit').val(idresv);
+                $("#modal-jadwal").modal();
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error : Data tidak ditemukan..!');
+            }
+        });
+    }
 </script>

@@ -78,10 +78,20 @@ class Admin extends CI_Controller
     }  
     public function reservasi() {
         $this->load->model('mod_reservasi');
+        $this->load->model('mod_setting');
         $data['page']='admin/reservasi';
+        $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
+        $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
         $data['content']['datares']= $this->mod_reservasi->getresfull("waktu_rsv>={date('Y-m-d')}");
         $data['content']['action']='admin/reservasi';
         $this->load->view('admin/main', $data);
+    }
+    public function ajaxresv($idrsv) {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        $data = $this->mod_setting->getreserv($idrsv);
+        echo json_encode($data); 
     }
     public function datares() {
         $this->data['page']='admin/datares';
