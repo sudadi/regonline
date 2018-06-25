@@ -39,11 +39,12 @@
                                             <th>TL</th>
                                             <th>Klinik</th>
                                             <th>Dokter</th>
+                                            <th>Bayar</th>
                                             <th>Layanan</th>
-                                            <th>Tgl. Res.</th>
+                                            <th>Reservasi</th>
                                             <th>Kode</th>
-                                            <th>No. Urut</th>
-                                            <th>Tgl. Entri</th>
+                                            <th>Urut</th>
+                                            <th>Update</th>
                                             <th>Status</th>
                                             <th>Sync</th>
                                             <th>Opsi</th>
@@ -61,7 +62,8 @@
                                             <td><?=$res->tgl_lahir;?></td>
                                             <td><?=$res->nama_klinik;?></td>
                                             <td class="text-nowrap"><?=$res->nama_dokter;?></td>
-                                            <td><?=$res->cara_bayar;?></td>
+                                            <td><?=$res->nmjnspasien;?></td>
+                                            <td><?=$res->nmjnslayan;?></td>
                                             <td><?=$res->waktu_rsv;?></td>
                                             <td><?=$res->nores;?></td>
                                             <td><?=$res->nourut;?></td>
@@ -141,7 +143,7 @@
                         foreach ($dokter as $dok) {
                             $option[$dok->id_dokter] = $dok->nama_dokter;
                         }
-                        echo form_dropdown('dokter', $option, '', 'class="form-control" required');?>
+                        echo form_dropdown('dokter', $option, '', 'class="form-control" id="dokter" required');?>
                     </div>
                     <label for="poliklinik" class="col-sm-2 control-label">Poliklinik</label>
                     <div class="col-sm-4">
@@ -151,7 +153,7 @@
                         foreach ($klinik as $poli) {
                             $option[$poli->id_klinik] = $poli->nama_klinik;
                         }
-                        echo form_dropdown('klinik', $option, '', 'class="form-control" required');?>
+                        echo form_dropdown('klinik', $option, '', 'class="form-control" id="klinik" required');?>
                     </div>
                 </div>
                 <div class="form-group">
@@ -172,8 +174,25 @@
                         ?>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="tglcekin" class="col-sm-2 control-label">No. Telp</label>
+                    <div class="col-sm-3 tglcekin">
+                        <?=form_input('notelp', '', 'class="form-control" id="notelp" required');?>
+                    </div>
+                    <label for="jamcekin" class="col-sm-2 col-sm-offset-1 control-label">Sebab Sakit</label>
+                    <div class="col-sm-4 jamcekin">
+                        <?php 
+                            $option[''] = '-Pilih Sebab Sakit-';
+                            $ssakit= $this->mod_reservasi->getsebabsakit();
+                            foreach ($ssakit as $key => $value){
+                                $option[$value['ss_id']] = $value['ss_nama'];
+                            } 
+                            echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
+                        ?>
+                    </div>
+                </div>
                 <?=form_input(array('name'=>'jenisres','type'=>'hidden'));
-                    echo form_input(array('name'=>'edit','type'=>'hidden'));?>
+                    echo form_input(array('name'=>'edit','type'=>'hidden','id'=>'edit'));?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -224,7 +243,80 @@
             }); 
             //return false;
         }
-        //$(location).attr('href','http://localhost/regonline/admin')
+    });
+    $("#dokter").change(function(){
+        var iddokter=$(this).val();
+        var jenis=$('#jnslayan').val();
+        var klinik=$('#klinik');
+        var url ="<?php echo site_url('reservasi/ajax_klinik/')?>"+iddokter+"/"+jenis;
+        if (iddokter !== ''){
+            $.ajax({
+                url : url,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data)
+                {
+                    klinik.empty();
+                    klinik.append('<option value="">-Pilih Poliklinik-</option>');
+                    for (var i = 0; i < data.length; i++) {
+                        klinik.append('<option value='+data[i].id_klinik+'>'+data[i].nama_klinik+'</option>');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error : Masukkan data secara urut..!');
+                }
+            });
+        }   
+    });
+    $("#klinik").change(function() {
+        var klinik=$(this).val();
+        var jenis=$('#jnslayan').val();
+        var tglcekin=$('#tglcekin');      
+        var iddokter=$('#dokter').val();
+        if (klinik !==''){
+            $.ajax({
+                url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data)
+                {
+                    tglcekin.empty();
+                    tglcekin.append('<option value="">-Pilih Tanggal-</option>');
+                    for (var i = 0; i < data.length; i++) {
+                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].iddokter+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error : Masukkan data secara urut..!');
+                }    
+            });
+        }
+    });
+    $("#tglcekin").change(function() {
+        var dtcekin=$(this).val();
+        var cekin = dtcekin.split('|');
+        var jamcekin=$("#jamcekin");
+        $('#dokter').val(cekin[1]);
+        var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[2];
+        console.log(url);
+        $.ajax({
+            url : url,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data){
+                jamcekin.empty();
+                jamcekin.append('<option value="">-Pilih Waktu Kunjungan-</option>');
+                for (var i = 0; i < data.length; i++) {
+                    jamcekin.append('<option value="'+data[i].jam+'">'+data[i].jam+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error : Masukkan data secara urut..!');
+            } 
+        });       
     });
     function editdata(idrsv){
         $.ajax({
@@ -233,22 +325,17 @@
             dataType: "JSON",
             success: function(data)
             {
-                var d = new Date(data.waktu_rsv);
-                var tglresv = d.format("yyyy-mm-dd");
-                var jamresv = d.format("HH:MM");
-                $('.tglcekin').html('<input type="date" name="tglcekin" required />');
-                $('.jamcekin').html('<input type="time" name="jamcekin" required />');
+                //$('.tglcekin').html('<input type="date" name="tglcekin" required />');
+                //$('.jamcekin').html('<input type="time" name="jamcekin" required />');
                 $('#norm').val(data.norm);
                 $('input[name*=nama]').val(data.nama);
-                $('input[name*=jnspasien]').val(data.cara_bayar);
-                $('select[name=dokter]').val(data.id_dokter);
+                $('#jnspasien').val(data.cara_bayar);
+                $('#dokter').val(data.id_dokter);
                 $('select[name=klinik]').val(data.id_klinik);
-                $('select[name=jnslayan]').val(data.jnslayan);
-                $('select[name=tglcekin]').val(tglresv);
-                $('select[name=jamcekin]').val(jamresv);
+                $('select[name=jnslayan]').val(data.id_jnslayan);
                 $('input[name*=jenisres]').val(data.jenisresv);
-                $('#edit').val(idresv);
-                $("#modal-jadwal").modal();
+                $('#edit').val(idrsv);
+                $('#modal-reservasi').modal();
             },
             error: function (jqXHR, textStatus, errorThrown)
             {

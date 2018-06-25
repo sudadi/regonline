@@ -4,7 +4,7 @@
         <h3 class="box-title">Reservasi Berhasil <small>(finish)</small></h3>
     </div>
     <div class="box-body" id="printableArea">
-        <div class="col-sm-6 col-sm-offset-3 col-md-5 col-md-offset-3 col-lg-4 col-lg-offset-4">
+        <div class="col-sm-5 col-sm-offset-3">
         <div class="box box-widget widget-user-2">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-green-gradient">

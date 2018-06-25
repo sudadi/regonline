@@ -161,12 +161,12 @@
         var iddokter=$(this).val();
         var jenis=$('#jnslayan').val();
         var klinik=$('#poliklinik');
-        if (jenis==1){
+        if (jenis===1){
             var url = "<?php echo site_url('reservasi/ajax_klinik/')?>0/"+jenis;
         } else {
             var url ="<?php echo site_url('reservasi/ajax_klinik/')?>"+iddokter+"/"+jenis;
         }
-        if (iddokter != ''){
+        if (iddokter !== ''){
             $.ajax({
                 url : url,
                 type: "GET",
@@ -192,7 +192,7 @@
         var jenis=$('#jnslayan').val();
         var tglcekin=$('#tglcekin');      
         var iddokter=$('#dokter').val();
-        if (klinik !=''){
+        if (klinik !==''){
             $.ajax({
                 url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
                 type: "GET",

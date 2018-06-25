@@ -32,53 +32,56 @@ class Admin extends CI_Controller
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
         $this->lang->load('auth');
         $this->load->model('mod_setting');
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
     }
 
     public function index()
-    {
-        if (!$this->ion_auth->logged_in()) {
-            redirect('admin/login', 'refresh');
-        }
-        
+    {   
         $this->data['page']='admin/dasboard';
         $this->data['content']='';
         $this->load->view('admin/main', $this->data);
     }
-    public function login() {
-        $this->data['title'] = $this->lang->line('login_heading');
-        $this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
-        $this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
-        if ($this->form_validation->run() === TRUE) {
-            $remember = (bool)$this->input->post('remember');
-            if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
-            {
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('admin', 'refresh');
-            } else  {
-                $this->session->set_flashdata('message', $this->ion_auth->errors());
-                redirect('admin/login', 'refresh'); 
-            }
-        }  else {
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            $this->data['content']['identity'] = array('name' => 'identity',
-                    'id' => 'identity',
-                    'type' => 'text',
-                    'value' => $this->form_validation->set_value('identity'),
-                    'class'=>'form-control', 'placeholder'=>'Email'
-            );
-            $this->data['content']['password'] = array('name' => 'password',
-                    'id' => 'password',
-                    'type' => 'password',
-                    'class'=>'form-control', 'placeholder'=>'Password'
-            );
-            $this->data['page']='admin/login';
-            $this->data['content']['action']='admin/login';
-            $this->load->view('admin' . DIRECTORY_SEPARATOR . 'main', $this->data);
-        }
-    }  
     public function reservasi() {
+        if ($this->input->get('hapus')){
+            $this->db->delete("treservasi", "id_rsv={$this->input->get('hapus')}");
+            redirect('admin/reservasi', 'refresh');
+        }
         $this->load->model('mod_reservasi');
-        $this->load->model('mod_setting');
+        if ($this->input->post()){
+            $datatgl= explode("|",$this->input->post('tglcekin'));
+            $waktursv=date('Y/m/d H:i:s', strtotime($datatgl[2].$this->input->post('jamcekin')));
+            $dataklinik= $this->mod_reservasi->getklinikbyid($this->input->post('klinik'));
+            $kodeklinik=$dataklinik->kode_poli;
+            $datares= array('norm'=>$this->input->post('norm'),
+                'notelp'=>$this->input->post('notelp'),
+                'waktu_rsv'=>$waktursv,'id_jadwal'=>$datatgl[0],
+                'id_klinik'=>$this->input->post('klinik'),
+                'id_dokter'=>$this->input->post('dokter'),
+                'cara_bayar'=>$this->input->post('jnspasien'),
+                'sebab'=>$this->input->post('sebab'),
+                'id_jnslayan'=>$this->input->post('jnslayan'),
+                'status'=>1, 'user_id'=>2, 
+                'jenis_res'=>$this->input->post('jenisres'));
+            if(empty($this->input->post('edit'))){
+                $this->db->insert('treservasi', $datares);
+            } else {
+                $this->db->update('treservasi', $datares, "id_rsv={$this->input->post('edit')}");
+            }
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah tersimpan');
+                if(empty($this->input->post('edit'))){
+                    $this->session->set_userdata('status', '1');
+                    $idres=$this->db->insert_id();
+                    $nores=$kodeklinik.'-'.$idres;
+                    $this->db->update('treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                }
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+            }
+            redirect('admin/reservasi', 'refresh');
+        }
         $data['page']='admin/reservasi';
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
         $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
@@ -90,7 +93,8 @@ class Admin extends CI_Controller
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-        $data = $this->mod_setting->getreserv($idrsv);
+        $this->load->model('mod_reservasi');
+        $data = $this->mod_reservasi->getreserv($idrsv);
         echo json_encode($data); 
     }
     public function ajaxpasien($norm) {

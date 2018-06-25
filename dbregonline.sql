@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Jun 2018 pada 17.43
+-- Waktu pembuatan: 25 Jun 2018 pada 22.28
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 5.6.35
 
@@ -114,6 +114,15 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(1, '::1', 'ew', 1529955131),
+(2, '::1', 'sa', 1529956179),
+(3, '::1', 'we', 1529958380);
 
 -- --------------------------------------------------------
 
@@ -330,6 +339,7 @@ CREATE TABLE `treservasi` (
   `nourut` int(4) NOT NULL,
   `kode_cekin` varchar(10) DEFAULT NULL,
   `cara_bayar` int(11) NOT NULL,
+  `id_jnslayan` int(4) NOT NULL,
   `sebab` tinyint(4) NOT NULL,
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0.reservasi; 1. checkin; 2.Batat',
   `tgl_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -342,8 +352,8 @@ CREATE TABLE `treservasi` (
 -- Dumping data untuk tabel `treservasi`
 --
 
-INSERT INTO `treservasi` (`id_rsv`, `norm`, `notelp`, `nores`, `waktu_rsv`, `id_jadwal`, `id_klinik`, `id_dokter`, `nourut`, `kode_cekin`, `cara_bayar`, `sebab`, `status`, `tgl_update`, `user_id`, `sync`, `jenis_res`) VALUES
-(1, '133469', '08995313157', 'ORT-1', '2018-06-25 11:00:00', 1, 1, 1, 0, NULL, 2, 9, 1, '2018-06-15 18:01:45', 2, 0, '');
+INSERT INTO `treservasi` (`id_rsv`, `norm`, `notelp`, `nores`, `waktu_rsv`, `id_jadwal`, `id_klinik`, `id_dokter`, `nourut`, `kode_cekin`, `cara_bayar`, `id_jnslayan`, `sebab`, `status`, `tgl_update`, `user_id`, `sync`, `jenis_res`) VALUES
+(3, '133469', '08995313157', 'ORT-3', '2018-06-28 08:00:00', 2, 1, 1, 0, NULL, 2, 2, 9, 1, '2018-06-25 20:25:23', 2, 0, 'WA');
 
 -- --------------------------------------------------------
 
@@ -376,7 +386,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1529096345, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1529956846, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
@@ -421,6 +431,9 @@ CREATE TABLE `vreservasi` (
 ,`nama_klinik` varchar(100)
 ,`nama` varchar(200)
 ,`tgl_lahir` date
+,`jnslayan` tinyint(1)
+,`nmjnspasien` varchar(100)
+,`nmjnslayan` varchar(50)
 );
 
 -- --------------------------------------------------------
@@ -430,7 +443,7 @@ CREATE TABLE `vreservasi` (
 --
 DROP TABLE IF EXISTS `vreservasi`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vreservasi`  AS  select `a`.`id_rsv` AS `id_rsv`,`a`.`norm` AS `norm`,`a`.`notelp` AS `notelp`,`a`.`nores` AS `nores`,`a`.`waktu_rsv` AS `waktu_rsv`,`a`.`tgl_update` AS `tgl_update`,`a`.`status` AS `status`,`a`.`cara_bayar` AS `cara_bayar`,`a`.`nourut` AS `nourut`,`a`.`sync` AS `sync`,`users`.`username` AS `username`,`refdokter`.`nama_dokter` AS `nama_dokter`,`refklinik`.`nama_klinik` AS `nama_klinik`,`tpasien`.`nama` AS `nama`,`tpasien`.`tgl_lahir` AS `tgl_lahir` from ((((`treservasi` `a` join `users` on((`users`.`id` = `a`.`user_id`))) join `tpasien` on((`a`.`norm` = `tpasien`.`norm`))) join `refklinik` on((`a`.`id_klinik` = `refklinik`.`id_klinik`))) join `refdokter` on((`a`.`id_dokter` = `refdokter`.`id_dokter`))) where (`a`.`waktu_rsv` >= curdate()) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vreservasi`  AS  select `a`.`id_rsv` AS `id_rsv`,`a`.`norm` AS `norm`,`a`.`notelp` AS `notelp`,`a`.`nores` AS `nores`,`a`.`waktu_rsv` AS `waktu_rsv`,`a`.`tgl_update` AS `tgl_update`,`a`.`status` AS `status`,`a`.`cara_bayar` AS `cara_bayar`,`a`.`nourut` AS `nourut`,`a`.`sync` AS `sync`,`users`.`username` AS `username`,`refdokter`.`nama_dokter` AS `nama_dokter`,`refklinik`.`nama_klinik` AS `nama_klinik`,`tpasien`.`nama` AS `nama`,`tpasien`.`tgl_lahir` AS `tgl_lahir`,`jadwal`.`jnslayan` AS `jnslayan`,`jenis_pasien`.`jenis_nama` AS `nmjnspasien`,`refjns_layan`.`jnslayan` AS `nmjnslayan` from (((((((`treservasi` `a` join `users` on((`users`.`id` = `a`.`user_id`))) join `tpasien` on((`a`.`norm` = `tpasien`.`norm`))) join `refklinik` on((`a`.`id_klinik` = `refklinik`.`id_klinik`))) join `refdokter` on((`a`.`id_dokter` = `refdokter`.`id_dokter`))) join `jadwal` on((`a`.`id_jadwal` = `jadwal`.`id_jadwal`))) join `jenis_pasien` on((`jenis_pasien`.`jenis_id` = `a`.`cara_bayar`))) join `refjns_layan` on((`refjns_layan`.`id_jnslayan` = `a`.`id_jnslayan`))) ;
 
 --
 -- Indexes for dumped tables
@@ -541,7 +554,7 @@ ALTER TABLE `jadwal`
 -- AUTO_INCREMENT untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `refdokter`
@@ -571,7 +584,7 @@ ALTER TABLE `tgl_libur`
 -- AUTO_INCREMENT untuk tabel `treservasi`
 --
 ALTER TABLE `treservasi`
-  MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

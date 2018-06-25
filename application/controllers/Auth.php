@@ -31,30 +31,34 @@ class Auth extends CI_Controller
             $remember = (bool)$this->input->post('remember');
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
             {
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('/', 'refresh');
+                $this->session->set_flashdata('info', $this->ion_auth->messages());
+                redirect('admin', 'refresh');
             } else  {
-                $this->session->set_flashdata('message', $this->ion_auth->errors());
+                $this->session->set_flashdata('error', $this->ion_auth->errors());
                 redirect('auth/login', 'refresh'); 
             }
         }  else {
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            $this->data['identity'] = array('name' => 'identity',
+            $this->data['message'] = (validation_errors()) ? validation_errors() : '';
+            $this->data['content']['identity'] = array('name' => 'identity',
                     'id' => 'identity',
                     'type' => 'text',
                     'value' => $this->form_validation->set_value('identity'),
+                    'class'=>'form-control', 'placeholder'=>'Email'
             );
-            $this->data['password'] = array('name' => 'password',
+            $this->data['content']['password'] = array('name' => 'password',
                     'id' => 'password',
                     'type' => 'password',
+                    'class'=>'form-control', 'placeholder'=>'Password'
             );
-            $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
+            $this->data['page']='admin/login';
+            $this->data['content']['action']='auth/login';
+            $this->load->view('admin' . DIRECTORY_SEPARATOR . 'main', $this->data);
         }
     }
     public function logout() {
         $this->data['title'] = "Logout";
         $logout = $this->ion_auth->logout();
-        $this->session->set_flashdata('message', $this->ion_auth->messages());
+        $this->session->set_flashdata('info', $this->ion_auth->messages());
         redirect('auth/login', 'refresh');
     }
     public function change_password() {
