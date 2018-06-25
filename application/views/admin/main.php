@@ -43,7 +43,7 @@
 <!-- Site wrapper -->
 <div class="wrapper">
     <header class="main-header">
-        <a href="../../index2.html" class="logo">
+        <a href="<?=base_url();?>" class="logo">
             <span class="logo-mini"><b>R</b>SO</span>
             <span class="logo-lg"><b>Reservasi</b>Online</span>
         </a>

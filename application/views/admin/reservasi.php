@@ -99,7 +99,7 @@
                     <label class="control-label col-sm-2">No. RM</label>
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <?=form_input(array('name'=>'norm','id'=>'norm','type'=>'number'), '', 'class="form-control" required');?>
+                            <?=form_input(array('name'=>'norm','id'=>'norm'), '', 'class="form-control" required');?>
                             <div class="input-group-btn">
                                 <button id="shownorm" class="btn btn-default"><i class="fa fa-eye"></i></button>
                             </div>
@@ -197,19 +197,34 @@
     }
     $('#norm').keypress(function(e) {
         if(e.which === 13) {
-            $('#shownorm').click();
-            return false;  
+            if ($('#norm').val().length >= 6){
+                $('#shownorm').click();
+                return false;  
+            }
         }
     });
     $('#shownorm').click(function(){
         var norm=$('#norm').val();
+        console.log(norm);
         if (norm.length < 6){
             alert('No. RM SALAH, minimal 6 digit angka.');
             return false;
         } else {
-            
+            $.ajax({
+                url : "<?php echo site_url('admin/ajaxpasien/')?>"+norm,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $("input*[name='nama']").val(data.nama);
+                    console.log($("input*[name='nama']").val(data.nama));
+                },
+                error: function (jqXHR, textStatus, errorThrown){
+                    alert('Error : Data tidak ditemukan..!');
+                }
+            }); 
+            //return false;
         }
-        $(location).attr('href','http://localhost/regonline/admin')
+        //$(location).attr('href','http://localhost/regonline/admin')
     });
     function editdata(idrsv){
         $.ajax({

@@ -93,6 +93,14 @@ class Admin extends CI_Controller
         $data = $this->mod_setting->getreserv($idrsv);
         echo json_encode($data); 
     }
+    public function ajaxpasien($norm) {
+        $this->load->model('mod_reservasi');
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        $data = $this->mod_reservasi->cekdatpas("norm='{$norm}'");
+        echo json_encode($data);
+    }
     public function datares() {
         $this->data['page']='admin/datares';
         $this->data['content']='';

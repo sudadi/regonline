@@ -3,12 +3,8 @@
      function __construct() {
          parent:: __construct();
     }
-    function cekdatpas($norm, $tgllahir){
-        $this->db->from('tpasien');
-        $this->db->where('norm', $norm);
-        $this->db->where('tgl_lahir', $tgllahir);
-        $qry = $this->db->get();
-        if ($qry->num_rows() > 0) return $qry->row(); 
+    function cekdatpas($where){
+        return $this->db->get_where('tpasien', $where)->row();
     }	
     function cekreserv($norm, $status){
         $this->db->from('treservasi');

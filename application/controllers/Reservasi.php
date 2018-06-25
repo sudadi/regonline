@@ -26,7 +26,7 @@ class Reservasi extends CI_Controller {
         $this->load->view('reservasi/reservasi', $data);
     }
     private function cekvalpas($norm,$tgllahir) {
-        $datapas = $this->mod_reservasi->cekdatpas($norm, $tgllahir);
+        $datapas = $this->mod_reservasi->cekdatpas("norm='{$norm}' and tgl_lahir='{$tgllahir}'");
         if ($datapas) {
             $this->session->set_userdata('norm', $norm);
             $this->session->set_userdata('tgllahir', $tgllahir);
