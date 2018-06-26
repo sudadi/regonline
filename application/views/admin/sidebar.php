@@ -8,15 +8,15 @@
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-registered"></i> <span>Reg. Online</span>
+            <li>
+                <a href="<?=base_url('admin/reservasi');?>">
+                    <i class="fa fa-registered"></i> <span>Reservasi</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
-                <ul class="treeview-menu">
+<!--                <ul class="treeview-menu">
                     <li><a href="<?=base_url('admin/reservasi');?>"><i class="fa fa-circle-o"></i> Reg. SMS/WA</a></li>
                     <li><a href="<?=base_url('admin/datares');?>"><i class="fa fa-circle-o"></i> Data Registrasi</a></li>
-                </ul>
+                </ul>-->
             </li>
             <li class="treeview">
                 <a href="#">
@@ -27,6 +27,12 @@
                     <li><a href="<?=base_url('sms/inbox');?>"><i class="fa fa-circle-o"></i> Inbox</a></li>
                     <li><a href="<?=base_url('sms/outbox');?>"><i class="fa fa-circle-o"></i> Outbox</a></li>
                 </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-envelope-o"></i> <span>Laporan</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
             </li>
             <li class="treeview">
                 <a href="#">
@@ -39,6 +45,7 @@
                     <li><a href="<?=base_url('admin/jadwal');?>"><i class="fa fa-circle-o"></i> Data Jadwal</a></li>
                     <li><a href="<?=base_url('admin/libur');?>"><i class="fa fa-circle-o"></i> Data Libur</a></li>
                     <li><a href="<?=base_url('admin/users');?>"><i class="fa fa-circle-o"></i> Data User</a></li>
+                    <li><a href="<?=base_url('admin/users');?>"><i class="fa fa-circle-o"></i> SMS Konfirmasi</a></li>
                 </ul>
             </li>
         </ul>
