@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Jun 2018 pada 22.28
+-- Waktu pembuatan: 27 Jun 2018 pada 22.29
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 5.6.35
 
@@ -114,15 +114,6 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `login_attempts`
---
-
-INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
-(1, '::1', 'ew', 1529955131),
-(2, '::1', 'sa', 1529956179),
-(3, '::1', 'we', 1529958380);
 
 -- --------------------------------------------------------
 
@@ -358,6 +349,29 @@ INSERT INTO `treservasi` (`id_rsv`, `norm`, `notelp`, `nores`, `waktu_rsv`, `id_
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `tsms`
+--
+
+CREATE TABLE `tsms` (
+  `id_sms` int(11) NOT NULL,
+  `no_telp` varchar(16) NOT NULL,
+  `pesan` text NOT NULL,
+  `stat_kirim` tinyint(4) DEFAULT NULL,
+  `stat_baca` tinyint(1) NOT NULL DEFAULT '0',
+  `waktu` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tsms`
+--
+
+INSERT INTO `tsms` (`id_sms`, `no_telp`, `pesan`, `stat_kirim`, `stat_baca`, `waktu`) VALUES
+(1, '08995313157', 'dddd', 0, 1, '2018-06-27 20:18:32'),
+(2, '083818181831', 'ffff', NULL, 0, '2018-06-27 20:18:32');
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `users`
 --
 
@@ -386,7 +400,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1529956846, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1530121808, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
@@ -520,6 +534,12 @@ ALTER TABLE `treservasi`
   ADD KEY `id_jadwal` (`id_jadwal`);
 
 --
+-- Indeks untuk tabel `tsms`
+--
+ALTER TABLE `tsms`
+  ADD PRIMARY KEY (`id_sms`);
+
+--
 -- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
@@ -585,6 +605,12 @@ ALTER TABLE `tgl_libur`
 --
 ALTER TABLE `treservasi`
   MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT untuk tabel `tsms`
+--
+ALTER TABLE `tsms`
+  MODIFY `id_sms` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
