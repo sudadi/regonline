@@ -11,27 +11,20 @@
             <li>
                 <a href="<?=base_url('admin/reservasi');?>">
                     <i class="fa fa-registered"></i> <span>Reservasi</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
 <!--                <ul class="treeview-menu">
                     <li><a href="<?=base_url('admin/reservasi');?>"><i class="fa fa-circle-o"></i> Reg. SMS/WA</a></li>
                     <li><a href="<?=base_url('admin/datares');?>"><i class="fa fa-circle-o"></i> Data Registrasi</a></li>
                 </ul>-->
             </li>
-            <li class="treeview">
-                <a href="#">
+            <li>
+                <a href="<?=base_url('admin/sms');?>">
                     <i class="fa fa-envelope-o"></i> <span>SMS</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="<?=base_url('sms/inbox');?>"><i class="fa fa-circle-o"></i> Inbox</a></li>
-                    <li><a href="<?=base_url('sms/outbox');?>"><i class="fa fa-circle-o"></i> Outbox</a></li>
-                </ul>
             </li>
             <li>
-                <a href="#">
-                    <i class="fa fa-envelope-o"></i> <span>Laporan</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                <a href="<?=base_url('admin/laporan');?>">
+                    <i class="fa fa-line-chart"></i> <span>Laporan</span>
                 </a>
             </li>
             <li class="treeview">

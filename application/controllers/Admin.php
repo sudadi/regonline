@@ -110,6 +110,17 @@ class Admin extends CI_Controller
         $this->data['content']='';
         $this->load->view('admin/main', $this->data);
     }
+    public function sms() {
+        $this->load->model('mod_sms');
+        $this->data['page']='admin/sms';
+        $this->data['content']['datasms']= $this->mod_sms->getsms('waktu');
+        $this->load->view('admin/main', $this->data);
+    }
+    public function laporan() {
+        $this->data['page']='admin/laporan';
+        $this->data['content']='';
+        $this->load->view('admin/main', $this->data);
+    }
     public function datadok() {
         $this->data['page']='admin/datadok';
         $this->data['content']='';
