@@ -3,11 +3,8 @@
      function __construct() {
          parent:: __construct();
     }
-    function getdokter($number=null,$offset=null) {
-        if($number && $offset){
-            $this->db->limit($number, $offset);
-        }
-        return $this->db->get('refdokter')->result();
+    function getdokter($number=null,$offset=null,$where=null) {
+        return $this->db->get_where('refdokter',$where,$number,$offset)->result();
     }
     function getklinik($number=null,$offset=null) {
         if($number && $offset){

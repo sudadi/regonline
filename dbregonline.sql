@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Jun 2018 pada 22.29
+-- Waktu pembuatan: 01 Jul 2018 pada 20.44
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 5.6.35
 
@@ -114,6 +114,13 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(1, '::1', 'sudadi', 1530459674);
 
 -- --------------------------------------------------------
 
@@ -367,7 +374,8 @@ CREATE TABLE `tsms` (
 
 INSERT INTO `tsms` (`id_sms`, `no_telp`, `pesan`, `stat_kirim`, `stat_baca`, `waktu`) VALUES
 (1, '08995313157', 'dddd', 0, 1, '2018-06-27 20:18:32'),
-(2, '083818181831', 'ffff', NULL, 0, '2018-06-27 20:18:32');
+(2, '083818181831', 'ffff', NULL, 1, '2018-06-27 20:18:32'),
+(3, '083818181831', 'ljkjljlkjlk', NULL, 0, '2018-07-01 18:13:12');
 
 -- --------------------------------------------------------
 
@@ -400,7 +408,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1530121808, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1530459689, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
@@ -574,7 +582,7 @@ ALTER TABLE `jadwal`
 -- AUTO_INCREMENT untuk tabel `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `refdokter`
@@ -610,7 +618,7 @@ ALTER TABLE `treservasi`
 -- AUTO_INCREMENT untuk tabel `tsms`
 --
 ALTER TABLE `tsms`
-  MODIFY `id_sms` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_sms` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

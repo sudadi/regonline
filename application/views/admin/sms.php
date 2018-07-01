@@ -17,8 +17,8 @@
     <section class="content">
         <!-- Info boxes -->
         <div class="row">
-            <div class="col-md-3">
-                <a href="compose.html" class="btn btn-primary btn-block margin-bottom">Tulis Pesan</a>
+            <div class="col-sm-3">
+                <?=form_button('tulissms', '<span class="fa fa-plus"></span> Tulis Pesan', 'class="btn btn-primary btn-block margin-bottom" data-toggle="modal" data-target="#modal-sms"') ;?>
                 <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">No. Telp</h3>
@@ -32,7 +32,7 @@
                         <div class="table-responsive mailbox-messages">
                             <table class="table table-hover table-striped">
                                 <?php
-                                foreach ($datasms as $notelp) {?>
+                                foreach ($datanotelp as $notelp) {?>
                                 <tr>
                                     <td>
                                     <a href="#">
@@ -50,6 +50,9 @@
                         </div>
                     </div>
                   <!-- /.box-body -->
+                  <div class="box-footer">
+                       <?php echo $this->pagination->create_links();?>
+                  </div>
                 </div>
                 <!-- /. box -->
                     <div class="box box-solid">
@@ -70,7 +73,7 @@
                     </div>
                 <!-- /.box -->
             </div>
-            <div class="col-md-9">
+            <div class="col-sm-9 hidden-xs">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Pesan</h3>
@@ -96,27 +99,21 @@
                             <!-- /.btn-group -->
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
                             <div class="pull-right">
-                              1-50/200
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                                </div>
-                              <!-- /.btn-group -->
+                                 <?php echo $this->pagination->create_links();?>
                             </div>
                             <!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
                             <table class="table table-hover table-striped">
                                 <tbody>
+                                    <?php
+                                    foreach ($datasms as $pesan) {?>
                                     <tr>
-                                        <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                        <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">5 mins ago</td>
+                                        <td style="width:10px"><?=form_checkbox('cek');?></td>
+                                        <td class="mailbox-subject"><i class="fa fa-star text-yellow"></i><?=$pesan->pesan;?></td>
+                                        <td class="mailbox-date text-right"><?=$pesan->waktu;?></td>
                                     </tr>
+                                    <?php }?>
                                 </tbody>
                             </table>
                             <!-- /.table -->
@@ -137,12 +134,7 @@
                             <!-- /.btn-group -->
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
                             <div class="pull-right">
-                              1-50/200
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                                </div>
-                              <!-- /.btn-group -->
+                                 <?php echo $this->pagination->create_links();?>
                             </div>
                             <!-- /.pull-right -->
                         </div>
@@ -153,3 +145,43 @@
         </div>
     </section>
 </div>
+<div class="modal fade" id="modal-sms">
+    <?=form_open($action, 'id="formsms" class="form-horizontal form-label-left"'); ?>
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Kirim Pesan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">No. Telp </label>
+                    <div class="col-sm-4">
+                        <?=form_input(array('name'=>'notelp'), '', 'class="form-control" required');?>
+                    </div>                    
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Pesan</label>
+                    <div class="col-sm-10">
+                        <?= form_textarea(array('name'=>'pesan','rows'=>'3'), '', ' class="form-control" required');?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kirim</button>
+            </div>
+        </div>
+    </div>
+    <?=form_close();?>
+</div>
+<div class='device-check visible-xs' data-device='xs'></div>
+<div class='device-check visible-sm' data-device='sm'></div>
+<div class='device-check visible-md' data-device='md'></div>
+<div class='device-check visible-lg' data-device='lg'></div>
+<script>
+    function get_current(){
+    return $('.device-check:visible').attr('data-device')
+    }
+</script>

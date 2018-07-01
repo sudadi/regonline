@@ -25,6 +25,8 @@
 
 class Admin extends CI_Controller
 {
+    var $pageconf=array();
+    
     public function __construct()
     {
         parent::__construct();
@@ -35,6 +37,23 @@ class Admin extends CI_Controller
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
+        $this->pageconf['per_page'] = 10;
+        $this->pageconf['num_links'] = 2;
+        $this->pageconf['uri_segment']=3;
+        $this->pageconf['full_tag_open'] = "<ul class='pagination pagination-sm' style='position:relative; top:-25px;'>";
+        $this->pageconf['full_tag_close'] ="</ul>";
+        $this->pageconf['num_tag_open'] = '<li>';
+        $this->pageconf['num_tag_close'] = '</li>';
+        $this->pageconf['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
+        $this->pageconf['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
+        $this->pageconf['next_tag_open'] = "<li>";
+        $this->pageconf['next_tagl_close'] = "</li>";
+        $this->pageconf['prev_tag_open'] = "<li>";
+        $this->pageconf['prev_tagl_close'] = "</li>";
+        $this->pageconf['first_tag_open'] = "<li>";
+        $this->pageconf['first_tagl_close'] = "</li>";
+        $this->pageconf['last_tag_open'] = "<li>";
+        $this->pageconf['last_tagl_close'] = "</li>";
     }
 
     public function index()
@@ -112,9 +131,17 @@ class Admin extends CI_Controller
     }
     public function sms() {
         $this->load->model('mod_sms');
-        $this->data['page']='admin/sms';
-        $this->data['content']['datasms']= $this->mod_sms->getsms('waktu');
-        $this->load->view('admin/main', $this->data);
+        $data['page']='admin/sms';
+        $this->load->library('pagination');
+        $datanotelp=$this->mod_sms->getsms('waktu',true,null);
+        $jmldata=count($datanotelp);
+        $this->pageconf['base_url'] = base_url().'admin/sms/';
+        $this->pageconf['total_rows'] = $jmldata;        
+        $this->pagination->initialize($this->pageconf);
+        $data['content']['datanotelp']= $this->mod_sms->getsms('waktu',true,null,$this->pageconf['per_page'],$this->uri->segment('3'));
+        $data['content']['datasms']= $this->mod_sms->getsms('waktu');
+        $data['content']['action']='admin/sms';
+        $this->load->view('admin/main', $data);
     }
     public function laporan() {
         $this->data['page']='admin/laporan';
@@ -122,14 +149,47 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $this->data);
     }
     public function datadok() {
-        $this->data['page']='admin/datadok';
-        $this->data['content']='';
-        $this->load->view('admin/main', $this->data);
+        if ($this->input->get('hapus')) {
+            $id= $this->input->get('hapus');
+            $this->db->delete('refdokter', 'id_dokter='.$id);
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah dihapus');    
+                redirect('admin/datadok','refresh');
+            } else {
+                $this->session->set_flashdata('error', 'Data GAGAL dihapus');
+            }            
+        }
+        if($this->input->post()){
+            $iddr= $this->input->post('iddr');
+            $namadr= $this->input->post('namadr');
+            $status= $this->input->post('status');
+            if ($this->input->post('edit')){
+                $this->db->update('refdokter', array('id_dokter'=>$iddr,'status'=>$status,'nama_dokter'=>$namadr), 'id_dokter='.$iddr);
+            }else{
+                $this->db->insert('refdokter', array('id_dokter'=>$iddr,'nama_dokter'=>$namadr,'status'=>$status));
+            }
+            if ($this->db->affected_rows()>0){
+               $this->session->set_flashdata('success', 'Data sudah tersimpan');
+               redirect('admin/datadok', 'refresh');
+            } else {
+                $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
+                redirect('admin/datadok', 'refresh');
+            }
+        }
+        $this->load->library('pagination');
+        $jmldata= count($this->mod_setting->getdokter());
+        $this->pageconf['base_url'] = base_url().'admin/datadok/';
+        $this->pageconf['total_rows'] = $jmldata;
+        $this->pagination->initialize($this->pageconf);		
+        $data['content']['datadr'] = $this->mod_setting->getdokter($this->pageconf['per_page'],$this->uri->segment('3'));
+        $data['page']='admin/datadok';
+        $data['content']['action']='admin/datadok';
+        $this->load->view('admin/main', $data);
     }
     public function dataklinik() {
-        $this->data['page']='admin/dataklinik';
-        $this->data['content']='';
-        $this->load->view('admin/main', $this->data);
+        $data['page']='admin/dataklinik';
+        $data['content']='';
+        $this->load->view('admin/main', $data);
     }
     public function jadwal() {
         if ($this->input->get('hapus')) {
@@ -169,28 +229,10 @@ class Admin extends CI_Controller
         }
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getjmljadwal();
-        $config['base_url'] = base_url().'admin/jadwal/';
-        $config['total_rows'] = $jmldata;
-        $config['per_page'] = 10;
-        $config['num_links'] = 2;
-        $config['uri_segment']=3;
-        $config['full_tag_open'] = "<ul class='pagination pagination-sm' style='position:relative; top:-25px;'>";
-        $config['full_tag_close'] ="</ul>";
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
-        $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
-        $config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
-        $config['next_tag_open'] = "<li>";
-        $config['next_tagl_close'] = "</li>";
-        $config['prev_tag_open'] = "<li>";
-        $config['prev_tagl_close'] = "</li>";
-        $config['first_tag_open'] = "<li>";
-        $config['first_tagl_close'] = "</li>";
-        $config['last_tag_open'] = "<li>";
-        $config['last_tagl_close'] = "</li>";
-        $this->pagination->initialize($config);	
-        $data['content']['jadwal']= $this->mod_setting->getjadwalfull($config['per_page'],$this->uri->segment('3'));
-        
+        $this->pageconf['base_url'] = base_url().'admin/jadwal/';
+        $this->pageconf['total_rows'] = $jmldata;        
+        $this->pagination->initialize($this->pageconf);	
+        $data['content']['jadwal']= $this->mod_setting->getjadwalfull($this->pageconf['per_page'],$this->uri->segment('3'));
         $data['page']='admin/jadwal';
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
         $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
@@ -235,27 +277,10 @@ class Admin extends CI_Controller
         }
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getnumlibur();
-        $config['base_url'] = base_url().'admin/libur/';
-        $config['total_rows'] = $jmldata;
-        $config['per_page'] = 10;
-        $config['num_links'] = 2;
-        $config['uri_segment']=3;
-        $config['full_tag_open'] = "<ul class='pagination pagination-sm' style='position:relative; top:-25px;'>";
-        $config['full_tag_close'] ="</ul>";
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
-        $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
-        $config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
-        $config['next_tag_open'] = "<li>";
-        $config['next_tagl_close'] = "</li>";
-        $config['prev_tag_open'] = "<li>";
-        $config['prev_tagl_close'] = "</li>";
-        $config['first_tag_open'] = "<li>";
-        $config['first_tagl_close'] = "</li>";
-        $config['last_tag_open'] = "<li>";
-        $config['last_tagl_close'] = "</li>";
-        $this->pagination->initialize($config);		
-        $this->data['content']['dtlibur'] = $this->mod_setting->getdatalibur($config['per_page'],$this->uri->segment('3'));
+        $this->pageconf['base_url'] = base_url().'admin/libur/';
+        $this->pageconf['total_rows'] = $jmldata;
+        $this->pagination->initialize($this->pageconf);		
+        $this->data['content']['dtlibur'] = $this->mod_setting->getdatalibur($this->pageconf['per_page'],$this->uri->segment('3'));
         $this->data['page']='admin/libur';
         $this->data['content']['action']='admin/libur';
         $this->load->view('admin/main', $this->data);

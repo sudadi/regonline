@@ -18,14 +18,16 @@
                         <h3 class="box-title">Reservasi <small> SMS/WA</small></h3>
                     </div>
                     <div class="box-body">
-                        <div class="col-sm-12">
                             <div class="col-sm-2">
+                            <div class="input-group">
                                 <?=form_button(array('name'=>'wa'), '<span class="fa fa-whatsapp"></span> Reservasi WA', 'class="btn btn-success reservasi" onclick="showmodal(this);"');?>
                             </div>
-                            <div class="col-sm-2 col-sm-offset-1">
+                            </div>
+                            <div class="col-sm-2">
+                            <div class="input-group">
                                 <?=form_button('sms', '<span class="fa fa-envelope-o"></span> Reservasi SMS', 'class="btn btn-primary reservasi" onclick="showmodal(this);"') ;?>
                             </div>
-                        </div>
+                            </div>
                         <div class="clearfix"></div><p/>
                         <div class="box box-info">
                             <div class="box-header with-border"></div>
