@@ -58,9 +58,16 @@ class Admin extends CI_Controller
 
     public function index()
     {   
-        $this->data['page']='admin/dasboard';
-        $this->data['content']='';
-        $this->load->view('admin/main', $this->data);
+        $this->load->model('mod_reservasi');
+        $jmlwa=count($this->mod_reservasi->getdatares("jenis_res='WA'"));
+        $jmlsms=count($this->mod_reservasi->getdatares("jenis_res='SMS'"));
+        $jmlweb=count($this->mod_reservasi->getdatares("jenis_res='web'"));
+        $data['content']['jmlwa']=$jmlwa;
+        $data['content']['jmlsms']=$jmlsms;
+        $data['content']['jmlweb']=$jmlweb;
+        $data['page']='admin/dasboard';
+        $data['content']['action']='';
+        $this->load->view('admin/main', $data);
     }
     public function reservasi() {
         if ($this->input->get('hapus')){

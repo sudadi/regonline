@@ -108,4 +108,10 @@
     function getresfull($where) {
         return $this->db->get_where('vreservasi', $where)->result();
     }
+    function getdatares($where,$group=null){
+        if($group){
+            $this->db->group_by($group);
+        }
+        return $this->db->get_where('treservasi', $where)->result();
+    }
  }
