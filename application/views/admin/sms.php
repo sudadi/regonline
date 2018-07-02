@@ -30,12 +30,12 @@
                     </div>
                     <div class="box-body no-padding">
                         <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
+                            <table id="tnotelp" class="table">
                                 <?php
                                 foreach ($datanotelp as $notelp) {?>
                                 <tr>
                                     <td>
-                                    <a href="#">
+                                        <a href="#" class="text-black">
                                     <?php
                                     if ($notelp->stat_baca){ 
                                         echo $notelp->no_telp;
@@ -183,5 +183,12 @@
 <script>
     function get_current(){
     return $('.device-check:visible').attr('data-device')
-    }
+    };
+    
+    $(document).ready(function(){
+    $("#tnotelp tr").click(function(){
+        $("#tnotelp tr").removeClass("aktif");
+        $(this).toggleClass("aktif");
+    });
+});
 </script>
