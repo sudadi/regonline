@@ -69,6 +69,14 @@ class Admin extends CI_Controller
         $data['content']['action']='';
         $this->load->view('admin/main', $data);
     }
+    public function ajaxdashres() {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        $this->load->model('mod_reservasi');
+        $data=$this->mod_reservasi->getdatares('waktu_rsv BETWEEN NOW() - INTERVAL 30 DAY AND NOW()','waktu_rsv, jenis_res');
+        echo json_encode($data);
+    }
     public function reservasi() {
         if ($this->input->get('hapus')){
             $this->db->delete("treservasi", "id_rsv={$this->input->get('hapus')}");
@@ -136,6 +144,7 @@ class Admin extends CI_Controller
         $this->data['content']='';
         $this->load->view('admin/main', $this->data);
     }
+    
     public function sms() {
         $this->load->model('mod_sms');
         $data['page']='admin/sms';

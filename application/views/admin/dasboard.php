@@ -117,7 +117,18 @@
 <script src="<?=base_url('assets/bower_components/chart.js/Chart.js');?>"></script>  
 <script>
 $(document).ready(function() {
-    
+    $.ajax({
+        url : "<?php echo site_url('admin/ajaxpasien/')?>"+norm,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data){
+            $("input*[name='nama']").val(data.nama);
+            console.log($("input*[name='nama']").val(data.nama));
+        },
+        error: function (jqXHR, textStatus, errorThrown){
+            alert('Error : Data tidak ditemukan..!');
+        }
+    });
     
     
   'use strict';
