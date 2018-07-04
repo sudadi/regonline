@@ -70,11 +70,11 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $data);
     }
     public function ajaxdashres() {
-        if (!$this->input->is_ajax_request()) {
-            exit('No direct script access allowed');
-        }
+//        if (!$this->input->is_ajax_request()) {
+//            exit('No direct script access allowed');
+//        }
         $this->load->model('mod_reservasi');
-        $data=$this->mod_reservasi->getdatares('waktu_rsv BETWEEN NOW() - INTERVAL 30 DAY AND NOW()','waktu_rsv, jenis_res');
+        $data=$this->mod_reservasi->getgraphres('waktu_rsv BETWEEN NOW() - INTERVAL 30 DAY AND NOW()');
         echo json_encode($data);
     }
     public function reservasi() {
