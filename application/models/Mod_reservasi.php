@@ -115,7 +115,7 @@
         return $this->db->get_where('treservasi', $where)->result();
     }
     function getgraphres($where) {
-        $this->db->select("count(jenis_res) as jml, DATE_FORMAT(waktu_rsv, '%m/%d/%Y') as tgl, jenis_res");
+        $this->db->select("count(jenis_res) as jml, DATE_FORMAT(waktu_rsv, '%d') as tgl, jenis_res");
         $this->db->group_by('tgl, jenis_res');
         return $this->db->get_where('treservasi',$where)->result_array();
     }

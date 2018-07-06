@@ -114,83 +114,75 @@
     </section>
   </div>
 
-<script src="<?=base_url('assets/bower_components/chart.js/Chart.js');?>"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
 <script>
-$(document).ready(function() {
-    $.ajax({
-        url : "<?php echo site_url('admin/ajaxpasien/')?>"+norm,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data){
-            $("input*[name='nama']").val(data.nama);
-            console.log($("input*[name='nama']").val(data.nama));
-        },
-        error: function (jqXHR, textStatus, errorThrown){
-            alert('Error : Data tidak ditemukan..!');
-        }
-    });
-    
-    
-  'use strict';
-  var reservasiChartCanvas = $('#reservasiChart').get(0).getContext('2d');
-  var reservasiChart  = new Chart(reservasiChartCanvas);
-  var reservasiChartData = {
-    labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label               : 'Web',
-        fillColor           : 'rgb(60,141,188)',
-        strokeColor         : 'rgb(60,141,188)',
-        pointColor          : 'rgb(60,141,188)',
-        pointStrokeColor    : '#c1c7d1',
-        pointHighlightFill  : '#fff',
-        pointHighlightStroke: 'rgb(60,141,188)',
-        data                : [65, 59, 80, 81, 56, 55, 40]
-      },
-      {
-        label               : 'WA',
-        fillColor           : 'rgba(0,166,90,0.7)',
-        strokeColor         : 'rgba(0,166,90,0.7)',
-        pointColor          : 'rgba(0,166,90,0.7)',
-        pointStrokeColor    : 'rgba(0,166,90,0.7)',
-        pointHighlightFill  : '#fff',
-        pointHighlightStroke: 'rgba(0,166,90,0.7)',
-        data                : [28, 48, 40, 19, 86, 27, 90]
-      },
-      {
-        label               : 'SMS',
-        fillColor           : 'rgba(221,75,57,0.7)',
-        strokeColor         : 'rgba(221,75,57,0.7)',
-        pointColor          : 'rgba(221,75,57,0.7)',
-        pointStrokeColor    : 'rgba(221,75,57,0.7)',
-        pointHighlightFill  : '#fff',
-        pointHighlightStroke: 'rgba(221,75,57,0.7)',
-        data                : [28, 30, 50, 35, 70, 60, 90]
-      }
-    ]
-  };
+    $(document).ready(function(){
+  $.ajax({
+    url : "<?=base_url('admin/ajaxdashres');?>",
+    type : "GET",
+    dataType: "JSON",
+    success : function(data){
+      console.log(data);
 
-  var reservasiChartOptions = {
-    showScale               : true,
-    scaleShowGridLines      : false,
-    scaleGridLineColor      : 'rgba(0,0,0,.05)',
-    scaleGridLineWidth      : 1,
-    scaleShowHorizontalLines: true,
-    scaleShowVerticalLines  : true,
-    bezierCurve             : true,
-    bezierCurveTension      : 0.3,
-    pointDot                : false,
-    pointDotRadius          : 4,
-    pointDotStrokeWidth     : 1,
-    pointHitDetectionRadius : 20,
-    datasetStroke           : true,
-    datasetStrokeWidth      : 2,
-    datasetFill             : false,
-    legendTemplate          : '<ul class=\'<%=name.toLowerCase()%>-legend\'><% for (var i=0; i<datasets.length; i++){%><li><span style=\'background-color:<%=datasets[i].lineColor%>\'></span><%=datasets[i].label%></li><%}%></ul>',
-    maintainAspectRatio     : true,
-    responsive              : true
-  };
-  reservasiChart.Line(reservasiChartData, reservasiChartOptions);
- });      
-  
+      var tgl = [];
+      var SMS = [];
+      var WA = [];
+      var WEB = [];
+
+      for(var i in data) {
+        tgl.push(data[i].tgl);
+        SMS.push(data[i].jml);
+        console.log(data[i].jml);
+//        WA.push(data[i].WA);
+//        WEB.push(data[i].WEB);
+      }
+
+      var chartdata = {
+        labels: tgl,
+        datasets: [
+          {
+            label: "SMS",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(59, 89, 152, 0.75)",
+            borderColor: "rgba(59, 89, 152, 1)",
+            pointHoverBackgroundColor: "rgba(59, 89, 152, 1)",
+            pointHoverBorderColor: "rgba(59, 89, 152, 1)",
+            data: SMS
+          }
+//          {
+//            label: "WA",
+//            fill: false,
+//            lineTension: 0.1,
+//            backgroundColor: "rgba(29, 202, 255, 0.75)",
+//            borderColor: "rgba(29, 202, 255, 1)",
+//            pointHoverBackgroundColor: "rgba(29, 202, 255, 1)",
+//            pointHoverBorderColor: "rgba(29, 202, 255, 1)",
+//            data: WA
+//          },
+//          {
+//            label: "WEB",
+//            fill: false,
+//            lineTension: 0.1,
+//            backgroundColor: "rgba(211, 72, 54, 0.75)",
+//            borderColor: "rgba(211, 72, 54, 1)",
+//            pointHoverBackgroundColor: "rgba(211, 72, 54, 1)",
+//            pointHoverBorderColor: "rgba(211, 72, 54, 1)",
+//            data: WEB
+//          }
+        ]
+      };
+
+      var ctx = $("#reservasiChart");
+
+      var LineGraph = new Chart(ctx, {
+        type: 'line',
+        data: chartdata
+      });
+    },
+    error : function(data) {
+
+    }
+  });
+});		
 </script>
