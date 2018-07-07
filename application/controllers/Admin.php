@@ -74,7 +74,7 @@ class Admin extends CI_Controller
 //            exit('No direct script access allowed');
 //        }
         $this->load->model('mod_reservasi');
-        $data=$this->mod_reservasi->getgraphres('waktu_rsv BETWEEN NOW() - INTERVAL 30 DAY AND NOW()');
+        $data=$this->mod_reservasi->getgraphres('waktu_rsv BETWEEN (NOW() - INTERVAL 30 DAY) AND NOW()');
         //var_dump($data);
         echo json_encode($data);
     }

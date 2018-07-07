@@ -114,7 +114,7 @@
     </section>
   </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>  
 <script>
     $(document).ready(function(){
   $.ajax({
@@ -131,54 +131,58 @@
 
       for(var i in data) {
         tgl.push(data[i].tgl);
-        SMS.push(data[i].jml);
-        console.log(data[i].jml);
-//        WA.push(data[i].WA);
-//        WEB.push(data[i].WEB);
+        SMS.push(data[i].SMS);
+        WA.push(data[i].WA);
+        WEB.push(data[i].WEB);
       }
 
       var chartdata = {
-        labels: tgl,
-        datasets: [
-          {
-            label: "SMS",
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: "rgba(59, 89, 152, 0.75)",
-            borderColor: "rgba(59, 89, 152, 1)",
-            pointHoverBackgroundColor: "rgba(59, 89, 152, 1)",
-            pointHoverBorderColor: "rgba(59, 89, 152, 1)",
-            data: SMS
-          }
-//          {
-//            label: "WA",
-//            fill: false,
-//            lineTension: 0.1,
-//            backgroundColor: "rgba(29, 202, 255, 0.75)",
-//            borderColor: "rgba(29, 202, 255, 1)",
-//            pointHoverBackgroundColor: "rgba(29, 202, 255, 1)",
-//            pointHoverBorderColor: "rgba(29, 202, 255, 1)",
-//            data: WA
-//          },
-//          {
-//            label: "WEB",
-//            fill: false,
-//            lineTension: 0.1,
-//            backgroundColor: "rgba(211, 72, 54, 0.75)",
-//            borderColor: "rgba(211, 72, 54, 1)",
-//            pointHoverBackgroundColor: "rgba(211, 72, 54, 1)",
-//            pointHoverBorderColor: "rgba(211, 72, 54, 1)",
-//            data: WEB
-//          }
-        ]
+            type: 'line',
+            data:{
+                labels: tgl,
+                datasets: [ {
+                    label: "SMS",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(204, 0, 0, 0.75)",
+                    borderColor: "rgba(204, 0, 0, 0.6)",
+                    pointHoverBackgroundColor: "rgba(204, 0, 0, 1)",
+                    pointHoverBorderColor: "rgba(204, 0, 0, 1)",
+                    data: SMS
+                  }, {
+                    label: "WA",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "rgb(0, 153, 51, 0.75)",
+                    borderColor: "rgb(0, 153, 51, 0.6)",
+                    pointHoverBackgroundColor: "rgba(0, 153, 51, 0.5)",
+                    pointHoverBorderColor: "rgba(0, 153, 51, 0.5)",
+                    data: WA
+                  }, {
+                    label: "WEB",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "rgb(0, 85, 128, 0.75)",
+                    borderColor: "rgba(0, 85, 128, 0.6)",
+                    pointHoverBackgroundColor: "rgba(0, 85, 128, 0.75)",
+                    pointHoverBorderColor: "rgba(0, 85, 128, 0.75)",
+                    data: WEB
+                  }
+                ]
+            }, 
+        options: {
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            }
+        }
       };
-
-      var ctx = $("#reservasiChart");
-
-      var LineGraph = new Chart(ctx, {
-        type: 'line',
-        data: chartdata
-      });
+      var ctx = document.getElementById('reservasiChart').getContext('2d');
+      var LineGraph = new Chart(ctx, chartdata);
     },
     error : function(data) {
 
