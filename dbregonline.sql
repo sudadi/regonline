@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 01 Jul 2018 pada 20.44
+-- Waktu pembuatan: 07 Jul 2018 pada 21.05
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 5.6.35
 
@@ -120,7 +120,7 @@ CREATE TABLE `login_attempts` (
 --
 
 INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
-(1, '::1', 'sudadi', 1530459674);
+(1, '::1', 'sudadi', 1530981327);
 
 -- --------------------------------------------------------
 
@@ -351,7 +351,21 @@ CREATE TABLE `treservasi` (
 --
 
 INSERT INTO `treservasi` (`id_rsv`, `norm`, `notelp`, `nores`, `waktu_rsv`, `id_jadwal`, `id_klinik`, `id_dokter`, `nourut`, `kode_cekin`, `cara_bayar`, `id_jnslayan`, `sebab`, `status`, `tgl_update`, `user_id`, `sync`, `jenis_res`) VALUES
-(3, '133469', '08995313157', 'ORT-3', '2018-06-28 08:00:00', 2, 1, 1, 0, NULL, 2, 2, 9, 1, '2018-06-25 20:25:23', 2, 0, 'WA');
+(3, '133469', '08995313157', 'ORT-3', '2018-06-28 08:00:00', 2, 1, 1, 0, NULL, 2, 2, 9, 1, '2018-06-25 20:25:23', 2, 0, 'WA'),
+(4, '317993', '083818181831', 'ORT-4', '2018-07-05 07:00:00', 1, 1, 1, 0, NULL, 2, 2, 1, 1, '2018-07-06 20:34:36', 2, 0, 'WA'),
+(5, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 16:59:58', 1, 0, 'WEB'),
+(6, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:18', 1, 0, 'SMS'),
+(7, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:28', 1, 0, 'WA'),
+(8, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:41', 1, 0, 'WA'),
+(9, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:52', 1, 0, 'SMS'),
+(10, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:01:08', 1, 0, 'WEB'),
+(11, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:01:15', 1, 0, 'WEB'),
+(12, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:01:20', 1, 0, 'WEB'),
+(13, '133469', '0', '34', '2018-07-05 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:18:59', 1, 0, 'WA'),
+(14, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:19:37', 1, 0, 'WEB'),
+(15, '133469', '0', '34', '2018-06-30 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:24:40', 1, 0, 'WEB'),
+(16, '133469', '0', '34', '2018-06-25 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:25:30', 1, 0, 'SMS'),
+(17, '133469', '0', '34', '2018-06-22 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:32:52', 1, 0, 'WEB');
 
 -- --------------------------------------------------------
 
@@ -408,7 +422,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1530459689, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1530981340, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
@@ -612,7 +626,7 @@ ALTER TABLE `tgl_libur`
 -- AUTO_INCREMENT untuk tabel `treservasi`
 --
 ALTER TABLE `treservasi`
-  MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `tsms`
