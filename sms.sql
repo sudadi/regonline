@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 09 Jul 2018 pada 22.59
--- Versi Server: 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- Waktu pembuatan: 09 Jul 2018 pada 22.02
+-- Versi server: 10.1.31-MariaDB
+-- Versi PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,21 +25,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `daemons`
+-- Struktur dari tabel `sms_daemons`
 --
 
-CREATE TABLE `daemons` (
+CREATE TABLE `sms_daemons` (
   `Start` text NOT NULL,
   `Info` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `full_inbox`
+-- Struktur dari tabel `sms_full_inbox`
 --
 
-CREATE TABLE `full_inbox` (
+CREATE TABLE `sms_full_inbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ReceivingDateTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Text` text NOT NULL,
@@ -50,13 +52,13 @@ CREATE TABLE `full_inbox` (
   `ID` int(10) UNSIGNED NOT NULL,
   `RecipientID` text NOT NULL,
   `Processed` enum('false','true') NOT NULL DEFAULT 'false'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `full_inbox`
+-- Dumping data untuk tabel `sms_full_inbox`
 --
 
-INSERT INTO `full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
+INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
 ('2011-11-29 17:40:57', '2011-11-29 17:40:04', '0053006500640061006E0067006B0061006E0020006B0065006C00650062006900680061006E0020006D0065006E0067006900720069006D0020006C006F006E00670020007400650078007400200053004D0053002000640065006E00670061006E002000710075006500720079002000530051004C0020006100640061006C00610068002000720075006E006E0069006E0067002000740069006D0065002000790061006E00670020006A0061007500680020006C006500620069006800200063006500700061007400200064006900620061006E00640069006E0067006B0061006E00200063006F006D006D0061006E00640020003F00670061006D006D0075002D0073006D00730064002D0069006E006A006500630074003F002E0020004E0061006D0075006E002E002E00200064', '+628995313157', 'Default_No_Compression', '050003030401', '+6289644000001', -1, 'Sedangkan kelebihan mengirim long text SMS dengan query SQL adalah running time yang jauh lebih cepat dibandingkan command ?gammu-smsd-inject?. Namun.. di sisi lain, kekurangannya adalah agak rumitnya membuat script untuk melakukan hal ini. Sedangkan kelebihan dari command ?gammu-smsd-inject? adalah perintahnya jauh lebih mudah dibandingkan via script query SQL. Akan tetapi mengingat kelebihannya yang lebih efisien, saya kira kesulitan untuk membuat script pengiriman long text SMS dengan query tak perlu dipermasalahkan, toh? saya akan beberkan caranya di sini', 1, '', 'false'),
 ('0000-00-00 00:00:00', '2011-11-29 17:47:04', '0061006B006800690072006E00790061002000730075006B0073006500730020006A00750067006100200063006F0069002E002E002E', '+6289637032339', 'Default_No_Compression', '', '+6289644000001', -1, 'akhirnya sukses juga coi...', 2, '', 'false'),
 ('0000-00-00 00:00:00', '2011-11-29 17:53:59', '007700690073002000770065006E00670069002C0020006E00640061006E006700200074007500720075002E002E002E', '+6285292213020', 'Default_No_Compression', '', '+6281100000', -1, 'wis wengi, ndang turu...', 3, '', 'false'),
@@ -68,10 +70,10 @@ INSERT INTO `full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNum
 ('0000-00-00 00:00:00', '2012-05-07 06:45:16', '005300690070002E0070006100670069', '+628995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'Sip.pagi', 9, '', 'false');
 
 --
--- Trigger `full_inbox`
+-- Trigger `sms_full_inbox`
 --
 DELIMITER $$
-CREATE TRIGGER `full_inbox_before_ins` BEFORE INSERT ON `full_inbox` FOR EACH ROW begin
+CREATE TRIGGER `full_inbox_before_ins` BEFORE INSERT ON `sms_full_inbox` FOR EACH ROW begin
 
 IF NEW.ReceivingDateTime = '0000-00-00 00:00:00' THEN
         SET NEW.ReceivingDateTime = CURRENT_TIMESTAMP();
@@ -83,27 +85,27 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `gammu`
+-- Struktur dari tabel `sms_gammu`
 --
 
-CREATE TABLE `gammu` (
+CREATE TABLE `sms_gammu` (
   `Version` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `gammu`
+-- Dumping data untuk tabel `sms_gammu`
 --
 
-INSERT INTO `gammu` (`Version`) VALUES
+INSERT INTO `sms_gammu` (`Version`) VALUES
 (13);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `inbox`
+-- Struktur dari tabel `sms_inbox`
 --
 
-CREATE TABLE `inbox` (
+CREATE TABLE `sms_inbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ReceivingDateTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Text` text NOT NULL,
@@ -119,10 +121,10 @@ CREATE TABLE `inbox` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `inbox`
+-- Dumping data untuk tabel `sms_inbox`
 --
 
-INSERT INTO `inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
+INSERT INTO `sms_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
 ('2011-11-29 06:04:01', '2011-11-28 13:36:43', '0054006500620073006E0068006A0064006B0073006600610061000A0046006E00660064006E006400200066006A0077006800200064006A007700680073006100680064006600200064006800770071006E0068006A0073002000660064006E006A00640068006A', '+628995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'Tebsnhjdksfaa\nFnfdnd fjwh djwhsahdf dhwqnhjs fdnjdhj', 1, '', 'false'),
 ('2011-11-29 06:04:02', '2011-11-28 18:42:08', '00740065007300740069006E0067', '+6289637032339', 'Default_No_Compression', '', '+6289644000001', -1, 'testing', 2, '', 'false'),
 ('2011-11-29 06:04:03', '2011-11-28 18:45:20', '00740065007300740069006E0067', '+6289637032339', 'Default_No_Compression', '', '+6289644000001', -1, 'testing', 3, '', 'false'),
@@ -151,23 +153,23 @@ INSERT INTO `inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`,
 ('2012-05-07 06:45:25', '2012-05-07 06:45:16', '005300690070002E0070006100670069', '+628995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'Sip.pagi', 26, '', 'false');
 
 --
--- Trigger `inbox`
+-- Trigger `sms_inbox`
 --
 DELIMITER $$
-CREATE TRIGGER `inbox_before_ins` BEFORE INSERT ON `inbox` FOR EACH ROW begin
+CREATE TRIGGER `inbox_before_ins` BEFORE INSERT ON `sms_inbox` FOR EACH ROW begin
 
 IF NEW.ReceivingDateTime = '0000-00-00 00:00:00' THEN
         SET NEW.ReceivingDateTime = CURRENT_TIMESTAMP();
 END IF;
 
 if NEW.UDH=NULL OR RIGHT(NEW.UDH,2)='01' OR NEW.UDH='' THEN
-INSERT INTO `full_inbox`(`UpdatedInDB`,`ReceivingDateTime`,`Text`,`SenderNumber`,`Coding`,`UDH`,`SMSCNumber`,`Class`,`TextDecoded`,`ID`,`RecipientID`,`Processed`) VALUES
+INSERT INTO `sms_full_inbox`(`UpdatedInDB`,`ReceivingDateTime`,`Text`,`SenderNumber`,`Coding`,`UDH`,`SMSCNumber`,`Class`,`TextDecoded`,`ID`,`RecipientID`,`Processed`) VALUES
 (new.UpdatedInDB, new.ReceivingDateTime, new.TEXT, new.SenderNumber,
 new.Coding, new.UDH, new.SMSCNumber, new.Class, new.TextDecoded,
 new.ID, new.RecipientID, new.Processed);
 
 ELSE
-UPDATE full_inbox SET textdecoded=CONCAT(textdecoded,new.TextDecoded)
+UPDATE sms_full_inbox SET textdecoded=CONCAT(textdecoded,new.TextDecoded)
 WHERE LEFT(udh,10)=LEFT(new.UDH,10);
 
 END if;
@@ -178,10 +180,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `outbox`
+-- Struktur dari tabel `sms_outbox`
 --
 
-CREATE TABLE `outbox` (
+CREATE TABLE `sms_outbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `InsertIntoDB` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `SendingDateTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -203,10 +205,10 @@ CREATE TABLE `outbox` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Trigger `outbox`
+-- Trigger `sms_outbox`
 --
 DELIMITER $$
-CREATE TRIGGER `outbox_after_ins_tr` AFTER INSERT ON `outbox` FOR EACH ROW BEGIN
+CREATE TRIGGER `outbox_after_ins_tr` AFTER INSERT ON `sms_outbox` FOR EACH ROW BEGIN
  set @seq=2;
  set @udh=left(new.udh,10);
  while (length(@remains)>0 and @seq<256) do
@@ -219,14 +221,14 @@ CREATE TRIGGER `outbox_after_ins_tr` AFTER INSERT ON `outbox` FOR EACH ROW BEGIN
    end if;
 
    set @remains=substring(@remains from 154);
-   insert into outbox_multipart  (SequencePosition,UDH,TextDecoded,id) values (@seq,concat(@udh,@seqx),@part,new.ID);
+   insert into sms_outbox_multipart  (SequencePosition,UDH,TextDecoded,id) values (@seq,concat(@udh,@seqx),@part,new.ID);
    set @seq=@seq+1;
  end while;
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `outbox_before_ins_tr` BEFORE INSERT ON `outbox` FOR EACH ROW BEGIN
+CREATE TRIGGER `outbox_before_ins_tr` BEFORE INSERT ON `sms_outbox` FOR EACH ROW BEGIN
  IF NEW.InsertIntoDB = '0000-00-00 00:00:00' THEN
         SET NEW.InsertIntoDB = CURRENT_TIMESTAMP();
     END IF;
@@ -264,10 +266,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `outbox_multipart`
+-- Struktur dari tabel `sms_outbox_multipart`
 --
 
-CREATE TABLE `outbox_multipart` (
+CREATE TABLE `sms_outbox_multipart` (
   `Text` text,
   `Coding` enum('Default_No_Compression','Unicode_No_Compression','8bit','Default_Compression','Unicode_Compression') NOT NULL DEFAULT 'Default_No_Compression',
   `UDH` text,
@@ -278,10 +280,10 @@ CREATE TABLE `outbox_multipart` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `outbox_multipart`
+-- Dumping data untuk tabel `sms_outbox_multipart`
 --
 
-INSERT INTO `outbox_multipart` (`Text`, `Coding`, `UDH`, `Class`, `TextDecoded`, `ID`, `SequencePosition`) VALUES
+INSERT INTO `sms_outbox_multipart` (`Text`, `Coding`, `UDH`, `Class`, `TextDecoded`, `ID`, `SequencePosition`) VALUES
 (NULL, 'Default_No_Compression', '050003A70303', -1, 'Di Kota Solo, Yaitu Universitas Sebelas Maret.', 9, 3),
 (NULL, 'Default_No_Compression', '050003A70302', -1, 'Saya Cintai. Rumah Saya Di Colomadu Karanganyar. Saya Lahir Di Boyolali Tiga Puluh Tahun Yang Lalu. Sekarang Saya Mengajar Di Perguruan Tinggi', 11, 2),
 (NULL, 'Default_No_Compression', '050003A70303', -1, 'Di Kota Solo, Yaitu Universitas Sebelas Maret.', 11, 3);
@@ -289,10 +291,10 @@ INSERT INTO `outbox_multipart` (`Text`, `Coding`, `UDH`, `Class`, `TextDecoded`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pbk`
+-- Struktur dari tabel `sms_pbk`
 --
 
-CREATE TABLE `pbk` (
+CREATE TABLE `sms_pbk` (
   `ID` int(11) NOT NULL,
   `GroupID` int(11) NOT NULL DEFAULT '-1',
   `Name` text NOT NULL,
@@ -302,10 +304,10 @@ CREATE TABLE `pbk` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pbk_groups`
+-- Struktur dari tabel `sms_pbk_groups`
 --
 
-CREATE TABLE `pbk_groups` (
+CREATE TABLE `sms_pbk_groups` (
   `Name` text NOT NULL,
   `ID` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -313,10 +315,10 @@ CREATE TABLE `pbk_groups` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `phones`
+-- Struktur dari tabel `sms_phones`
 --
 
-CREATE TABLE `phones` (
+CREATE TABLE `sms_phones` (
   `ID` text NOT NULL,
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `InsertIntoDB` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -332,17 +334,17 @@ CREATE TABLE `phones` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `phones`
+-- Dumping data untuk tabel `sms_phones`
 --
 
-INSERT INTO `phones` (`ID`, `UpdatedInDB`, `InsertIntoDB`, `TimeOut`, `Send`, `Receive`, `IMEI`, `Client`, `Battery`, `Signal`, `Sent`, `Received`) VALUES
+INSERT INTO `sms_phones` (`ID`, `UpdatedInDB`, `InsertIntoDB`, `TimeOut`, `Send`, `Receive`, `IMEI`, `Client`, `Battery`, `Signal`, `Sent`, `Received`) VALUES
 ('', '2012-05-07 07:54:31', '2012-05-07 07:52:06', '2012-05-07 07:54:41', 'yes', 'yes', '354136020259739', 'Gammu 1.30.90, Windows Server 2007 SP1, GCC 4.6, MinGW 3.11', 0, 36, 0, 0);
 
 --
--- Trigger `phones`
+-- Trigger `sms_phones`
 --
 DELIMITER $$
-CREATE TRIGGER `phones_timestamp` BEFORE INSERT ON `phones` FOR EACH ROW BEGIN
+CREATE TRIGGER `phones_timestamp` BEFORE INSERT ON `sms_phones` FOR EACH ROW BEGIN
     IF NEW.InsertIntoDB = '0000-00-00 00:00:00' THEN
         SET NEW.InsertIntoDB = CURRENT_TIMESTAMP();
     END IF;
@@ -356,10 +358,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sentitems`
+-- Struktur dari tabel `sms_sentitems`
 --
 
-CREATE TABLE `sentitems` (
+CREATE TABLE `sms_sentitems` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `InsertIntoDB` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `SendingDateTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -382,10 +384,10 @@ CREATE TABLE `sentitems` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sentitems`
+-- Dumping data untuk tabel `sms_sentitems`
 --
 
-INSERT INTO `sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `DeliveryDateTime`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `SenderID`, `SequencePosition`, `Status`, `StatusError`, `TPMR`, `RelativeValidity`, `CreatorID`) VALUES
+INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `DeliveryDateTime`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `SenderID`, `SequencePosition`, `Status`, `StatusError`, `TPMR`, `RelativeValidity`, `CreatorID`) VALUES
 ('2011-11-29 06:35:11', '2011-11-29 06:34:55', '2011-11-29 06:35:11', NULL, '007000610069006A006F0020006B0061006D0070007200650074002000730075006E00640065006C00200062006F006C006F006E0067', '628995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'paijo kampret sundel bolong', 1, '', 1, 'SendingOKNoReport', -1, 86, 255, ''),
 ('2011-11-29 06:40:17', '2011-11-29 06:40:03', '2011-11-29 06:40:17', NULL, '002A004C006100790061006E0061006E00200069006E006900200064006900730065006400690061006B0061006E0020006F006C006500680020005000540020005900610068006F006F00200049006E0064006F006E0065007300690061002E002000480061006C0061006D0061006E0020004100770061006C00200069006E00690020006A00750067006100200064006900730065006400690061006B0061006E0020006F006C006500680020005000540020005900610068006F006F00200049006E0064006F006E0065007300690061002E0020007C002000530065006D007500610020006C006100790061006E0061006E0020006C00610069006E002000790061006E006700200074006900640061006B0020006D0065006D0069006C0069006B0069002000740061006E006400610020201C002A201D00200061006B0061006E0020006D0065006E0075006A00750020006B0065002000730069007400750073002000770065006200200070006900680061006B0020006B00650074006900670061002C002000790061006E00670020006B006F006E00740065006E006E007900610020006D0075006E0067006B0069006E00200074006900640061006B0020007300650073007500610069002000640065006E00670061006E00200075006E00640061006E0067002D0075006E00640061006E0067002000640069002000770069006C006100790061006800200041006E00640061002E00200041006E00640061002C002000620075006B0061006E0020005000540020005900610068006F006F00200049006E0064006F006E0065007300690061002C002000620065007200740061006E006700670075006E00670020006A0061007700610062002000700065006E007500680020006100740061007300200061006B0073006500730020006B0065002000640061006E002000700065006E006700670075006E00610061006E002000730069007400750073002000770065006200200070006900680061006B0020006B00650074006900670061002E000D000A000D000A', '085292213020', 'Default_No_Compression', '', '+6289644000001', -1, '*Layanan ini disediakan oleh PT Yahoo Indonesia. Halaman Awal ini juga disediakan oleh PT Yahoo Indonesia. | Semua layanan lain yang tidak memiliki tanda “*” akan menuju ke situs web pihak ketiga, yang kontennya mungkin tidak sesuai dengan undang-undang di wilayah Anda. Anda, bukan PT Yahoo Indonesia, bertanggung jawab penuh atas akses ke dan penggunaan situs web pihak ketiga.\r\n\r\n', 2, '', 1, 'SendingOKNoReport', -1, 87, 255, ''),
 ('2011-11-29 06:41:23', '2011-11-29 06:40:51', '2011-11-29 06:41:23', NULL, '002A004C006100790061006E0061006E00200069006E006900200064006900730065006400690061006B0061006E0020006F006C006500680020005000540020005900610068006F006F00200049006E0064006F006E0065007300690061002E002000480061006C0061006D0061006E0020004100770061006C00200069006E00690020006A00750067006100200064006900730065006400690061006B0061006E0020006F006C006500680020005000540020005900610068006F006F00200049006E0064006F006E0065007300690061002E0020007C002000530065006D007500610020006C006100790061006E0061006E0020006C00610069006E002000790061006E006700200074006900640061006B0020006D0065006D0069006C0069006B0069002000740061006E006400610020201C002A201D00200061006B0061006E0020006D0065006E0075006A00750020006B0065002000730069007400750073002000770065006200200070006900680061006B0020006B00650074006900670061002C002000790061006E00670020006B006F006E00740065006E006E007900610020006D0075006E0067006B0069006E00200074006900640061006B0020007300650073007500610069002000640065006E00670061006E00200075006E00640061006E0067002D0075006E00640061006E0067002000640069002000770069006C006100790061006800200041006E00640061002E00200041006E00640061002C002000620075006B0061006E0020005000540020005900610068006F006F00200049006E0064006F006E0065007300690061002C002000620065007200740061006E006700670075006E00670020006A0061007700610062002000700065006E007500680020006100740061007300200061006B0073006500730020006B0065002000640061006E002000700065006E006700670075006E00610061006E002000730069007400750073002000770065006200200070006900680061006B0020006B00650074006900670061002E000D000A000D000A', '08995313157', 'Default_No_Compression', '', '+6289644000001', -1, '*Layanan ini disediakan oleh PT Yahoo Indonesia. Halaman Awal ini juga disediakan oleh PT Yahoo Indonesia. | Semua layanan lain yang tidak memiliki tanda “*” akan menuju ke situs web pihak ketiga, yang kontennya mungkin tidak sesuai dengan undang-undang di wilayah Anda. Anda, bukan PT Yahoo Indonesia, bertanggung jawab penuh atas akses ke dan penggunaan situs web pihak ketiga.\r\n\r\n', 3, '', 1, 'SendingOKNoReport', -1, 88, 255, ''),
@@ -413,10 +415,10 @@ INSERT INTO `sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `Deli
 ('2012-05-06 17:30:48', '2012-05-06 15:50:02', '2012-05-06 17:30:48', NULL, '00740065007300740069006E00670020006D0061006E006500680020006D00610073002000620072006F0020', '08995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'testing maneh mas bro ', 20, '', 1, 'SendingOKNoReport', -1, 10, 255, '');
 
 --
--- Trigger `sentitems`
+-- Trigger `sms_sentitems`
 --
 DELIMITER $$
-CREATE TRIGGER `sentitems_timestamp` BEFORE INSERT ON `sentitems` FOR EACH ROW BEGIN
+CREATE TRIGGER `sentitems_timestamp` BEFORE INSERT ON `sms_sentitems` FOR EACH ROW BEGIN
     IF NEW.InsertIntoDB = '0000-00-00 00:00:00' THEN
         SET NEW.InsertIntoDB = CURRENT_TIMESTAMP();
     END IF;
@@ -432,53 +434,53 @@ DELIMITER ;
 --
 
 --
--- Indexes for table `full_inbox`
+-- Indeks untuk tabel `sms_full_inbox`
 --
-ALTER TABLE `full_inbox`
+ALTER TABLE `sms_full_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `inbox`
+-- Indeks untuk tabel `sms_inbox`
 --
-ALTER TABLE `inbox`
+ALTER TABLE `sms_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `outbox`
+-- Indeks untuk tabel `sms_outbox`
 --
-ALTER TABLE `outbox`
+ALTER TABLE `sms_outbox`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `outbox_date` (`SendingDateTime`,`SendingTimeOut`),
   ADD KEY `outbox_sender` (`SenderID`);
 
 --
--- Indexes for table `outbox_multipart`
+-- Indeks untuk tabel `sms_outbox_multipart`
 --
-ALTER TABLE `outbox_multipart`
+ALTER TABLE `sms_outbox_multipart`
   ADD PRIMARY KEY (`ID`,`SequencePosition`);
 
 --
--- Indexes for table `pbk`
+-- Indeks untuk tabel `sms_pbk`
 --
-ALTER TABLE `pbk`
+ALTER TABLE `sms_pbk`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `pbk_groups`
+-- Indeks untuk tabel `sms_pbk_groups`
 --
-ALTER TABLE `pbk_groups`
+ALTER TABLE `sms_pbk_groups`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `phones`
+-- Indeks untuk tabel `sms_phones`
 --
-ALTER TABLE `phones`
+ALTER TABLE `sms_phones`
   ADD PRIMARY KEY (`IMEI`);
 
 --
--- Indexes for table `sentitems`
+-- Indeks untuk tabel `sms_sentitems`
 --
-ALTER TABLE `sentitems`
+ALTER TABLE `sms_sentitems`
   ADD PRIMARY KEY (`ID`,`SequencePosition`),
   ADD KEY `sentitems_date` (`DeliveryDateTime`),
   ADD KEY `sentitems_tpmr` (`TPMR`),
@@ -486,34 +488,40 @@ ALTER TABLE `sentitems`
   ADD KEY `sentitems_sender` (`SenderID`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `full_inbox`
+-- AUTO_INCREMENT untuk tabel `sms_full_inbox`
 --
-ALTER TABLE `full_inbox`
+ALTER TABLE `sms_full_inbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
--- AUTO_INCREMENT for table `inbox`
+-- AUTO_INCREMENT untuk tabel `sms_inbox`
 --
-ALTER TABLE `inbox`
+ALTER TABLE `sms_inbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
 --
--- AUTO_INCREMENT for table `outbox`
+-- AUTO_INCREMENT untuk tabel `sms_outbox`
 --
-ALTER TABLE `outbox`
+ALTER TABLE `sms_outbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
 --
--- AUTO_INCREMENT for table `pbk`
+-- AUTO_INCREMENT untuk tabel `sms_pbk`
 --
-ALTER TABLE `pbk`
+ALTER TABLE `sms_pbk`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `pbk_groups`
+-- AUTO_INCREMENT untuk tabel `sms_pbk_groups`
 --
-ALTER TABLE `pbk_groups`
+ALTER TABLE `sms_pbk_groups`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
