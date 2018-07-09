@@ -79,8 +79,8 @@
                         <h3 class="box-title">Pesan</h3>
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+<!--                                <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>-->
                             </div>
                         </div>
                         <!-- /.box-tools -->
@@ -99,7 +99,7 @@
                             <!-- /.btn-group -->
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
                             <div class="pull-right">
-                                 <?php echo $this->pagination->create_links();?>
+                                
                             </div>
                             <!-- /.pull-right -->
                         </div>
@@ -110,7 +110,9 @@
                                     foreach ($datasms as $pesan) {?>
                                     <tr>
                                         <td style="width:10px"><?=form_checkbox('cek');?></td>
-                                        <td class="mailbox-subject"><i class="fa fa-star text-yellow"></i><?=$pesan->pesan;?></td>
+                                        <td class="mailbox-subject"><span <?=$pesan->stat_kirim==1 ? 'class="fa fa-reply text-blue">':'>';?></span>
+                                            <?=$pesan->pesan;?>
+                                        </td>
                                         <td class="mailbox-date text-right"><?=$pesan->waktu;?></td>
                                     </tr>
                                     <?php }?>
@@ -133,9 +135,9 @@
                             </div>
                             <!-- /.btn-group -->
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                            <div class="pull-right">
+<!--                            <div class="pull-right">
                                  <?php echo $this->pagination->create_links();?>
-                            </div>
+                            </div>-->
                             <!-- /.pull-right -->
                         </div>
                     </div>
