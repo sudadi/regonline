@@ -38,6 +38,7 @@
                                             <th>ID</th>
                                             <th>No. RM</th>
                                             <th>Nama</th>
+                                            <th>No. Telp</th>
                                             <th>TL</th>
                                             <th>Klinik</th>
                                             <th>Dokter</th>
@@ -63,6 +64,7 @@
                                             <td class="text-nowrap"><?=$res->nama;?></td>
                                             <td><?=$res->tgl_lahir;?></td>
                                             <td><?=$res->nama_klinik;?></td>
+                                            <td><?=$res->notelp;?></td>
                                             <td class="text-nowrap"><?=$res->nama_dokter;?></td>
                                             <td><?=$res->nmjnspasien;?></td>
                                             <td><?=$res->nmjnslayan;?></td>
