@@ -148,7 +148,7 @@ class Reservasi extends CI_Controller {
                 $data['content']['idklinik']= $this->input->post('poliklinik');
                 $data['content']['nmklinik']= $klinik->nama_klinik;
                 $data['content']['jnspasien']= $this->input->post('jnspasien');
-                $data['content']['jenispas']= $jenispas->jenis_nama;
+                $data['content']['jenispas']= $jenispas->jns_nama;
                 $data['content']['jnslayan']= $this->input->post('jnslayan');
                 if($this->input->post('jnslayan')==1) {
                     $data['content']['layanan']= "Reguler";
@@ -182,22 +182,22 @@ class Reservasi extends CI_Controller {
                 'waktu_rsv'=>$waktursv,'id_jadwal'=>$this->input->post('idjadwal'),
                 'id_klinik'=>$idklinik,
                 'id_dokter'=>$this->input->post('iddokter'),
-                'cara_bayar'=>$this->input->post('jnspasien'),
+                'jns_pasien'=>$this->input->post('jnspasien'),
                 'sebab'=>$this->input->post('sebab'),
                 'status'=>1, 'user_id'=>2);
-            $this->db->insert('treservasi', $datares);
+            $this->db->insert('res_treservasi', $datares);
             if ($this->db->affected_rows()>0){
                 $this->session->set_userdata('status', '1');
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
                 $idres=$this->db->insert_id();
                 $nores=$kodeklinik.'-'.$idres;
-                $this->db->update('treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
                 $this->session->set_userdata('nmklinik',$nmklinik);
                 redirect('reservasi/finish/'.$idres);
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
             }                
-            redirect('usulan');
+            redirect('reservasi');
         }
     }
     public function finish($idres) {

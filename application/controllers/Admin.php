@@ -59,9 +59,9 @@ class Admin extends CI_Controller
     public function index()
     {   
         $this->load->model('mod_reservasi');
-        $jmlwa=count($this->mod_reservasi->getdatares("jenis_res='WA'"));
-        $jmlsms=count($this->mod_reservasi->getdatares("jenis_res='SMS'"));
-        $jmlweb=count($this->mod_reservasi->getdatares("jenis_res='web'"));
+        $jmlwa=count($this->mod_reservasi->getdatares("jenis_rsv='WA'"));
+        $jmlsms=count($this->mod_reservasi->getdatares("jenis_rsv='SMS'"));
+        $jmlweb=count($this->mod_reservasi->getdatares("jenis_rsv='web'"));
         $data['content']['jmlwa']=$jmlwa;
         $data['content']['jmlsms']=$jmlsms;
         $data['content']['jmlweb']=$jmlweb;

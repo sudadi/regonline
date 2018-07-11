@@ -15,12 +15,12 @@
         $this->db->from('res_refdokter');
         $this->db->join('res_jadwal','res_refdokter.id_dokter=res_jadwal.id_dokter');
         $this->db->group_by('res_jadwal.id_dokter');
-        $this->db->where('jnslayan', $jenis);
+        $this->db->where('jns_layan', $jenis);
         $qry = $this->db->get();
         return $qry->result();
     }    
     function getdokterbytgl($klinik,$jenis,$dow){
-        $res = $this->db->get_where('res_jadwal',"id_klinik=$klinik and jnslayan=$jenis and id_hari=$dow");
+        $res = $this->db->get_where('res_jadwal',"id_klinik=$klinik and jns_layan=$jenis and id_hari=$dow");
         return $res->row(); 
     }
     function getdokterbyid($iddokter) {
@@ -34,7 +34,7 @@
         if ($iddokter){
             $this->db->where('id_dokter', $iddokter);
         }
-        $this->db->where("(tipe_layanan = 3 or tipe_layanan=$jenis)");
+        $this->db->where("(tipe_layan = 3 or tipe_layan=$jenis)");
         $this->db->group_by('res_refklinik.id_klinik');
         $res = $this->db->get();
         return $res->result();
@@ -48,7 +48,7 @@
         $this->db->where('id_dokter', $dokter);
         }
         $this->db->where('id_klinik', $klinik);
-        $this->db->where('jnslayan', $jenis);
+        $this->db->where('jns_layan', $jenis);
         return $this->db->get('res_jadwal')->result_array();
     }
     function getkuotatgl($jadwaltgl,$klinik,$dokter) {
@@ -70,8 +70,7 @@
         return $this->db->get('res_jadwal')->row();
     }
     function getjnspasien($idjenis) {
-        $this->db->where('jenis_id',$idjenis);
-        return $this->db->get_where("res_jns_pasien", "jenis_flag = 1 and jenis_id = $idjenis")->row();
+        return $this->db->get_where("res_jns_pasien", "jns_flag = 1 and jns_id = $idjenis")->row();
     }
     function getsebabsakit() {
         return $this->db->get('res_sebab_sakit')->result_array();
@@ -97,7 +96,7 @@
         return $this->db->get_where('res_treservasi', $where)->result();
     }
     function getgraphres($where) {
-        $this->db->select("sum(jenis_res='WA')as'WA',sum(jenis_res='SMS')as'SMS',sum(jenis_res='WEB')as'WEB',DATE_FORMAT(waktu_rsv, '%m/%d') as tgl");
+        $this->db->select("sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(waktu_rsv, '%m/%d') as tgl");
         $this->db->group_by('tgl');
         $this->db->order_by('tgl');
         return $this->db->get_where('res_treservasi',$where)->result_array();
