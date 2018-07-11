@@ -23,7 +23,7 @@ class Reservasi extends CI_Controller {
         $data['page'] = 'reservasi/step1';
         $data['action'] = site_url('reservasi');
         $data['content']='';
-        $this->load->view('reservasi/reservasi', $data);
+        $this->load->view('reservasi/main', $data);
     }
     private function cekvalpas($norm,$tgllahir) {
         $datapas = $this->mod_reservasi->cekdatpas("norm='{$norm}' and tgl_lahir='{$tgllahir}'");
@@ -56,7 +56,7 @@ class Reservasi extends CI_Controller {
             $data['content']['norm']=$this->session->userdata('norm');
             $data['content']['tgllahir']=$this->session->userdata('tgllahir');
             $data['content']['namapas']=$this->session->userdata('namapas');
-            $this->load->view('reservasi/reservasi', $data);
+            $this->load->view('reservasi/main', $data);
         } else {
             redirect('reservasi');
         }
@@ -162,7 +162,7 @@ class Reservasi extends CI_Controller {
                 $data['content']['alamat']=$this->session->userdata('alamat');
                 $data['page'] = 'reservasi/step3';
                 $data['action'] = site_url('reservasi/simpan');
-                $this->load->view('reservasi/reservasi', $data);
+                $this->load->view('reservasi/main', $data);
             }else {
                 redirect('reservasi');
             }
@@ -210,10 +210,28 @@ class Reservasi extends CI_Controller {
             $data['content']['nmklinik']=$this->session->userdata('nmklinik');
             $data['content']['nores']=$datares->nores;
             $data['content']['waktures']=$datares->waktu_rsv;
-            $this->load->view('reservasi/reservasi', $data);
+            $this->load->view('reservasi/main', $data);
         } else {
             redirect('reservasi');
         }
+    }
+    public function info() {
+        $data['page'] = 'reservasi/informasi';
+        $data['action'] = site_url('reservasi');
+        $data['content']='';
+        $this->load->view('reservasi/main', $data);
+    }
+    public function help() {
+        $data['page'] = 'reservasi/help';
+        $data['action'] = site_url('reservasi');
+        $data['content']='';
+        $this->load->view('reservasi/main', $data);
+    }
+    public function ketentuan() {
+        $data['page'] = 'reservasi/ketentuan';
+        $data['action'] = site_url('reservasi');
+        $data['content']='';
+        $this->load->view('reservasi/main', $data);
     }
     
 }

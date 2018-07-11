@@ -11,19 +11,19 @@
           </a>
         </li>
         <li>
-          <a href="<?=base_url('informasi');?>">
+          <a href="<?=base_url('reservasi/info');?>">
             <i class="fa fa-info-circle"></i>
             <span>Info Ortopedi</span>
           </a>
         </li>
 		<li>
-          <a href="<?=base_url('help');?>">
+          <a href="<?=base_url('reservasi/help');?>">
             <i class="fa fa-support"></i>
             <span>Bantuan</span>
           </a>
         </li>
         <li>
-          <a href="<?=base_url('ketentuan');?>">
+          <a href="<?=base_url('reservasi/ketentuan');?>">
             <i class="fa fa-exclamation-triangle"></i> <span>Syarat & Ketentuan</span>
             <!-- <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
