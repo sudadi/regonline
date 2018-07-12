@@ -59,10 +59,51 @@ class Admin extends CI_Controller
     public function index()
     {   
         $this->load->model('mod_reservasi');
-        $datares=$this->mod_reservasi->getgraphres("DATE_FORMAT(first_update, '%Y/%m/%d') = CURRENT_DATE()");
-        $data['content']['jmlwa']=$datares[0]['WA'];
-        $data['content']['jmlsms']=$datares[0]['SMS'];
-        $data['content']['jmlweb']=$datares[0]['WEB'];
+        $currentres=$this->mod_reservasi->getgraphres("DATE_FORMAT(first_update, '%Y/%m/%d') = CURRENT_DATE()");
+        $lastweekday=$this->mod_reservasi->getgraphres("DATE_FORMAT(first_update, '%Y/%m/%d') = DATE_FORMAT(NOW() - INTERVAL 7 DAY, '%Y/%m/%d')");
+        if (empty($lastweekday)){
+            $lastwa=$lastsms=$lastweb=0;
+        } else {
+            $lastwa=$lastweekday[0]['WA'];
+            $lastsms=$lastweekday[0]['SMS'];
+            $lastweb=$lastweekday[0]['WEB'];
+        }
+        if (empty($currentres)) {
+            $currwa=$currsms=$currweb=0;
+        } else {
+            $currwa=$currentres[0]['WA'];
+            $currsms=$currentres[0]['SMS'];
+            $currweb=$currentres[0]['WEB'];
+        }
+        $currall=$currsms+$currwa+$currweb;
+        $lastall=$lastsms+$lastwa+$lastweb;
+        if ($lastall == 0){
+            $percentall=$percentall*100;
+        } else {
+            $percentall=round((($currall-$lastall)/$lastall)*100,2);
+        }
+        if ($lastwa == 0){
+            $percentwa=$currwa*100;
+        } else {
+            $percentwa= round((($currwa-$lastwa)/$lastwa)*100, 2);
+        }
+        if ($lastsms == 0){
+            $percentsms=$currsms*100;
+        } else {
+            $percentsms= round((($currsms-$lastsms)/$lastsms)*100, 2);
+        }
+        if ($lastweb == 0){
+            $percentweb=$currweb*100;
+        } else {
+            $percentweb= round((($currweb-$lastweb)/$lastweb)*100, 2);
+        }
+        $data['content']['jmlwa']=$currentres[0]['WA'];
+        $data['content']['jmlsms']=$currentres[0]['SMS'];
+        $data['content']['jmlweb']=$currentres[0]['WEB'];
+        $data['content']['percentsms']=$percentsms;
+        $data['content']['percentwa']=$percentwa;
+        $data['content']['percentweb']=$percentweb;
+        $data['content']['percentall']=$percentall;
         $data['page']='admin/dasboard';
         $data['content']['action']='';
         $this->load->view('admin/main', $data);
@@ -91,7 +132,6 @@ class Admin extends CI_Controller
                 'waktu_rsv'=>$waktursv,'jadwal_id'=>$datatgl[0],
                 'jns_pasien_id'=>$this->input->post('jnspasien'),
                 'sebab_id'=>$this->input->post('sebab'),
-                'jns_layan_id'=>$this->input->post('jnslayan'),
                 'status'=>1, 'user_id'=>2, 
                 'jenis_rsv'=>$this->input->post('jenisres'));
             if(empty($this->input->post('edit'))){
