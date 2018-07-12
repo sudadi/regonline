@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 11 Jul 2018 pada 20.05
--- Versi server: 10.1.31-MariaDB
--- Versi PHP: 5.6.35
+-- Host: localhost
+-- Generation Time: Jul 12, 2018 at 03:45 PM
+-- Server version: 5.7.22-0ubuntu18.04.1
+-- PHP Version: 7.2.7-0ubuntu0.18.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_groups`
+-- Table structure for table `auth_groups`
 --
 
 CREATE TABLE `auth_groups` (
@@ -35,7 +35,7 @@ CREATE TABLE `auth_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_groups`
+-- Dumping data for table `auth_groups`
 --
 
 INSERT INTO `auth_groups` (`id`, `name`, `description`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `auth_groups` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_login_attempts`
+-- Table structure for table `auth_login_attempts`
 --
 
 CREATE TABLE `auth_login_attempts` (
@@ -58,7 +58,7 @@ CREATE TABLE `auth_login_attempts` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_users`
+-- Table structure for table `auth_users`
 --
 
 CREATE TABLE `auth_users` (
@@ -82,17 +82,17 @@ CREATE TABLE `auth_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_users`
+-- Dumping data for table `auth_users`
 --
 
 INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1531331669, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1531379511, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_users_groups`
+-- Table structure for table `auth_users_groups`
 --
 
 CREATE TABLE `auth_users_groups` (
@@ -102,7 +102,7 @@ CREATE TABLE `auth_users_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_users_groups`
+-- Dumping data for table `auth_users_groups`
 --
 
 INSERT INTO `auth_users_groups` (`id`, `user_id`, `group_id`) VALUES
@@ -112,14 +112,14 @@ INSERT INTO `auth_users_groups` (`id`, `user_id`, `group_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_jadwal`
+-- Table structure for table `res_jadwal`
 --
 
 CREATE TABLE `res_jadwal` (
   `id_jadwal` int(11) NOT NULL,
-  `id_dokter` int(8) NOT NULL,
-  `id_klinik` int(4) NOT NULL,
-  `jns_layan` tinyint(1) NOT NULL,
+  `dokter_id` int(8) NOT NULL,
+  `klinik_id` int(4) NOT NULL,
+  `jns_layan_id` tinyint(4) NOT NULL,
   `id_hari` tinyint(4) NOT NULL,
   `jam_mulai` time NOT NULL,
   `jam_selesai` time NOT NULL,
@@ -128,17 +128,18 @@ CREATE TABLE `res_jadwal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_jadwal`
+-- Dumping data for table `res_jadwal`
 --
 
-INSERT INTO `res_jadwal` (`id_jadwal`, `id_dokter`, `id_klinik`, `jns_layan`, `id_hari`, `jam_mulai`, `jam_selesai`, `kuota_perjam`, `status`) VALUES
+INSERT INTO `res_jadwal` (`id_jadwal`, `dokter_id`, `klinik_id`, `jns_layan_id`, `id_hari`, `jam_mulai`, `jam_selesai`, `kuota_perjam`, `status`) VALUES
 (1, 1, 1, 2, 1, '07:00:00', '14:00:00', 30, 1),
-(2, 1, 1, 2, 4, '08:00:00', '15:00:00', 20, 0);
+(2, 1, 1, 2, 4, '08:00:00', '15:00:00', 20, 0),
+(3, 1, 1, 1, 4, '08:00:00', '15:00:00', 20, 0);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_jns_pasien`
+-- Table structure for table `res_jns_pasien`
 --
 
 CREATE TABLE `res_jns_pasien` (
@@ -148,7 +149,7 @@ CREATE TABLE `res_jns_pasien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_jns_pasien`
+-- Dumping data for table `res_jns_pasien`
 --
 
 INSERT INTO `res_jns_pasien` (`jns_id`, `jns_nama`, `jns_flag`) VALUES
@@ -172,7 +173,7 @@ INSERT INTO `res_jns_pasien` (`jns_id`, `jns_nama`, `jns_flag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refdokter`
+-- Table structure for table `res_refdokter`
 --
 
 CREATE TABLE `res_refdokter` (
@@ -182,7 +183,7 @@ CREATE TABLE `res_refdokter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refdokter`
+-- Dumping data for table `res_refdokter`
 --
 
 INSERT INTO `res_refdokter` (`id_dokter`, `nama_dokter`, `status`) VALUES
@@ -239,26 +240,26 @@ INSERT INTO `res_refdokter` (`id_dokter`, `nama_dokter`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refjns_layan`
+-- Table structure for table `res_refjns_layan`
 --
 
 CREATE TABLE `res_refjns_layan` (
-  `id_jnslayan` tinyint(4) NOT NULL,
-  `jnslayan` varchar(50) NOT NULL
+  `id_jns_layan` tinyint(4) NOT NULL,
+  `jns_layan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refjns_layan`
+-- Dumping data for table `res_refjns_layan`
 --
 
-INSERT INTO `res_refjns_layan` (`id_jnslayan`, `jnslayan`) VALUES
+INSERT INTO `res_refjns_layan` (`id_jns_layan`, `jns_layan`) VALUES
 (1, 'Reguler'),
 (2, 'Eksekutif');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refklinik`
+-- Table structure for table `res_refklinik`
 --
 
 CREATE TABLE `res_refklinik` (
@@ -270,7 +271,7 @@ CREATE TABLE `res_refklinik` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refklinik`
+-- Dumping data for table `res_refklinik`
 --
 
 INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_layan`, `status`) VALUES
@@ -295,19 +296,19 @@ INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_laya
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_sebab_sakit`
+-- Table structure for table `res_sebab_sakit`
 --
 
 CREATE TABLE `res_sebab_sakit` (
-  `ss_id` tinyint(2) NOT NULL,
-  `ss_nama` varchar(100) DEFAULT NULL
+  `id_sebab` tinyint(2) NOT NULL,
+  `sebab` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_sebab_sakit`
+-- Dumping data for table `res_sebab_sakit`
 --
 
-INSERT INTO `res_sebab_sakit` (`ss_id`, `ss_nama`) VALUES
+INSERT INTO `res_sebab_sakit` (`id_sebab`, `sebab`) VALUES
 (1, 'Bencana Alam'),
 (2, 'Bermain'),
 (3, 'Cacat Sejak Lahir'),
@@ -321,7 +322,7 @@ INSERT INTO `res_sebab_sakit` (`ss_id`, `ss_nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_tgl_libur`
+-- Table structure for table `res_tgl_libur`
 --
 
 CREATE TABLE `res_tgl_libur` (
@@ -332,7 +333,7 @@ CREATE TABLE `res_tgl_libur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_tgl_libur`
+-- Dumping data for table `res_tgl_libur`
 --
 
 INSERT INTO `res_tgl_libur` (`id_libur`, `tanggal`, `ket`, `status`) VALUES
@@ -342,7 +343,7 @@ INSERT INTO `res_tgl_libur` (`id_libur`, `tanggal`, `ket`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_tpasien`
+-- Table structure for table `res_tpasien`
 --
 
 CREATE TABLE `res_tpasien` (
@@ -359,7 +360,7 @@ CREATE TABLE `res_tpasien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_tpasien`
+-- Dumping data for table `res_tpasien`
 --
 
 INSERT INTO `res_tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `alamat`, `propinsi`, `kota`, `kec`, `kel`) VALUES
@@ -369,56 +370,38 @@ INSERT INTO `res_tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `ala
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_treservasi`
+-- Table structure for table `res_treservasi`
 --
 
 CREATE TABLE `res_treservasi` (
   `id_rsv` bigint(20) NOT NULL,
   `norm` varchar(10) NOT NULL,
-  `notelp` varchar(15) NOT NULL,
   `nores` varchar(15) NOT NULL,
   `waktu_rsv` datetime NOT NULL,
-  `id_jadwal` int(11) NOT NULL,
-  `id_klinik` int(4) NOT NULL,
-  `id_dokter` int(8) NOT NULL,
+  `jadwal_id` int(11) NOT NULL,
   `nourut` int(4) NOT NULL,
   `kode_cekin` varchar(10) DEFAULT NULL,
-  `jns_pasien` int(11) NOT NULL,
-  `id_jnslayan` int(4) NOT NULL,
-  `sebab` tinyint(4) NOT NULL,
+  `jns_pasien_id` int(11) NOT NULL,
+  `sebab_id` tinyint(2) NOT NULL,
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0.reservasi; 1. checkin; 2.Batat',
   `first_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_update` datetime DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `sync` tinyint(1) NOT NULL DEFAULT '0',
   `jenis_rsv` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_treservasi`
+-- Dumping data for table `res_treservasi`
 --
 
-INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `notelp`, `nores`, `waktu_rsv`, `id_jadwal`, `id_klinik`, `id_dokter`, `nourut`, `kode_cekin`, `jns_pasien`, `id_jnslayan`, `sebab`, `status`, `first_update`, `user_id`, `sync`, `jenis_rsv`) VALUES
-(3, '133469', '08995313157', 'ORT-3', '2018-06-28 08:00:00', 2, 1, 1, 0, NULL, 2, 2, 9, 2, '2018-07-09 04:12:17', 2, 0, 'WA'),
-(4, '317993', '083818181831', 'ORT-4', '2018-07-05 07:00:00', 1, 1, 1, 0, NULL, 2, 2, 1, 2, '2018-07-09 04:12:17', 2, 0, 'WA'),
-(5, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 16:59:58', 1, 0, 'WEB'),
-(6, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:18', 1, 0, 'SMS'),
-(7, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:28', 1, 0, 'WA'),
-(8, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:41', 1, 0, 'WA'),
-(9, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:00:52', 1, 0, 'SMS'),
-(10, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:01:08', 1, 0, 'WEB'),
-(11, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:01:15', 1, 0, 'WEB'),
-(12, '133469', '0', '34', '2018-07-01 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 17:01:20', 1, 0, 'WEB'),
-(13, '133469', '0', '34', '2018-07-05 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:18:59', 1, 0, 'WA'),
-(14, '133469', '0', '34', '2018-07-06 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:19:37', 1, 0, 'WEB'),
-(15, '133469', '0', '34', '2018-06-30 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:24:40', 1, 0, 'WEB'),
-(16, '133469', '0', '34', '2018-06-25 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:25:30', 1, 0, 'SMS'),
-(17, '133469', '0', '34', '2018-06-22 00:00:00', 1, 1, 1, 1, NULL, 1, 1, 1, 0, '2018-07-07 18:32:52', 1, 0, 'WEB'),
-(18, '133469', '083818181831', 'ORT-18', '2018-07-12 13:00:00', 2, 1, 1, 0, NULL, 2, 0, 9, 1, '2018-07-11 17:53:11', 2, 0, '');
+INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `nores`, `waktu_rsv`, `jadwal_id`, `nourut`, `kode_cekin`, `jns_pasien_id`, `sebab_id`, `status`, `first_update`, `last_update`, `user_id`, `sync`, `jenis_rsv`) VALUES
+(19, '133469', 'ORT-19', '2018-07-19 15:00:00', 3, 0, NULL, 2, 9, 1, '2018-07-12 07:10:11', NULL, 2, 0, 'WEB');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_daemons`
+-- Table structure for table `sms_daemons`
 --
 
 CREATE TABLE `sms_daemons` (
@@ -429,7 +412,7 @@ CREATE TABLE `sms_daemons` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_full_inbox`
+-- Table structure for table `sms_full_inbox`
 --
 
 CREATE TABLE `sms_full_inbox` (
@@ -448,7 +431,7 @@ CREATE TABLE `sms_full_inbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_full_inbox`
+-- Dumping data for table `sms_full_inbox`
 --
 
 INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
@@ -463,7 +446,7 @@ INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `Sende
 ('0000-00-00 00:00:00', '2012-05-07 06:45:16', '005300690070002E0070006100670069', '+628995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'Sip.pagi', 9, '', 'false');
 
 --
--- Trigger `sms_full_inbox`
+-- Triggers `sms_full_inbox`
 --
 DELIMITER $$
 CREATE TRIGGER `full_inbox_before_ins` BEFORE INSERT ON `sms_full_inbox` FOR EACH ROW begin
@@ -478,7 +461,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_full_outbox`
+-- Table structure for table `sms_full_outbox`
 --
 
 CREATE TABLE `sms_full_outbox` (
@@ -505,7 +488,7 @@ CREATE TABLE `sms_full_outbox` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_gammu`
+-- Table structure for table `sms_gammu`
 --
 
 CREATE TABLE `sms_gammu` (
@@ -513,7 +496,7 @@ CREATE TABLE `sms_gammu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_gammu`
+-- Dumping data for table `sms_gammu`
 --
 
 INSERT INTO `sms_gammu` (`Version`) VALUES
@@ -522,7 +505,7 @@ INSERT INTO `sms_gammu` (`Version`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_inbox`
+-- Table structure for table `sms_inbox`
 --
 
 CREATE TABLE `sms_inbox` (
@@ -541,7 +524,7 @@ CREATE TABLE `sms_inbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Trigger `sms_inbox`
+-- Triggers `sms_inbox`
 --
 DELIMITER $$
 CREATE TRIGGER `inbox_before_ins` BEFORE INSERT ON `sms_inbox` FOR EACH ROW begin
@@ -568,7 +551,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_outbox`
+-- Table structure for table `sms_outbox`
 --
 
 CREATE TABLE `sms_outbox` (
@@ -593,7 +576,7 @@ CREATE TABLE `sms_outbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Trigger `sms_outbox`
+-- Triggers `sms_outbox`
 --
 DELIMITER $$
 CREATE TRIGGER `outbox_after_ins_tr` AFTER INSERT ON `sms_outbox` FOR EACH ROW BEGIN
@@ -654,7 +637,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_outbox_multipart`
+-- Table structure for table `sms_outbox_multipart`
 --
 
 CREATE TABLE `sms_outbox_multipart` (
@@ -668,7 +651,7 @@ CREATE TABLE `sms_outbox_multipart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_outbox_multipart`
+-- Dumping data for table `sms_outbox_multipart`
 --
 
 INSERT INTO `sms_outbox_multipart` (`Text`, `Coding`, `UDH`, `Class`, `TextDecoded`, `ID`, `SequencePosition`) VALUES
@@ -679,7 +662,7 @@ INSERT INTO `sms_outbox_multipart` (`Text`, `Coding`, `UDH`, `Class`, `TextDecod
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_pbk`
+-- Table structure for table `sms_pbk`
 --
 
 CREATE TABLE `sms_pbk` (
@@ -692,7 +675,7 @@ CREATE TABLE `sms_pbk` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_pbk_groups`
+-- Table structure for table `sms_pbk_groups`
 --
 
 CREATE TABLE `sms_pbk_groups` (
@@ -703,7 +686,7 @@ CREATE TABLE `sms_pbk_groups` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_phones`
+-- Table structure for table `sms_phones`
 --
 
 CREATE TABLE `sms_phones` (
@@ -722,14 +705,14 @@ CREATE TABLE `sms_phones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_phones`
+-- Dumping data for table `sms_phones`
 --
 
 INSERT INTO `sms_phones` (`ID`, `UpdatedInDB`, `InsertIntoDB`, `TimeOut`, `Send`, `Receive`, `IMEI`, `Client`, `Battery`, `Signal`, `Sent`, `Received`) VALUES
 ('', '2012-05-07 07:54:31', '2012-05-07 07:52:06', '2012-05-07 07:54:41', 'yes', 'yes', '354136020259739', 'Gammu 1.30.90, Windows Server 2007 SP1, GCC 4.6, MinGW 3.11', 0, 36, 0, 0);
 
 --
--- Trigger `sms_phones`
+-- Triggers `sms_phones`
 --
 DELIMITER $$
 CREATE TRIGGER `phones_timestamp` BEFORE INSERT ON `sms_phones` FOR EACH ROW BEGIN
@@ -746,7 +729,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_sentitems`
+-- Table structure for table `sms_sentitems`
 --
 
 CREATE TABLE `sms_sentitems` (
@@ -772,7 +755,7 @@ CREATE TABLE `sms_sentitems` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_sentitems`
+-- Dumping data for table `sms_sentitems`
 --
 
 INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `DeliveryDateTime`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `SenderID`, `SequencePosition`, `Status`, `StatusError`, `TPMR`, `RelativeValidity`, `CreatorID`) VALUES
@@ -803,7 +786,7 @@ INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `
 ('2012-05-06 17:30:48', '2012-05-06 15:50:02', '2012-05-06 17:30:48', NULL, '00740065007300740069006E00670020006D0061006E006500680020006D00610073002000620072006F0020', '08995313157', 'Default_No_Compression', '', '+6289644000001', -1, 'testing maneh mas bro ', 20, '', 1, 'SendingOKNoReport', -1, 10, 255, '');
 
 --
--- Trigger `sms_sentitems`
+-- Triggers `sms_sentitems`
 --
 DELIMITER $$
 CREATE TRIGGER `sentitems_timestamp` BEFORE INSERT ON `sms_sentitems` FOR EACH ROW BEGIN
@@ -817,30 +800,82 @@ END
 $$
 DELIMITER ;
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vreservasi`
+-- (See below for the actual view)
+--
+CREATE TABLE `vreservasi` (
+`id_rsv` bigint(20)
+,`nores` varchar(15)
+,`waktu_rsv` datetime
+,`nourut` int(4)
+,`kode_cekin` varchar(10)
+,`norm` varchar(10)
+,`nama` varchar(200)
+,`gender` varchar(1)
+,`tgl_lahir` date
+,`notelp` varchar(15)
+,`alamat` varchar(255)
+,`propinsi` int(11)
+,`kota` int(11)
+,`kec` int(11)
+,`kel` int(11)
+,`id_jadwal` int(11)
+,`id_hari` tinyint(4)
+,`id_dokter` int(8)
+,`nama_dokter` varchar(100)
+,`id_klinik` int(4)
+,`nama_klinik` varchar(100)
+,`kode_poli` varchar(5)
+,`id_sebab` tinyint(2)
+,`sebab` varchar(100)
+,`jns_id` int(3)
+,`jns_nama` varchar(100)
+,`id_jns_layan` tinyint(4)
+,`jns_layan` varchar(50)
+,`status` tinyint(2)
+,`sync` tinyint(1)
+,`jenis_rsv` varchar(5)
+,`user_id` int(11)
+,`first_update` timestamp
+,`last_update` datetime
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vreservasi`
+--
+DROP TABLE IF EXISTS `vreservasi`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW `vreservasi`  AS  select `res_treservasi`.`id_rsv` AS `id_rsv`,`res_treservasi`.`nores` AS `nores`,`res_treservasi`.`waktu_rsv` AS `waktu_rsv`,`res_treservasi`.`nourut` AS `nourut`,`res_treservasi`.`kode_cekin` AS `kode_cekin`,`res_tpasien`.`norm` AS `norm`,`res_tpasien`.`nama` AS `nama`,`res_tpasien`.`gender` AS `gender`,`res_tpasien`.`tgl_lahir` AS `tgl_lahir`,`res_tpasien`.`notelp` AS `notelp`,`res_tpasien`.`alamat` AS `alamat`,`res_tpasien`.`propinsi` AS `propinsi`,`res_tpasien`.`kota` AS `kota`,`res_tpasien`.`kec` AS `kec`,`res_tpasien`.`kel` AS `kel`,`res_jadwal`.`id_jadwal` AS `id_jadwal`,`res_jadwal`.`id_hari` AS `id_hari`,`res_refdokter`.`id_dokter` AS `id_dokter`,`res_refdokter`.`nama_dokter` AS `nama_dokter`,`res_refklinik`.`id_klinik` AS `id_klinik`,`res_refklinik`.`nama_klinik` AS `nama_klinik`,`res_refklinik`.`kode_poli` AS `kode_poli`,`res_sebab_sakit`.`id_sebab` AS `id_sebab`,`res_sebab_sakit`.`sebab` AS `sebab`,`res_jns_pasien`.`jns_id` AS `jns_id`,`res_jns_pasien`.`jns_nama` AS `jns_nama`,`res_refjns_layan`.`id_jns_layan` AS `id_jns_layan`,`res_refjns_layan`.`jns_layan` AS `jns_layan`,`res_treservasi`.`status` AS `status`,`res_treservasi`.`sync` AS `sync`,`res_treservasi`.`jenis_rsv` AS `jenis_rsv`,`res_treservasi`.`user_id` AS `user_id`,`res_treservasi`.`first_update` AS `first_update`,`res_treservasi`.`last_update` AS `last_update` from (((((((`res_treservasi` left join `res_tpasien` on((`res_treservasi`.`norm` = `res_tpasien`.`norm`))) left join `res_sebab_sakit` on((`res_treservasi`.`sebab_id` = `res_sebab_sakit`.`id_sebab`))) left join `res_jadwal` on((`res_treservasi`.`jadwal_id` = `res_jadwal`.`id_jadwal`))) left join `res_jns_pasien` on((`res_treservasi`.`jns_pasien_id` = `res_jns_pasien`.`jns_id`))) left join `res_refdokter` on((`res_jadwal`.`dokter_id` = `res_refdokter`.`id_dokter`))) left join `res_refklinik` on((`res_jadwal`.`klinik_id` = `res_refklinik`.`id_klinik`))) left join `res_refjns_layan` on((`res_jadwal`.`jns_layan_id` = `res_refjns_layan`.`id_jns_layan`))) ;
+
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `auth_groups`
+-- Indexes for table `auth_groups`
 --
 ALTER TABLE `auth_groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_login_attempts`
+-- Indexes for table `auth_login_attempts`
 --
 ALTER TABLE `auth_login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_users`
+-- Indexes for table `auth_users`
 --
 ALTER TABLE `auth_users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_users_groups`
+-- Indexes for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   ADD PRIMARY KEY (`id`),
@@ -849,71 +884,74 @@ ALTER TABLE `auth_users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- Indeks untuk tabel `res_jadwal`
+-- Indexes for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
-  ADD KEY `id_dokter` (`id_dokter`),
-  ADD KEY `id_klinik` (`id_klinik`);
+  ADD KEY `jns_layan_id` (`jns_layan_id`),
+  ADD KEY `res_jadwal_ibfk_1` (`dokter_id`),
+  ADD KEY `res_jadwal_ibfk_2` (`klinik_id`);
 
 --
--- Indeks untuk tabel `res_jns_pasien`
+-- Indexes for table `res_jns_pasien`
 --
 ALTER TABLE `res_jns_pasien`
   ADD PRIMARY KEY (`jns_id`);
 
 --
--- Indeks untuk tabel `res_refdokter`
+-- Indexes for table `res_refdokter`
 --
 ALTER TABLE `res_refdokter`
   ADD PRIMARY KEY (`id_dokter`);
 
 --
--- Indeks untuk tabel `res_refjns_layan`
+-- Indexes for table `res_refjns_layan`
 --
 ALTER TABLE `res_refjns_layan`
-  ADD PRIMARY KEY (`id_jnslayan`);
+  ADD PRIMARY KEY (`id_jns_layan`);
 
 --
--- Indeks untuk tabel `res_refklinik`
+-- Indexes for table `res_refklinik`
 --
 ALTER TABLE `res_refklinik`
   ADD PRIMARY KEY (`id_klinik`);
 
 --
--- Indeks untuk tabel `res_sebab_sakit`
+-- Indexes for table `res_sebab_sakit`
 --
 ALTER TABLE `res_sebab_sakit`
-  ADD PRIMARY KEY (`ss_id`);
+  ADD PRIMARY KEY (`id_sebab`);
 
 --
--- Indeks untuk tabel `res_tgl_libur`
+-- Indexes for table `res_tgl_libur`
 --
 ALTER TABLE `res_tgl_libur`
   ADD PRIMARY KEY (`id_libur`);
 
 --
--- Indeks untuk tabel `res_tpasien`
+-- Indexes for table `res_tpasien`
 --
 ALTER TABLE `res_tpasien`
   ADD PRIMARY KEY (`norm`);
 
 --
--- Indeks untuk tabel `res_treservasi`
+-- Indexes for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   ADD PRIMARY KEY (`id_rsv`),
   ADD KEY `norm` (`norm`),
-  ADD KEY `id_jadwal` (`id_jadwal`);
+  ADD KEY `id_jadwal` (`jadwal_id`),
+  ADD KEY `jns_pasien` (`jns_pasien_id`),
+  ADD KEY `sebab` (`sebab_id`);
 
 --
--- Indeks untuk tabel `sms_full_inbox`
+-- Indexes for table `sms_full_inbox`
 --
 ALTER TABLE `sms_full_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_full_outbox`
+-- Indexes for table `sms_full_outbox`
 --
 ALTER TABLE `sms_full_outbox`
   ADD PRIMARY KEY (`ID`),
@@ -921,13 +959,13 @@ ALTER TABLE `sms_full_outbox`
   ADD KEY `outbox_sender` (`SenderID`);
 
 --
--- Indeks untuk tabel `sms_inbox`
+-- Indexes for table `sms_inbox`
 --
 ALTER TABLE `sms_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_outbox`
+-- Indexes for table `sms_outbox`
 --
 ALTER TABLE `sms_outbox`
   ADD PRIMARY KEY (`ID`),
@@ -935,31 +973,31 @@ ALTER TABLE `sms_outbox`
   ADD KEY `outbox_sender` (`SenderID`);
 
 --
--- Indeks untuk tabel `sms_outbox_multipart`
+-- Indexes for table `sms_outbox_multipart`
 --
 ALTER TABLE `sms_outbox_multipart`
   ADD PRIMARY KEY (`ID`,`SequencePosition`);
 
 --
--- Indeks untuk tabel `sms_pbk`
+-- Indexes for table `sms_pbk`
 --
 ALTER TABLE `sms_pbk`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_pbk_groups`
+-- Indexes for table `sms_pbk_groups`
 --
 ALTER TABLE `sms_pbk_groups`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_phones`
+-- Indexes for table `sms_phones`
 --
 ALTER TABLE `sms_phones`
   ADD PRIMARY KEY (`IMEI`);
 
 --
--- Indeks untuk tabel `sms_sentitems`
+-- Indexes for table `sms_sentitems`
 --
 ALTER TABLE `sms_sentitems`
   ADD PRIMARY KEY (`ID`,`SequencePosition`),
@@ -969,129 +1007,132 @@ ALTER TABLE `sms_sentitems`
   ADD KEY `sentitems_sender` (`SenderID`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `auth_groups`
+-- AUTO_INCREMENT for table `auth_groups`
 --
 ALTER TABLE `auth_groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_login_attempts`
+-- AUTO_INCREMENT for table `auth_login_attempts`
 --
 ALTER TABLE `auth_login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_users`
+-- AUTO_INCREMENT for table `auth_users`
 --
 ALTER TABLE `auth_users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_users_groups`
+-- AUTO_INCREMENT for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_jadwal`
+-- AUTO_INCREMENT for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refdokter`
+-- AUTO_INCREMENT for table `res_refdokter`
 --
 ALTER TABLE `res_refdokter`
   MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refjns_layan`
+-- AUTO_INCREMENT for table `res_refjns_layan`
 --
 ALTER TABLE `res_refjns_layan`
-  MODIFY `id_jnslayan` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_jns_layan` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refklinik`
+-- AUTO_INCREMENT for table `res_refklinik`
 --
 ALTER TABLE `res_refklinik`
   MODIFY `id_klinik` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=570;
 
 --
--- AUTO_INCREMENT untuk tabel `res_tgl_libur`
+-- AUTO_INCREMENT for table `res_tgl_libur`
 --
 ALTER TABLE `res_tgl_libur`
   MODIFY `id_libur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_treservasi`
+-- AUTO_INCREMENT for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
-  MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_full_inbox`
+-- AUTO_INCREMENT for table `sms_full_inbox`
 --
 ALTER TABLE `sms_full_inbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_full_outbox`
+-- AUTO_INCREMENT for table `sms_full_outbox`
 --
 ALTER TABLE `sms_full_outbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_inbox`
+-- AUTO_INCREMENT for table `sms_inbox`
 --
 ALTER TABLE `sms_inbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_outbox`
+-- AUTO_INCREMENT for table `sms_outbox`
 --
 ALTER TABLE `sms_outbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_pbk`
+-- AUTO_INCREMENT for table `sms_pbk`
 --
 ALTER TABLE `sms_pbk`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_pbk_groups`
+-- AUTO_INCREMENT for table `sms_pbk_groups`
 --
 ALTER TABLE `sms_pbk_groups`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `auth_users_groups`
+-- Constraints for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   ADD CONSTRAINT `auth_users_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `auth_groups` (`id`),
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `auth_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `res_jadwal`
+-- Constraints for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
-  ADD CONSTRAINT `res_jadwal_ibfk_1` FOREIGN KEY (`id_klinik`) REFERENCES `res_refklinik` (`id_klinik`),
-  ADD CONSTRAINT `res_jadwal_ibfk_2` FOREIGN KEY (`id_dokter`) REFERENCES `res_refdokter` (`id_dokter`);
+  ADD CONSTRAINT `res_jadwal_ibfk_1` FOREIGN KEY (`dokter_id`) REFERENCES `res_refdokter` (`id_dokter`),
+  ADD CONSTRAINT `res_jadwal_ibfk_2` FOREIGN KEY (`klinik_id`) REFERENCES `res_refklinik` (`id_klinik`),
+  ADD CONSTRAINT `res_jadwal_ibfk_3` FOREIGN KEY (`jns_layan_id`) REFERENCES `res_refjns_layan` (`id_jns_layan`);
 
 --
--- Ketidakleluasaan untuk tabel `res_treservasi`
+-- Constraints for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   ADD CONSTRAINT `res_treservasi_ibfk_1` FOREIGN KEY (`norm`) REFERENCES `res_tpasien` (`norm`),
-  ADD CONSTRAINT `res_treservasi_ibfk_2` FOREIGN KEY (`id_jadwal`) REFERENCES `res_jadwal` (`id_jadwal`);
+  ADD CONSTRAINT `res_treservasi_ibfk_2` FOREIGN KEY (`jadwal_id`) REFERENCES `res_jadwal` (`id_jadwal`),
+  ADD CONSTRAINT `res_treservasi_ibfk_3` FOREIGN KEY (`jns_pasien_id`) REFERENCES `res_jns_pasien` (`jns_id`),
+  ADD CONSTRAINT `res_treservasi_ibfk_5` FOREIGN KEY (`sebab_id`) REFERENCES `res_sebab_sakit` (`id_sebab`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
