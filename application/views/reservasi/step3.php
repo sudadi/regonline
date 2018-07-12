@@ -41,7 +41,7 @@
                 $option[''] = '-Pilih Sebab Sakit-';
                 $ssakit= $this->mod_reservasi->getsebabsakit();
                 foreach ($ssakit as $key => $value){
-                    $option[$value['ss_id']] = $value['ss_nama'];
+                    $option[$value['id_sebab']] = $value['sebab'];
                 } 
                 echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
                 ?>

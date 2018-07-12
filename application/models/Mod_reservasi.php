@@ -13,14 +13,14 @@
     function getdokter($jenis) {
         $this->db->select('res_refdokter.id_dokter, res_refdokter.nama_dokter');
         $this->db->from('res_refdokter');
-        $this->db->join('res_jadwal','res_refdokter.id_dokter=res_jadwal.id_dokter');
-        $this->db->group_by('res_jadwal.id_dokter');
-        $this->db->where('jns_layan', $jenis);
+        $this->db->join('res_jadwal','res_refdokter.id_dokter=res_jadwal.dokter_id');
+        $this->db->group_by('res_jadwal.dokter_id');
+        $this->db->where('jns_layan_id', $jenis);
         $qry = $this->db->get();
         return $qry->result();
     }    
     function getdokterbytgl($klinik,$jenis,$dow){
-        $res = $this->db->get_where('res_jadwal',"id_klinik=$klinik and jns_layan=$jenis and id_hari=$dow");
+        $res = $this->db->get_where('res_jadwal',"klinik_id=$klinik and jns_layan_id=$jenis and id_hari=$dow");
         return $res->row(); 
     }
     function getdokterbyid($iddokter) {
@@ -30,9 +30,9 @@
     function getklinik($iddokter,$jenis) {
         $this->db->select('res_refklinik.id_klinik, res_refklinik.nama_klinik');
         $this->db->from('res_refklinik');
-        $this->db->join('res_jadwal', 'res_refklinik.id_klinik=res_jadwal.id_klinik');
+        $this->db->join('res_jadwal', 'res_refklinik.id_klinik=res_jadwal.klinik_id');
         if ($iddokter){
-            $this->db->where('id_dokter', $iddokter);
+            $this->db->where('dokter_id', $iddokter);
         }
         $this->db->where("(tipe_layan = 3 or tipe_layan=$jenis)");
         $this->db->group_by('res_refklinik.id_klinik');
@@ -45,14 +45,14 @@
     }
     function getjadwal($klinik,$dokter,$jenis) {
         if ($dokter){
-        $this->db->where('id_dokter', $dokter);
+        $this->db->where('dokter_id', $dokter);
         }
-        $this->db->where('id_klinik', $klinik);
-        $this->db->where('jns_layan', $jenis);
+        $this->db->where('klinik_id', $klinik);
+        $this->db->where('jns_layan_id', $jenis);
         return $this->db->get('res_jadwal')->result_array();
     }
     function getkuotatgl($jadwaltgl,$klinik,$dokter) {
-        $this->db->from('res_treservasi');
+        $this->db->from('vreservasi');
         $this->db->where("date(waktu_rsv)='$jadwaltgl'");
         $this->db->where('id_klinik',$klinik);
         if ($dokter){
@@ -61,7 +61,7 @@
         return  $this->db->count_all_results();
     }
     function getkuotajam($klinik,$dokter,$tglcekin,$jamcekin) {
-        $this->db->from('res_treservasi');
+        $this->db->from('vreservasi');
         $this->db->where("id_klinik=$klinik and id_dokter=$dokter and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
         return $this->db->count_all_results();
     }
@@ -96,7 +96,7 @@
         return $this->db->get_where('res_treservasi', $where)->result();
     }
     function getgraphres($where) {
-        $this->db->select("sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(waktu_rsv, '%m/%d') as tgl");
+        $this->db->select("sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(first_update, '%m/%d') as tgl");
         $this->db->group_by('tgl');
         $this->db->order_by('tgl');
         return $this->db->get_where('res_treservasi',$where)->result_array();

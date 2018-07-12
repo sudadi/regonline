@@ -92,7 +92,7 @@ class Reservasi extends CI_Controller {
                       //nothing          
                 } else {
                     $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 'perhari'=>$perhari, 
-                    'iddokter'=>$dtjadwal[$i]['id_dokter'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
+                    'iddokter'=>$dtjadwal[$i]['dokter_id'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
                     'terpakai'=>$this->mod_reservasi->getkuotatgl(date("Y/m/d", $startdate), $klinik, $iddokter));
                 }
                 $startdate = strtotime("+1 week", $startdate);
@@ -114,12 +114,12 @@ class Reservasi extends CI_Controller {
     public function ajax_jamcekin($idjadwal,$tglcekin) {
         $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
         //var_dump($dtjadwal);
-        $klinik=$dtjadwal->id_klinik;
-        $dokter=$dtjadwal->id_dokter;
+        $klinik=$dtjadwal->klinik_id;
+        $dokter=$dtjadwal->dokter_id;
         $perjam=$dtjadwal->kuota_perjam;
         $starttime= strtotime($dtjadwal->jam_mulai);
         $endtime=strtotime($dtjadwal->jam_selesai);
-        $kuotaperjam='';
+        $kuotaperjam=[];
         while ($starttime <= $endtime) {
             $jamcekin=date('H:i:s', $starttime);
             $dipakai= $this->mod_reservasi->getkuotajam($klinik,$dokter,$tglcekin,$jamcekin);
@@ -178,13 +178,10 @@ class Reservasi extends CI_Controller {
             $dataklinik= $this->mod_reservasi->getklinikbyid($idklinik);
             $kodeklinik=$dataklinik->kode_poli;
             $datares= array('norm'=>$this->input->post('norm'),
-                'notelp'=>$this->input->post('notelp'),
-                'waktu_rsv'=>$waktursv,'id_jadwal'=>$this->input->post('idjadwal'),
-                'id_klinik'=>$idklinik,
-                'id_dokter'=>$this->input->post('iddokter'),
-                'jns_pasien'=>$this->input->post('jnspasien'),
-                'sebab'=>$this->input->post('sebab'),
-                'status'=>1, 'user_id'=>2);
+                'waktu_rsv'=>$waktursv,'jadwal_id'=>$this->input->post('idjadwal'),
+                'jns_pasien_id'=>$this->input->post('jnspasien'),
+                'sebab_id'=>$this->input->post('sebab'),
+                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'WEB');
             $this->db->insert('res_treservasi', $datares);
             if ($this->db->affected_rows()>0){
                 $this->session->set_userdata('status', '1');

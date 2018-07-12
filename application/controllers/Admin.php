@@ -59,12 +59,10 @@ class Admin extends CI_Controller
     public function index()
     {   
         $this->load->model('mod_reservasi');
-        $jmlwa=count($this->mod_reservasi->getdatares("jenis_rsv='WA'"));
-        $jmlsms=count($this->mod_reservasi->getdatares("jenis_rsv='SMS'"));
-        $jmlweb=count($this->mod_reservasi->getdatares("jenis_rsv='web'"));
-        $data['content']['jmlwa']=$jmlwa;
-        $data['content']['jmlsms']=$jmlsms;
-        $data['content']['jmlweb']=$jmlweb;
+        $datares=$this->mod_reservasi->getgraphres("DATE_FORMAT(first_update, '%Y/%m/%d') = CURRENT_DATE()");
+        $data['content']['jmlwa']=$datares[0]['WA'];
+        $data['content']['jmlsms']=$datares[0]['SMS'];
+        $data['content']['jmlweb']=$datares[0]['WEB'];
         $data['page']='admin/dasboard';
         $data['content']['action']='';
         $this->load->view('admin/main', $data);
@@ -74,13 +72,13 @@ class Admin extends CI_Controller
 //            exit('No direct script access allowed');
 //        }
         $this->load->model('mod_reservasi');
-        $data=$this->mod_reservasi->getgraphres('waktu_rsv BETWEEN (NOW() - INTERVAL 30 DAY) AND NOW()');
+        $data=$this->mod_reservasi->getgraphres('first_update BETWEEN (NOW() - INTERVAL 15 DAY) AND NOW()');
         //var_dump($data);
         echo json_encode($data);
     }
     public function reservasi() {
         if ($this->input->get('hapus')){
-            $this->db->delete("treservasi", "id_rsv={$this->input->get('hapus')}");
+            $this->db->delete("res_treservasi", "id_rsv={$this->input->get('hapus')}");
             redirect('admin/reservasi', 'refresh');
         }
         $this->load->model('mod_reservasi');
@@ -90,19 +88,16 @@ class Admin extends CI_Controller
             $dataklinik= $this->mod_reservasi->getklinikbyid($this->input->post('klinik'));
             $kodeklinik=$dataklinik->kode_poli;
             $datares= array('norm'=>$this->input->post('norm'),
-                'notelp'=>$this->input->post('notelp'),
-                'waktu_rsv'=>$waktursv,'id_jadwal'=>$datatgl[0],
-                'id_klinik'=>$this->input->post('klinik'),
-                'id_dokter'=>$this->input->post('dokter'),
-                'cara_bayar'=>$this->input->post('jnspasien'),
-                'sebab'=>$this->input->post('sebab'),
-                'id_jnslayan'=>$this->input->post('jnslayan'),
+                'waktu_rsv'=>$waktursv,'jadwal_id'=>$datatgl[0],
+                'jns_pasien_id'=>$this->input->post('jnspasien'),
+                'sebab_id'=>$this->input->post('sebab'),
+                'jns_layan_id'=>$this->input->post('jnslayan'),
                 'status'=>1, 'user_id'=>2, 
-                'jenis_res'=>$this->input->post('jenisres'));
+                'jenis_rsv'=>$this->input->post('jenisres'));
             if(empty($this->input->post('edit'))){
-                $this->db->insert('treservasi', $datares);
+                $this->db->insert('res_treservasi', $datares);
             } else {
-                $this->db->update('treservasi', $datares, "id_rsv={$this->input->post('edit')}");
+                $this->db->update('res_treservasi', $datares, "id_rsv={$this->input->post('edit')}");
             }
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
@@ -110,7 +105,7 @@ class Admin extends CI_Controller
                     $this->session->set_userdata('status', '1');
                     $idres=$this->db->insert_id();
                     $nores=$kodeklinik.'-'.$idres;
-                    $this->db->update('treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                    $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
                 }
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
@@ -120,7 +115,10 @@ class Admin extends CI_Controller
         $data['page']='admin/reservasi';
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
         $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
-        $data['content']['datares']= $this->mod_reservasi->getresfull("waktu_rsv>={date('Y-m-d')}");
+        $data['content']['datares']= $this->mod_reservasi->getresfull("waktu_rsv>=CURRENT_DATE()");
+//        var_dump($data['content']['datares']);
+//        echo $this->db->last_query();
+//        die();
         $data['content']['action']='admin/reservasi';
         $this->load->view('admin/main', $data);
     }

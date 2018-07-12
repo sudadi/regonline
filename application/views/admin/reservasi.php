@@ -66,12 +66,12 @@
                                             <td><?=$res->nama_klinik;?></td>
                                             <td><?=$res->notelp;?></td>
                                             <td class="text-nowrap"><?=$res->nama_dokter;?></td>
-                                            <td><?=$res->nmjnspasien;?></td>
-                                            <td><?=$res->nmjnslayan;?></td>
+                                            <td><?=$res->jns_nama;?></td>
+                                            <td><?=$res->jns_layan;?></td>
                                             <td><?=$res->waktu_rsv;?></td>
                                             <td><?=$res->nores;?></td>
                                             <td><?=$res->nourut;?></td>
-                                            <td><?=$res->tgl_update;?></td>
+                                            <td><?=$res->first_update;?></td>
                                             <td><?=$res->status ? '<span class="btn btn-xs btn-success">Aktif</span>':'<span class="btn btn-xs btn-default">Non Aktif</span>';?></td>
                                             <td><span class="btn btn-xs btn-info"><?=$res->sync?'True':'False';?></span></td>
                                             <td class="text-nowrap">
@@ -189,7 +189,7 @@
                             $option[''] = '-Pilih Sebab Sakit-';
                             $ssakit= $this->mod_reservasi->getsebabsakit();
                             foreach ($ssakit as $key => $value){
-                                $option[$value['ss_id']] = $value['ss_nama'];
+                                $option[$value['id_sebab']] = $value['sebab'];
                             } 
                             echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
                         ?>

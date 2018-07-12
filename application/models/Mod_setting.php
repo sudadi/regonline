@@ -4,40 +4,40 @@
          parent:: __construct();
     }
     function getdokter($number=null,$offset=null,$where=null) {
-        return $this->db->get_where('refdokter',$where,$number,$offset)->result();
+        return $this->db->get_where('res_refdokter',$where,$number,$offset)->result();
     }
     function getklinik($number=null,$offset=null) {
         if($number && $offset){
             $this->db->limit($number, $offset);
         }
-        return $this->db->get('refklinik')->result();
+        return $this->db->get('res_refklinik')->result();
     }
     function getjnslayan() {
-        return $this->db->get('refjns_layan')->result();
+        return $this->db->get('res_refjns_layan')->result();
     }
     function getjadwal($idjadwal) {
         $this->db->where('id_jadwal',$idjadwal);
-        return $this->db->get('jadwal')->row();
+        return $this->db->get('res_jadwal')->row();
     }
     function getjadwalfull($number=null,$offset=null) {
-        $this->db->select('refdokter.nama_dokter,refklinik.nama_klinik,refjns_layan.jnslayan,jadwal.id_jadwal,'
-                . 'jadwal.id_hari,jadwal.jam_mulai,jadwal.jam_selesai,jadwal.kuota_perjam,jadwal.status');
-        $this->db->join('refdokter', 'refdokter.id_dokter=jadwal.id_dokter');
-        $this->db->join('refklinik', 'refklinik.id_klinik=jadwal.id_klinik');
-        $this->db->join('refjns_layan', 'refjns_layan.id_jnslayan=jadwal.jnslayan');
-        $this->db->order_by('jadwal.id_jadwal');
+        $this->db->select('res_refdokter.nama_dokter,res_refklinik.nama_klinik,res_refjns_layan.jns_layan,res_jadwal.id_jadwal,'
+                . 'res_jadwal.id_hari,res_jadwal.jam_mulai,res_jadwal.jam_selesai,res_jadwal.kuota_perjam,res_jadwal.status');
+        $this->db->join('res_refdokter', 'res_refdokter.id_dokter=res_jadwal.dokter_id');
+        $this->db->join('res_refklinik', 'res_refklinik.id_klinik=res_jadwal.klinik_id');
+        $this->db->join('res_refjns_layan', 'res_refjns_layan.id_jns_layan=res_jadwal.jns_layan_id');
+        $this->db->order_by('res_jadwal.id_jadwal');
         if ($number && $offset){
             $this->db->limit($number, $offset);
         }
-        return $this->db->get('jadwal')->result();
+        return $this->db->get('res_jadwal')->result();
     }
     function getjmljadwal() {
-        return $this->db->get('jadwal')->num_rows();
+        return $this->db->get('res_jadwal')->num_rows();
     }
     function getdatalibur($number,$offset) {
-        return $this->db->get('tgl_libur',$number,$offset)->result();
+        return $this->db->get('res_tgl_libur',$number,$offset)->result();
     }
     function getnumlibur() {
-       return $this->db->get('tgl_libur')->num_rows(); 
+       return $this->db->get('res_tgl_libur')->num_rows(); 
     }
  }
