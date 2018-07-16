@@ -97,9 +97,9 @@ class Admin extends CI_Controller
         } else {
             $percentweb= round((($currweb-$lastweb)/$lastweb)*100, 2);
         }
-        $data['content']['jmlwa']=$currentres[0]['WA'];
-        $data['content']['jmlsms']=$currentres[0]['SMS'];
-        $data['content']['jmlweb']=$currentres[0]['WEB'];
+        $data['content']['jmlwa']=$currwa;
+        $data['content']['jmlsms']=$currsms;
+        $data['content']['jmlweb']=$currweb;
         $data['content']['percentsms']=$percentsms;
         $data['content']['percentwa']=$percentwa;
         $data['content']['percentweb']=$percentweb;
