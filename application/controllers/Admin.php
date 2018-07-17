@@ -188,15 +188,28 @@ class Admin extends CI_Controller
         $this->load->model('mod_sms');
         $data['page']='admin/sms';
         $this->load->library('pagination');
-        $datanotelp=$this->mod_sms->getsms('waktu',true,null);
+        $datanotelp=$this->mod_sms->getsms('UpdatedInDB',true,null);
         $jmldata=count($datanotelp);
         $this->pageconf['base_url'] = base_url().'admin/sms/';
         $this->pageconf['total_rows'] = $jmldata;        
         $this->pagination->initialize($this->pageconf);
-        $data['content']['datanotelp']= $this->mod_sms->getsms('waktu',true,null,$this->pageconf['per_page'],$this->uri->segment('3'));
-        $data['content']['datasms']= $this->mod_sms->getsms('waktu');
+        $data['content']['datanotelp']= $this->mod_sms->getsms('UpdatedInDB',true,null,$this->pageconf['per_page'],$this->uri->segment('3'));
+        $data['content']['datasms']= '';
         $data['content']['action']='admin/sms';
         $this->load->view('admin/main', $data);
+    }
+    public function ajaxsms() {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        if ($this->input->post()){
+            $notelp=$this->input->post('notelp');
+        } else {
+            $notelp='';
+        }
+        $this->load->model('mod_sms');
+        $data = $this->mod_sms->getsms("UpdatedInDB",false,"Number='$notelp'");
+        echo json_encode($data); 
     }
     public function laporan() {
         $this->data['page']='admin/laporan';

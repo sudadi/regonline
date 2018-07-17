@@ -31,18 +31,11 @@
                     <div class="box-body no-padding">
                         <div class="table-responsive mailbox-messages">
                             <table id="tnotelp" class="table">
-                                <?php
+                                <?php //var_dump($datanotelp);
                                 foreach ($datanotelp as $notelp) {?>
-                                <tr>
-                                    <td>
-                                        <a href="#" class="text-black">
-                                    <?php
-                                    if ($notelp->stat_baca){ 
-                                        echo $notelp->no_telp;
-                                    } else {
-                                        echo "<strong>".$notelp->no_telp."</strong>";
-                                    }?>
-                                    </a>
+                                <tr style="cursor: pointer;">
+                                    <?=($notelp->stat == 'false' && $notelp->Type == 'inbox') ? '<td class="text-bold">':'<td>';
+                                        echo $notelp->Number;?>
                                     </td>
                                 </tr>
                                 <?php }?>
@@ -104,19 +97,12 @@
                             <!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
-                                <tbody>
-                                    <?php
-                                    foreach ($datasms as $pesan) {?>
-                                    <tr>
-                                        <td style="width:10px"><?=form_checkbox('cek');?></td>
-                                        <td class="mailbox-subject"><span <?=$pesan->stat_kirim==1 ? 'class="fa fa-reply text-blue">':'>';?></span>
-                                            <?=$pesan->pesan;?>
-                                        </td>
-                                        <td class="mailbox-date text-right"><?=$pesan->waktu;?></td>
-                                    </tr>
-                                    <?php }?>
-                                </tbody>
+                            <table class="table table-hover table-striped" id="tsms">
+                                <tr>
+                                    <td>
+                                        Data Kosong. Klik/pilih nomer telp di samping. 
+                                    </td>
+                                </tr>
                             </table>
                             <!-- /.table -->
                         </div>
@@ -191,6 +177,33 @@
     $("#tnotelp tr").click(function(){
         $("#tnotelp tr").removeClass("aktif");
         $(this).toggleClass("aktif");
+        var notelp = $(this).find("td").eq(0).html().trim(); 
+         $.ajax({
+                url : "<?php echo site_url('admin/ajaxsms/')?>",
+                type: "POST",
+                data: {notelp : notelp},
+                dataType: "JSON",
+                success: function(data)
+                {
+                    $("#tsms").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Type === 'outbox') {
+                            $("#tsms").append('<tr class="text-blue"><td style="width:20px"><input type="checkbox" name="cek" value=""  /></td>'+
+                                    '<td class="mailbox-subject"><span class="fa fa-reply text-blue"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
+                                    '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
+                        } else {
+                            $("#tsms").append('<tr>'+
+                                '<td style="width:10px"><input type="checkbox" name="cek" value=""  /></td>'+
+                                '<td class="mailbox-subject"><span class="fa fa-inbox"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
+                                '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
+                        }
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error : Data tidak ditemukan..!');
+                }
+            });
     });
 });
 </script>
