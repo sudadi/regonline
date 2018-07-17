@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Waktu pembuatan: 17 Jul 2018 pada 17.06
--- Versi server: 5.7.22-0ubuntu18.04.1
--- Versi PHP: 7.2.7-0ubuntu0.18.04.2
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 17 Jul 2018 pada 22.09
+-- Versi server: 10.1.31-MariaDB
+-- Versi PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -784,13 +784,13 @@ CREATE TABLE `vreservasi` (
 --
 CREATE TABLE `vsms` (
 `ID` int(11) unsigned
-,`NUMBER` varchar(20)
+,`Number` varchar(20)
 ,`TextDecoded` mediumtext
 ,`UpdatedInDB` timestamp
 ,`Coding` varchar(22)
 ,`Class` int(11)
 ,`stat` varchar(5)
-,`TYPE` varchar(6)
+,`Type` varchar(6)
 );
 
 -- --------------------------------------------------------
@@ -809,7 +809,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW
 --
 DROP TABLE IF EXISTS `vsms`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW `vsms`  AS  select `a`.`ID` AS `ID`,`a`.`SenderNumber` AS `NUMBER`,`a`.`TextDecoded` AS `TextDecoded`,`a`.`UpdatedInDB` AS `UpdatedInDB`,`a`.`Coding` AS `Coding`,`a`.`Class` AS `Class`,`a`.`Processed` AS `stat`,'inbox' AS `TYPE` from `sms_full_inbox` `a` union select `b`.`ID` AS `ID`,`b`.`DestinationNumber` AS `NUMBER`,`b`.`TextDecoded` AS `TextDecoded`,`b`.`UpdatedInDB` AS `UpdatedInDB`,`b`.`Coding` AS `Coding`,`b`.`Class` AS `Class`,`b`.`Status` AS `stat`,'outbox' AS `TYPE` from `sms_full_outbox` `b` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsms`  AS  select `a`.`ID` AS `ID`,`a`.`SenderNumber` AS `Number`,`a`.`TextDecoded` AS `TextDecoded`,`a`.`UpdatedInDB` AS `UpdatedInDB`,`a`.`Coding` AS `Coding`,`a`.`Class` AS `Class`,`a`.`Processed` AS `stat`,'inbox' AS `Type` from `sms_full_inbox` `a` union select `b`.`ID` AS `ID`,`b`.`DestinationNumber` AS `NUMBER`,`b`.`TextDecoded` AS `TextDecoded`,`b`.`UpdatedInDB` AS `UpdatedInDB`,`b`.`Coding` AS `Coding`,`b`.`Class` AS `Class`,`b`.`Status` AS `stat`,'outbox' AS `TYPE` from `sms_full_outbox` `b` ;
 
 --
 -- Indexes for dumped tables
