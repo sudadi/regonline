@@ -78,7 +78,7 @@ class Admin extends CI_Controller
         $currall=$currsms+$currwa+$currweb;
         $lastall=$lastsms+$lastwa+$lastweb;
         if ($lastall == 0){
-            $percentall=$percentall*100;
+            $percentall=$currall*100;
         } else {
             $percentall=round((($currall-$lastall)/$lastall)*100,2);
         }

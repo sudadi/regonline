@@ -52,7 +52,7 @@
                                             <td><?=$jadwal->id_jadwal;?></td>
                                             <td><?=$jadwal->nama_dokter;?></td>
                                             <td><?= $jadwal->nama_klinik;?></td>
-                                            <td><?=$jadwal->jnslayan;?></td>
+                                            <td><?=$jadwal->jns_layan;?></td>
                                             <td><?=date('l', strtotime("Sunday +{$jadwal->id_hari} days"));?></td>
                                             <td><?=$jadwal->jam_mulai;?></td>
                                             <td><?=$jadwal->jam_selesai;?></td>
