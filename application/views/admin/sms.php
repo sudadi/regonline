@@ -9,7 +9,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?=base_url('admin');?>"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">SMS</li>
+            <li class="active"><a href="<?=base_url('admin/sms');?>">SMS</a></li>
         </ol>
     </section>
 
@@ -17,7 +17,7 @@
     <section class="content">
         <!-- Info boxes -->
         <div class="row">
-            <div class="col-sm-3">
+            <div id="dvnotelp" class="col-sm-3 col-xs-12">
                 <?=form_button('tulissms', '<span class="fa fa-plus"></span> Tulis Pesan', 'class="btn btn-primary btn-block margin-bottom" data-toggle="modal" data-target="#modal-sms"') ;?>
                 <div class="box box-solid">
                     <div class="box-header with-border">
@@ -28,8 +28,14 @@
                             </button>
                         </div>
                     </div>
-                    <div class="box-body no-padding">
-                        <div class="table-responsive mailbox-messages">
+                    <div class="box-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            <?php foreach ($datanotelp as $notelp) {?>
+                            <li class="linotelp"><a href="#"><i class="<?=($notelp->stat == 'false' && $notelp->Type == 'inbox') ? 'fa fa-circle text-red':'fa fa-circle-o text-green';?>"></i>
+                                    <span class="spnotelp text-bold"><?=$notelp->Number;?></span></a></li>   
+                            <?php } ?>
+                        </ul>
+<!--                        <div class="table-responsive mailbox-messages">
                             <table id="tnotelp" class="table">
                                 <?php //var_dump($datanotelp);
                                 foreach ($datanotelp as $notelp) {?>
@@ -40,7 +46,7 @@
                                 </tr>
                                 <?php }?>
                             </table>
-                        </div>
+                        </div>-->
                     </div>
                   <!-- /.box-body -->
                   <div class="box-footer text-center">
@@ -56,9 +62,9 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body no-padding">
+                        <div class="box-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#"><i class="fa fa-circle-o text-red"></i> Belum Baca</a></li>
+                                <li><a href="#"><i class="fa fa-circle text-red"></i> Belum Baca</a></li>
                                 <li><a href="#"><i class="fa fa-circle-o text-green"></i> Sudah Baca</a></li>
                             </ul>
                         </div>
@@ -66,7 +72,7 @@
                     </div>
                 <!-- /.box -->
             </div>
-            <div class="col-sm-9 hidden-xs">
+            <div id="msgbox" class="col-sm-9 col-xs-12 hidden-xs">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Pesan</h3>
@@ -81,25 +87,26 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
+                            <button type="button" id="btnbackxs" class="btn btn-primary btn-sm visible-xs"><i class="fa fa-arrow-left"></i> Back</button>
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+<!--                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
                             </button>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
                             </div>
-                            <!-- /.btn-group -->
+                             /.btn-group 
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
                             <div class="pull-right">
                                 
-                            </div>
+                            </div>-->
                             <!-- /.pull-right -->
                         </div>
-                        <div class="table-responsive mailbox-messages">
+                        <div class="mailbox-messages">
                             <table class="table table-hover table-striped" id="tsms">
                                 <tr>
-                                    <td>
+                                    <td style="word-wrap: break-word;">
                                         Data Kosong. Klik/pilih nomer telp di samping. 
                                     </td>
                                 </tr>
@@ -145,13 +152,13 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">No. Telp </label>
                     <div class="col-sm-4">
-                        <?=form_input(array('name'=>'notelp', 'id'=>'notelp'), '', 'class="form-control" required');?>
+                        <?=form_input(array('name'=>'notelp', 'id'=>'notelp', 'placeholder'=>'+628xxxxxxxx'), '', 'class="form-control" required');?>
                     </div>                    
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Pesan</label>
                     <div class="col-sm-10">
-                        <?= form_textarea(array('name'=>'pesan','rows'=>'3','id'=>'pesan'), '', ' class="form-control" required');?>
+                        <?= form_textarea(array('name'=>'pesan','rows'=>'3','id'=>'pesan','placeholder'=>'Tulis pesan disini..'), '', ' class="form-control" required');?>
                     </div>
                 </div>
             </div>
@@ -168,16 +175,18 @@
 <div class='device-check visible-md' data-device='md'></div>
 <div class='device-check visible-lg' data-device='lg'></div>
 <script>
-function get_current(){
+$(document).ready(function(){
+function get_currdev(){
     return $('.device-check:visible').attr('data-device')
 };
     
-$(document).ready(function(){
     var notelp;
-    $("#tnotelp tr").click(function(){
-        $("#tnotelp tr").removeClass("aktif");
-        $(this).toggleClass("aktif");
-        notelp = $(this).find("td").eq(0).html().trim(); 
+//    $("#tnotelp tr").click(function(){
+//        $("#tnotelp tr").removeClass("aktif");
+//        $(this).toggleClass("aktif");
+//        notelp = $(this).find("td").eq(0).html().trim(); 
+    $(".linotelp").click(function() {
+        notelp = $(this).find('span.spnotelp').text().trim(); 
         $.ajax({
             url : "<?php echo site_url('admin/ajaxsms/')?>",
             type: "POST",
@@ -187,15 +196,21 @@ $(document).ready(function(){
             {
                 $("#tsms").empty();
                 for (var i = 0; i < data.length; i++) {
+                    var obstat;
                     if (data[i].Type === 'outbox') {
-                        $("#tsms").append('<tr class="text-blue" id="'+i+'"><td style="width:20px"><input type="checkbox" name="cek[]" value="'+i+'|'+data[i].ID+'|'+data[i].Type+'" /></td>'+
-                                '<td class="mailbox-subject"><span class="fa fa-reply text-blue"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
-                                '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
+                        if (data[i].stat == 1) {
+                            obstat='text-green';
+                        } else {
+                            obstat='text-red';
+                        }
+                        $('<tr class="text-blue" id="'+i+'"><td style="width:20px"><input type="checkbox" name="cek[]" value="'+i+'|'+data[i].ID+'|'+data[i].Type+'" /></td>'+
+                                '<td class="mailbox-subject" style="word-wrap: break-word;"><span class="fa fa-reply text-blue"></span>&nbsp;&nbsp;'+data[i].TextDecoded+
+                                '<div class="text-sm text-right '+obstat+'">'+data[i].UpdatedInDB+'</div></td></tr>').hide().appendTo("#tsms").fadeIn(1000);
                     } else {
-                        $("#tsms").append('<tr id="'+i+'">'+
+                        $('<tr id="'+i+'">'+
                             '<td style="width:10px"><input type="checkbox" name="cek" value="'+i+'|'+data[i].ID+'|'+data[i].Type+'" /></td>'+
-                            '<td class="mailbox-subject"><span class="fa fa-inbox"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
-                            '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
+                            '<td class="mailbox-subject" style="word-wrap: break-word;"><span class="fa fa-inbox"></span>&nbsp;&nbsp;'+data[i].TextDecoded+
+                            '<div class="text-sm text-right text-green">'+data[i].UpdatedInDB+'</div></td></tr>').hide().appendTo("#tsms").fadeIn(1000);
                     }
                 }
             },
@@ -204,6 +219,13 @@ $(document).ready(function(){
                 alert('Error : Data tidak ditemukan..!');
             }
         });
+        if (get_currdev()=='xs'){
+            $("#msgbox").removeClass('hidden-xs').addClass('.visible-xs').show();
+            $("#dvnotelp").removeClass('visible-xs').addClass('.hidden-xs').hide();
+        } else {
+            $("#dvnotelp").removeClass('hidden-xs').addClass('.visible-xs').show();
+            $("#msgbox").removeClass('visible-xs').addClass('.hidden-xs');
+        }
     });
     
     $('#btn_hapus').click(function(){
@@ -241,17 +263,21 @@ $(document).ready(function(){
     $('#btn_balas').click(function(){
         $("#notelp").val(notelp);
         $("#modal-sms").modal();
-    })
+    });
     $("#btn_terus").click(function() {
         $("#pesan").val('');
         $("#modal-sms").modal();
-    })
+    });
     $("#checkAll").click(function(){
         var cb = $('input:checkbox');
         cb.prop('checked', !cb.prop('checked'));
     });
     $("#btn_refresh").click(function() {
         $("#tnotelp tr").click();
-    })
+    });
+    $("#btnbackxs").click(function () {
+        $("#dvnotelp").removeClass('hidden-xs').addClass('.visible-xs').show();
+        $("#msgbox").removeClass('visible-xs').addClass('.hidden-xs').hide;
+    });
 });
 </script>
