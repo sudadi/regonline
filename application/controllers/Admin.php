@@ -109,12 +109,11 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $data);
     }
     public function ajaxdashres() {
-//        if (!$this->input->is_ajax_request()) {
-//            exit('No direct script access allowed');
-//        }
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
         $this->load->model('mod_reservasi');
         $data=$this->mod_reservasi->getgraphres('first_update BETWEEN (NOW() - INTERVAL 15 DAY) AND NOW()');
-        //var_dump($data);
         echo json_encode($data);
     }
     public function reservasi() {
@@ -156,9 +155,6 @@ class Admin extends CI_Controller
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
         $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
         $data['content']['datares']= $this->mod_reservasi->getresfull("waktu_rsv>=CURRENT_DATE()");
-//        var_dump($data['content']['datares']);
-//        echo $this->db->last_query();
-//        die();
         $data['content']['action']='admin/reservasi';
         $this->load->view('admin/main', $data);
     }
@@ -186,6 +182,17 @@ class Admin extends CI_Controller
     
     public function sms() {
         $this->load->model('mod_sms');
+        if ($this->input->post('pesan') && $this->input->post('notelp')) {
+            $pesan= $this->input->post('pesan');
+            $notelp= $this->input->post('notelp');
+            $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$notelp, "TextDecoded"=>$pesan, "CreatorID"=>"Admin"));
+            if ($this->db->affected_rows()>0 ) {
+                $this->session->set_flashdata("success", "Berhasil, pesan masuk dalam antrian pengiriman");
+            } else {
+                $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
+            }
+            redirect('admin/sms','refresh');
+        }        
         $data['page']='admin/sms';
         $this->load->library('pagination');
         $datanotelp=$this->mod_sms->getsms('UpdatedInDB',true,null);
@@ -204,12 +211,28 @@ class Admin extends CI_Controller
         }
         if ($this->input->post()){
             $notelp=$this->input->post('notelp');
-        } else {
-            $notelp='';
+            $this->load->model('mod_sms');
+            $data = $this->mod_sms->getsms("UpdatedInDB",false,"Number='$notelp'");
+            $this->db->update("sms_full_inbox", array("Processed"=>"true"), "SenderNumber='$notelp'");
         }
-        $this->load->model('mod_sms');
-        $data = $this->mod_sms->getsms("UpdatedInDB",false,"Number='$notelp'");
-        echo json_encode($data); 
+        echo json_encode($data);            
+    }
+    public function ajaxdelsms() {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        if($this->input->post('id') && $this->input->post('type')) {
+            $this->load->model('mod_sms');
+            $res = array_combine($this->input->post('id'), $this->input->post('type'));
+            foreach($res as $key => $value) {
+                if ($value == 'inbox'){
+                    $this->db->delete("sms_full_inbox", "ID='$key'");
+                } else {
+                    $this->db->delete("sms_full_outbox", "ID='$key'");
+                }
+            }
+        }
+        echo json_encode($res);        
     }
     public function laporan() {
         $this->data['page']='admin/laporan';

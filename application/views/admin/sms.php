@@ -43,7 +43,7 @@
                         </div>
                     </div>
                   <!-- /.box-body -->
-                  <div class="box-footer">
+                  <div class="box-footer text-center">
                        <?php echo $this->pagination->create_links();?>
                   </div>
                 </div>
@@ -112,15 +112,14 @@
                     <div class="box-footer no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                            </button>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll"><i class="fa fa-square-o"></i></button>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus" title="Hapus"><i class="fa fa-trash-o"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_balas" title="Balas"><i class="fa fa-reply"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_terus" title="Teruskan"><i class="fa fa-share"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh" title="Penyegaran"><i class="fa fa-refresh"></i></button>
 <!--                            <div class="pull-right">
                                  <?php echo $this->pagination->create_links();?>
                             </div>-->
@@ -146,13 +145,13 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">No. Telp </label>
                     <div class="col-sm-4">
-                        <?=form_input(array('name'=>'notelp'), '', 'class="form-control" required');?>
+                        <?=form_input(array('name'=>'notelp', 'id'=>'notelp'), '', 'class="form-control" required');?>
                     </div>                    
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Pesan</label>
                     <div class="col-sm-10">
-                        <?= form_textarea(array('name'=>'pesan','rows'=>'3'), '', ' class="form-control" required');?>
+                        <?= form_textarea(array('name'=>'pesan','rows'=>'3','id'=>'pesan'), '', ' class="form-control" required');?>
                     </div>
                 </div>
             </div>
@@ -169,41 +168,90 @@
 <div class='device-check visible-md' data-device='md'></div>
 <div class='device-check visible-lg' data-device='lg'></div>
 <script>
-    function get_current(){
+function get_current(){
     return $('.device-check:visible').attr('data-device')
-    };
+};
     
-    $(document).ready(function(){
+$(document).ready(function(){
+    var notelp;
     $("#tnotelp tr").click(function(){
         $("#tnotelp tr").removeClass("aktif");
         $(this).toggleClass("aktif");
-        var notelp = $(this).find("td").eq(0).html().trim(); 
-         $.ajax({
-                url : "<?php echo site_url('admin/ajaxsms/')?>",
-                type: "POST",
-                data: {notelp : notelp},
-                dataType: "JSON",
-                success: function(data)
-                {
-                    $("#tsms").empty();
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].Type === 'outbox') {
-                            $("#tsms").append('<tr class="text-blue"><td style="width:20px"><input type="checkbox" name="cek" value=""  /></td>'+
-                                    '<td class="mailbox-subject"><span class="fa fa-reply text-blue"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
-                                    '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
-                        } else {
-                            $("#tsms").append('<tr>'+
-                                '<td style="width:10px"><input type="checkbox" name="cek" value=""  /></td>'+
-                                '<td class="mailbox-subject"><span class="fa fa-inbox"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
+        notelp = $(this).find("td").eq(0).html().trim(); 
+        $.ajax({
+            url : "<?php echo site_url('admin/ajaxsms/')?>",
+            type: "POST",
+            data: {notelp : notelp},
+            dataType: "JSON",
+            success: function(data)
+            {
+                $("#tsms").empty();
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Type === 'outbox') {
+                        $("#tsms").append('<tr class="text-blue" id="'+i+'"><td style="width:20px"><input type="checkbox" name="cek[]" value="'+i+'|'+data[i].ID+'|'+data[i].Type+'" /></td>'+
+                                '<td class="mailbox-subject"><span class="fa fa-reply text-blue"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
                                 '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
-                        }
+                    } else {
+                        $("#tsms").append('<tr id="'+i+'">'+
+                            '<td style="width:10px"><input type="checkbox" name="cek" value="'+i+'|'+data[i].ID+'|'+data[i].Type+'" /></td>'+
+                            '<td class="mailbox-subject"><span class="fa fa-inbox"></span>&nbsp;&nbsp;'+data[i].TextDecoded+'</td>'+
+                            '<td class="mailbox-date text-right">'+data[i].UpdatedInDB+'</td></tr>');
                     }
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Error : Data tidak ditemukan..!');
                 }
-            });
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error : Data tidak ditemukan..!');
+            }
+        });
     });
+    
+    $('#btn_hapus').click(function(){
+        if(confirm("Anda yakin akan menghapus data ini?")) {
+            var hasil; 
+            var nobar = [];
+            var id = [];
+            var type = [];
+            $(':checkbox:checked').each(function(i){
+                hasil = $(this).val().split('|');
+                nobar[i] = hasil[0];
+                id[i] = hasil[1];
+                type[i] = hasil[2];
+            });
+            if(nobar.length === 0) {
+                alert("Mohon pilih setidaknya satu checkbox");
+            } else {
+                $.ajax({
+                    url:"<?=base_url('admin/ajaxdelsms');?>",
+                    method: "POST",
+                    dataType: 'JSON',
+                    data: {id:id, type:type} ,
+                    success:function(data) {
+                        for(var i=0; i<nobar.length; i++) {
+                            $('tr#'+nobar[i]+'').css('background-color', '#ccc');
+                            $('tr#'+nobar[i]+'').fadeOut('slow');
+                        }
+                    }     
+                });
+            }   
+        } else {
+            return false;
+        }
+    });
+    $('#btn_balas').click(function(){
+        $("#notelp").val(notelp);
+        $("#modal-sms").modal();
+    })
+    $("#btn_terus").click(function() {
+        $("#pesan").val('');
+        $("#modal-sms").modal();
+    })
+    $("#checkAll").click(function(){
+        var cb = $('input:checkbox');
+        cb.prop('checked', !cb.prop('checked'));
+    });
+    $("#btn_refresh").click(function() {
+        $("#tnotelp tr").click();
+    })
 });
 </script>

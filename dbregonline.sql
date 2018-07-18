@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 17 Jul 2018 pada 22.09
--- Versi server: 10.1.31-MariaDB
--- Versi PHP: 5.6.35
+-- Host: localhost
+-- Generation Time: Jul 18, 2018 at 05:09 PM
+-- Server version: 5.7.22-0ubuntu18.04.1
+-- PHP Version: 7.2.7-0ubuntu0.18.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -22,10 +22,31 @@ SET time_zone = "+00:00";
 -- Database: `dbregonline`
 --
 
+DELIMITER $$
+--
+-- Functions
+--
+CREATE DEFINER=`admin`@`localhost` FUNCTION `SPLIT_STR` (`X` VARCHAR(255), `delim` VARCHAR(12), `pos` INT) RETURNS VARCHAR(255) CHARSET latin1 BEGIN
+    RETURN
+    REPLACE
+        (
+            SUBSTRING(
+                SUBSTRING_INDEX(X, delim, pos),
+                LENGTH(
+                    SUBSTRING_INDEX(X, delim, pos -1)
+                ) + 1
+            ),
+            delim,
+            ''
+        ) ;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_groups`
+-- Table structure for table `auth_groups`
 --
 
 CREATE TABLE `auth_groups` (
@@ -35,7 +56,7 @@ CREATE TABLE `auth_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_groups`
+-- Dumping data for table `auth_groups`
 --
 
 INSERT INTO `auth_groups` (`id`, `name`, `description`) VALUES
@@ -45,7 +66,7 @@ INSERT INTO `auth_groups` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_login_attempts`
+-- Table structure for table `auth_login_attempts`
 --
 
 CREATE TABLE `auth_login_attempts` (
@@ -58,7 +79,7 @@ CREATE TABLE `auth_login_attempts` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_users`
+-- Table structure for table `auth_users`
 --
 
 CREATE TABLE `auth_users` (
@@ -82,7 +103,7 @@ CREATE TABLE `auth_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_users`
+-- Dumping data for table `auth_users`
 --
 
 INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
@@ -92,7 +113,7 @@ INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `e
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_users_groups`
+-- Table structure for table `auth_users_groups`
 --
 
 CREATE TABLE `auth_users_groups` (
@@ -102,7 +123,7 @@ CREATE TABLE `auth_users_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_users_groups`
+-- Dumping data for table `auth_users_groups`
 --
 
 INSERT INTO `auth_users_groups` (`id`, `user_id`, `group_id`) VALUES
@@ -112,7 +133,7 @@ INSERT INTO `auth_users_groups` (`id`, `user_id`, `group_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_jadwal`
+-- Table structure for table `res_jadwal`
 --
 
 CREATE TABLE `res_jadwal` (
@@ -128,7 +149,7 @@ CREATE TABLE `res_jadwal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_jadwal`
+-- Dumping data for table `res_jadwal`
 --
 
 INSERT INTO `res_jadwal` (`id_jadwal`, `dokter_id`, `klinik_id`, `jns_layan_id`, `id_hari`, `jam_mulai`, `jam_selesai`, `kuota_perjam`, `status`) VALUES
@@ -139,7 +160,7 @@ INSERT INTO `res_jadwal` (`id_jadwal`, `dokter_id`, `klinik_id`, `jns_layan_id`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_jns_pasien`
+-- Table structure for table `res_jns_pasien`
 --
 
 CREATE TABLE `res_jns_pasien` (
@@ -149,7 +170,7 @@ CREATE TABLE `res_jns_pasien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_jns_pasien`
+-- Dumping data for table `res_jns_pasien`
 --
 
 INSERT INTO `res_jns_pasien` (`jns_id`, `jns_nama`, `jns_flag`) VALUES
@@ -173,7 +194,7 @@ INSERT INTO `res_jns_pasien` (`jns_id`, `jns_nama`, `jns_flag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refdokter`
+-- Table structure for table `res_refdokter`
 --
 
 CREATE TABLE `res_refdokter` (
@@ -183,7 +204,7 @@ CREATE TABLE `res_refdokter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refdokter`
+-- Dumping data for table `res_refdokter`
 --
 
 INSERT INTO `res_refdokter` (`id_dokter`, `nama_dokter`, `status`) VALUES
@@ -240,7 +261,7 @@ INSERT INTO `res_refdokter` (`id_dokter`, `nama_dokter`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refjns_layan`
+-- Table structure for table `res_refjns_layan`
 --
 
 CREATE TABLE `res_refjns_layan` (
@@ -249,7 +270,7 @@ CREATE TABLE `res_refjns_layan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refjns_layan`
+-- Dumping data for table `res_refjns_layan`
 --
 
 INSERT INTO `res_refjns_layan` (`id_jns_layan`, `jns_layan`) VALUES
@@ -259,7 +280,7 @@ INSERT INTO `res_refjns_layan` (`id_jns_layan`, `jns_layan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refklinik`
+-- Table structure for table `res_refklinik`
 --
 
 CREATE TABLE `res_refklinik` (
@@ -271,7 +292,7 @@ CREATE TABLE `res_refklinik` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refklinik`
+-- Dumping data for table `res_refklinik`
 --
 
 INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_layan`, `status`) VALUES
@@ -296,7 +317,7 @@ INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_laya
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_sebab_sakit`
+-- Table structure for table `res_sebab_sakit`
 --
 
 CREATE TABLE `res_sebab_sakit` (
@@ -305,7 +326,7 @@ CREATE TABLE `res_sebab_sakit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_sebab_sakit`
+-- Dumping data for table `res_sebab_sakit`
 --
 
 INSERT INTO `res_sebab_sakit` (`id_sebab`, `sebab`) VALUES
@@ -322,7 +343,7 @@ INSERT INTO `res_sebab_sakit` (`id_sebab`, `sebab`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_tgl_libur`
+-- Table structure for table `res_tgl_libur`
 --
 
 CREATE TABLE `res_tgl_libur` (
@@ -333,7 +354,7 @@ CREATE TABLE `res_tgl_libur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_tgl_libur`
+-- Dumping data for table `res_tgl_libur`
 --
 
 INSERT INTO `res_tgl_libur` (`id_libur`, `tanggal`, `ket`, `status`) VALUES
@@ -343,7 +364,7 @@ INSERT INTO `res_tgl_libur` (`id_libur`, `tanggal`, `ket`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_tpasien`
+-- Table structure for table `res_tpasien`
 --
 
 CREATE TABLE `res_tpasien` (
@@ -360,7 +381,7 @@ CREATE TABLE `res_tpasien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_tpasien`
+-- Dumping data for table `res_tpasien`
 --
 
 INSERT INTO `res_tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `alamat`, `propinsi`, `kota`, `kec`, `kel`) VALUES
@@ -370,7 +391,7 @@ INSERT INTO `res_tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `ala
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_treservasi`
+-- Table structure for table `res_treservasi`
 --
 
 CREATE TABLE `res_treservasi` (
@@ -392,7 +413,7 @@ CREATE TABLE `res_treservasi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_treservasi`
+-- Dumping data for table `res_treservasi`
 --
 
 INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `nores`, `waktu_rsv`, `jadwal_id`, `nourut`, `kode_cekin`, `jns_pasien_id`, `sebab_id`, `status`, `first_update`, `last_update`, `user_id`, `sync`, `jenis_rsv`) VALUES
@@ -418,7 +439,7 @@ INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `nores`, `waktu_rsv`, `jadwal_id
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_full_inbox`
+-- Table structure for table `sms_full_inbox`
 --
 
 CREATE TABLE `sms_full_inbox` (
@@ -437,17 +458,23 @@ CREATE TABLE `sms_full_inbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_full_inbox`
+-- Dumping data for table `sms_full_inbox`
 --
 
 INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
-('2018-07-17 02:13:23', '2018-07-17 02:13:21', '00480061006900200073006F0062002C0020006B0061006C006900200069006E00690020006700770020006D00770020006B0061007300690068002000740061007500200063006100720061006E007900610020006E0067006500620065006E006500720069006E00200061007400610075002000620061007300610020006700610075006C006E0079006100200046006C0061007300680069006E006700200062006C00610063006B0062006500720072007900200073006F00620061007400200079006700200072007500730061006B002E00200053006F0066007400770061007200650020006E007900610020006100740061007500200067006100670061006C00200062006F006F00740069006E00670020006100740061007500200062006100680061007300610020006A0061', '+6283818181831', 'Default_No_Compression', '050003850201', '+628315000032', -1, 'Hai sob, kali ini gw mw kasih tau caranya ngebenerin atau basa gaulnya Flashing blackberry sobat yg rusak. Software nya atau gagal booting atau bahasa jawane macet pada saat di hidupkan (loading terus)', 1, '', 'false'),
-('2018-07-17 09:59:26', '2018-07-17 09:05:18', '00490020006B006E006F007700200074006800690073002000770061007300200061006C0072006500610064007900200061006E007300770065007200650064002C002000620075007400200049002000750073006500640020007400680069007300200061006E006400200065007800740065006E006400650064002000690074002000610020006C006900740074006C00650020006D006F0072006500200069006E0020006D007900200063006F0064006500200073006F0020007400680061007400200079006F00750020006400690064006E002700740020006800610076006500200073006500610072006300680020006200790020006F006E006C007900200074006800650020007500690064002E002000490020006A007500730074002000770061006E007400200074006F', '+6283818181831', 'Default_No_Compression', '050003180201', '+628315000032', -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to share it for anyone else who may need that functionality.', 2, '', 'false');
+('2018-07-18 07:32:01', '2018-07-17 02:13:21', '00480061006900200073006F0062002C0020006B0061006C006900200069006E00690020006700770020006D00770020006B0061007300690068002000740061007500200063006100720061006E007900610020006E0067006500620065006E006500720069006E00200061007400610075002000620061007300610020006700610075006C006E0079006100200046006C0061007300680069006E006700200062006C00610063006B0062006500720072007900200073006F00620061007400200079006700200072007500730061006B002E00200053006F0066007400770061007200650020006E007900610020006100740061007500200067006100670061006C00200062006F006F00740069006E00670020006100740061007500200062006100680061007300610020006A0061', '+6283818181831', 'Default_No_Compression', '050003850201', '+628315000032', -1, 'Hai sob, kali ini gw mw kasih tau caranya ngebenerin atau basa gaulnya Flashing blackberry sobat yg rusak. Software nya atau gagal booting atau bahasa jawane macet pada saat di hidupkan (loading terus)', 1, '', 'true'),
+('2018-07-18 07:31:54', '2018-07-18 03:40:58', '0059006F002E002E', '+628995313157', 'Default_No_Compression', '', '+628964011134', -1, 'Yo..', 3, '', 'true'),
+('2018-07-18 08:47:59', '2018-07-18 08:26:06', '002800410058004900530029002000410059004F002000530045004D0041004E0047004100540020006B006900720069006D0020003200200053004D00530020006C0061006700690021002000200042006900610072002000640061007000610074002000200042004F004E00550053002000330030003000200053004D00530020006B0065002000530045004D005500410020004F00500045005200410054004F005200200073006500680061007200690061006E002100200049005200490054002000490054005500200041005800490053002E00200049006E0066006F003800330038', 'AXIS', 'Default_No_Compression', '', '+628184422876', -1, '(AXIS) AYO SEMANGAT kirim 2 SMS lagi!  Biar dapat  BONUS 300 SMS ke SEMUA OPERATOR seharian! IRIT ITU AXIS. Info838', 4, '', 'true'),
+('2018-07-18 08:58:13', '2018-07-18 08:53:05', '005900410059002100200042004F004E00550053002000330030003000200053004D00530020006B0065002000730065006D007500610020006F00700065007200610074006F00720020006B0061006D007500200073007500640061006800200061006B00740069006600210020004E0069006B006D00610074006900200073002E00640020006A0061006D002000310032006D006C006D002E00200044006F0077006E006C006F0061006400200041005800490053006E0065007400200061007400610075002000740065006C00700020002A0031003200330023002000640061006E002000740065006D0075006B0061006E002000500052004F004D004F00200041005800490053', '', 'Unicode_No_Compression', '', '', 127, 'YAY! BONUS 300 SMS ke semua operator kamu sudah aktif! Nikmati s.d jam 12mlm. Download AXISnet atau telp *123# dan temukan PROMO AXIS', 5, '', 'true'),
+('2018-07-18 09:39:29', '2018-07-18 08:56:23', '004100200073006500740020006F00660020006B00650079002F00760061006C00750065002000700061006900720073002000740068006100740020006D006100700020006100200067006900760065006E00200064006100740061005400790070006500200074006F00200069007400730020004D0049004D004500200074007900700065002C00200077006800690063006800200067006500740073002000730065006E007400200069006E00200074006800650020004100630063006500700074002000720065007100750065007300740020006800650061006400650072', '+6283818181831', 'Default_No_Compression', '', '+628315000032', -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 6, '', 'true'),
+('2018-07-18 09:42:50', '2018-07-18 09:26:24', '00530075006400610068002000630065006B002000700065006E00610077006100720061006E0020007300700065007300690061006C00200075006E00740075006B0020006B0061006D00750020006800610072006900200069006E0069003F002000430065006B0020002A0031003200330023002000730065006B006100720061006E00670020002600200061006D00620069006C002000700065006E00610077006100720061006E0020007400650072006200610069006B006E007900610021002000410046004F003000370041', 'AXIS', 'Default_No_Compression', '', '+62818445009', -1, 'Sudah cek penawaran spesial untuk kamu hari ini? Cek *123# sekarang & ambil penawaran terbaiknya! AFO07A', 7, '', 'true'),
+('2018-07-18 09:26:56', '2018-07-18 09:26:37', '0053006900610070002000670061006E002E002E', '+6281578034054', 'Default_No_Compression', '', '+62816124', -1, 'Siap gan..', 8, '', 'true'),
+('2018-07-18 10:00:53', '2018-07-18 09:59:28', '0028004100580049005300290020004B0075006F00740061002000700061006B00650074002000640061007400610020006B0061006D00750020006400690020006A0061006D002000300030002E00300030002D00310031002E00350039002000740065006C0061006800200064006900670075006E0061006B0061006E002000730065006C0075007200750068006E00790061002E002000500065006E006700670075006E00610061006E002000730065006C0061006E006A00750074006E0079006100200061006B0061006E002000640069006B0065006E0061006B0061006E0020007400610072006900660020006E006F0072006D0061006C002E00200049006E0066006F003800330038', '+628995313157', 'Default_No_Compression', '', '+628964011134', -1, '(AXIS) Kuota paket data kamu di jam 00.00-11.59 telah digunakan seluruhnya. Penggunaan selanjutnya akan dikenakan tarif normal. Info838', 9, '', 'true');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_full_outbox`
+-- Table structure for table `sms_full_outbox`
 --
 
 CREATE TABLE `sms_full_outbox` (
@@ -473,17 +500,23 @@ CREATE TABLE `sms_full_outbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_full_outbox`
+-- Dumping data for table `sms_full_outbox`
 --
 
 INSERT INTO `sms_full_outbox` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `SendBefore`, `SendAfter`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `Class`, `TextDecoded`, `ID`, `MultiPart`, `RelativeValidity`, `SenderID`, `SendingTimeOut`, `DeliveryReport`, `CreatorID`, `Status`) VALUES
-('2018-07-17 02:08:23', '2018-07-17 02:08:23', '2018-07-17 02:08:23', '23:59:59', '00:00:00', NULL, '+6283865765051', 'Default_No_Compression', NULL, -1, 'Hai sob, kali ini gw mw kasih tau caranya ngebenerin atau basa gaulnya Flashing blackberry sobat yg rusak. Software nya atau gagal booting atau bahasa jawane macet pada saat di hidupkan (loading terus)', 1, 'false', -1, NULL, '2018-07-17 02:08:23', 'default', 'dede', 0),
-('2018-07-17 02:12:24', '2018-07-17 02:12:24', '2018-07-17 02:12:24', '23:59:59', '00:00:00', NULL, '+6283818181831', 'Default_No_Compression', NULL, -1, 'Hai sob, kali ini gw mw kasih tau caranya ngebenerin atau basa gaulnya Flashing blackberry sobat yg rusak. Software nya atau gagal booting atau bahasa jawane macet pada saat di hidupkan (loading terus)', 2, 'false', -1, NULL, '2018-07-17 02:12:24', 'default', 'dede', 0),
 ('2018-07-17 09:05:17', '2018-07-17 09:04:55', '2018-07-17 09:04:55', '23:59:59', '00:00:00', NULL, '+6283818181831', 'Default_No_Compression', NULL, -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to share it for anyone else who may need that functionality.', 3, 'false', -1, NULL, '2018-07-17 09:04:55', 'default', 'dede', 1),
-('2018-07-17 09:59:29', '2018-07-17 09:09:28', '2018-07-17 09:09:28', '23:59:59', '00:00:00', NULL, '+6283865765051', 'Default_No_Compression', NULL, -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to share it for anyone else who may need that functionality.', 4, 'false', -1, NULL, '2018-07-17 09:09:28', 'default', 'dede', 1);
+('2018-07-17 09:59:29', '2018-07-17 09:09:28', '2018-07-17 09:09:28', '23:59:59', '00:00:00', NULL, '+6283865765051', 'Default_No_Compression', NULL, -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to share it for anyone else who may need that functionality.', 4, 'false', -1, NULL, '2018-07-17 09:09:28', 'default', 'dede', 1),
+('2018-07-18 08:25:00', '2018-07-18 08:24:50', '2018-07-18 08:24:50', '23:59:59', '00:00:00', NULL, '08995313157', 'Default_No_Compression', NULL, -1, 'testing melalui form sms', 5, 'false', -1, NULL, '2018-07-18 08:24:50', 'default', 'Admin', 1),
+('2018-07-18 08:48:07', '2018-07-18 08:47:55', '2018-07-18 08:47:55', '23:59:59', '00:00:00', NULL, '083865765051', 'Default_No_Compression', NULL, -1, 'testing lagi mas bro lewat form ', 6, 'false', -1, NULL, '2018-07-18 08:47:55', 'default', 'Admin', 1),
+('2018-07-18 08:49:12', '2018-07-18 08:49:00', '2018-07-18 08:49:00', '23:59:59', '00:00:00', NULL, '081576034054', 'Default_No_Compression', NULL, -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 7, 'false', -1, NULL, '2018-07-18 08:49:00', 'default', 'Admin', 1),
+('2018-07-18 08:51:47', '2018-07-18 08:51:15', '2018-07-18 08:51:15', '23:59:59', '00:00:00', NULL, '081578034054', 'Default_No_Compression', NULL, -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 8, 'false', -1, NULL, '2018-07-18 08:51:15', 'default', 'Admin', 1),
+('2018-07-18 08:56:23', '2018-07-18 08:55:50', '2018-07-18 08:55:50', '23:59:59', '00:00:00', NULL, '083818181831', 'Default_No_Compression', NULL, -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 9, 'false', -1, NULL, '2018-07-18 08:55:50', 'default', 'Admin', 1),
+('2018-07-18 09:23:21', '2018-07-18 09:00:04', '2018-07-18 09:00:04', '23:59:59', '00:00:00', NULL, '081578034054', 'Default_No_Compression', NULL, -1, 'In this post I show you delete multiple records from mysql database on the basis of selected checkbox in php. You have show lots of tutorial on this things but today I have show you how to use Ajax and JQuery for delete multiple records on the basis of checked checkboxes on one single click without page refresh. ', 10, 'false', -1, NULL, '2018-07-18 09:00:04', 'default', 'Admin', 1),
+('2018-07-18 09:23:26', '2018-07-18 09:09:07', '2018-07-18 09:09:07', '23:59:59', '00:00:00', NULL, '081578034054', 'Default_No_Compression', NULL, -1, 'In this post I show you delete multiple records from mysql database on the basis of selected checkbox in php. You have show lots of tutorial on this things but today I have show you how to use Ajax and JQuery for delete multiple records on the basis of checked checkboxes on one single click without page refresh. ', 11, 'false', -1, NULL, '2018-07-18 09:09:07', 'default', 'Admin', 1),
+('2018-07-18 10:03:35', '2018-07-18 10:03:16', '2018-07-18 10:03:16', '23:59:59', '00:00:00', NULL, '+628995313157', 'Default_No_Compression', NULL, -1, 'The individual signals on a serial port are unidirectional and when connecting two devices the outputs of one device must be connected to the inputs of the other. Devices are divided into two categories data terminal equipment (DTE) and data circuit-terminating equipment (DCE). A line that is an output on a DTE device is an input on a DCE device and vice versa so a DCE device can be connected to a DTE device with a straight wired cable.', 12, 'false', -1, NULL, '2018-07-18 10:03:16', 'default', 'Admin', 1);
 
 --
--- Trigger `sms_full_outbox`
+-- Triggers `sms_full_outbox`
 --
 DELIMITER $$
 CREATE TRIGGER `copy_to_inbox_aft_ins` AFTER INSERT ON `sms_full_outbox` FOR EACH ROW BEGIN
@@ -498,7 +531,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_gammu`
+-- Table structure for table `sms_gammu`
 --
 
 CREATE TABLE `sms_gammu` (
@@ -506,7 +539,7 @@ CREATE TABLE `sms_gammu` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_gammu`
+-- Dumping data for table `sms_gammu`
 --
 
 INSERT INTO `sms_gammu` (`Version`) VALUES
@@ -515,7 +548,7 @@ INSERT INTO `sms_gammu` (`Version`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_inbox`
+-- Table structure for table `sms_inbox`
 --
 
 CREATE TABLE `sms_inbox` (
@@ -535,17 +568,24 @@ CREATE TABLE `sms_inbox` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_inbox`
+-- Dumping data for table `sms_inbox`
 --
 
 INSERT INTO `sms_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`, `Status`) VALUES
 ('2018-07-17 02:13:23', '2018-07-17 02:13:21', '00480061006900200073006F0062002C0020006B0061006C006900200069006E00690020006700770020006D00770020006B0061007300690068002000740061007500200063006100720061006E007900610020006E0067006500620065006E006500720069006E00200061007400610075002000620061007300610020006700610075006C006E0079006100200046006C0061007300680069006E006700200062006C00610063006B0062006500720072007900200073006F00620061007400200079006700200072007500730061006B002E00200053006F0066007400770061007200650020006E007900610020006100740061007500200067006100670061006C00200062006F006F00740069006E00670020006100740061007500200062006100680061007300610020006A0061', '+6283818181831', 'Default_No_Compression', '050003850201', '+628315000032', -1, 'Hai sob, kali ini gw mw kasih tau caranya ngebenerin atau basa gaulnya Flashing blackberry sobat yg rusak. Software nya atau gagal booting atau bahasa ja', 1, '', 'false', 0),
 ('2018-07-17 02:13:23', '2018-07-17 02:13:22', '00770061006E00650020006D00610063006500740020007000610064006100200073006100610074002000640069002000680069006400750070006B0061006E00200028006C006F006100640069006E00670020007400650072007500730029', '+6283818181831', 'Default_No_Compression', '050003850202', '+628315000032', -1, 'wane macet pada saat di hidupkan (loading terus)', 2, '', 'false', 0),
 ('2018-07-17 09:59:26', '2018-07-17 09:05:18', '00490020006B006E006F007700200074006800690073002000770061007300200061006C0072006500610064007900200061006E007300770065007200650064002C002000620075007400200049002000750073006500640020007400680069007300200061006E006400200065007800740065006E006400650064002000690074002000610020006C006900740074006C00650020006D006F0072006500200069006E0020006D007900200063006F0064006500200073006F0020007400680061007400200079006F00750020006400690064006E002700740020006800610076006500200073006500610072006300680020006200790020006F006E006C007900200074006800650020007500690064002E002000490020006A007500730074002000770061006E007400200074006F', '+6283818181831', 'Default_No_Compression', '050003180201', '+628315000032', -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to', 3, '', 'false', 0),
-('2018-07-17 09:59:26', '2018-07-17 09:05:19', '00200073006800610072006500200069007400200066006F007200200061006E0079006F006E006500200065006C00730065002000770068006F0020006D006100790020006E00650065006400200074006800610074002000660075006E006300740069006F006E0061006C006900740079002E', '+6283818181831', 'Default_No_Compression', '050003180202', '+628315000032', -1, ' share it for anyone else who may need that functionality.', 4, '', 'false', 0);
+('2018-07-17 09:59:26', '2018-07-17 09:05:19', '00200073006800610072006500200069007400200066006F007200200061006E0079006F006E006500200065006C00730065002000770068006F0020006D006100790020006E00650065006400200074006800610074002000660075006E006300740069006F006E0061006C006900740079002E', '+6283818181831', 'Default_No_Compression', '050003180202', '+628315000032', -1, ' share it for anyone else who may need that functionality.', 4, '', 'false', 0),
+('2018-07-18 03:41:11', '2018-07-18 03:40:58', '0059006F002E002E', '+628995313157', 'Default_No_Compression', '', '+628964011134', -1, 'Yo..', 5, '', 'false', 0),
+('2018-07-18 08:26:13', '2018-07-18 08:26:06', '002800410058004900530029002000410059004F002000530045004D0041004E0047004100540020006B006900720069006D0020003200200053004D00530020006C0061006700690021002000200042006900610072002000640061007000610074002000200042004F004E00550053002000330030003000200053004D00530020006B0065002000530045004D005500410020004F00500045005200410054004F005200200073006500680061007200690061006E002100200049005200490054002000490054005500200041005800490053002E00200049006E0066006F003800330038', 'AXIS', 'Default_No_Compression', '', '+628184422876', -1, '(AXIS) AYO SEMANGAT kirim 2 SMS lagi!  Biar dapat  BONUS 300 SMS ke SEMUA OPERATOR seharian! IRIT ITU AXIS. Info838', 6, '', 'false', 0),
+('2018-07-18 08:53:05', '2018-07-18 08:53:05', '005900410059002100200042004F004E00550053002000330030003000200053004D00530020006B0065002000730065006D007500610020006F00700065007200610074006F00720020006B0061006D007500200073007500640061006800200061006B00740069006600210020004E0069006B006D00610074006900200073002E00640020006A0061006D002000310032006D006C006D002E00200044006F0077006E006C006F0061006400200041005800490053006E0065007400200061007400610075002000740065006C00700020002A0031003200330023002000640061006E002000740065006D0075006B0061006E002000500052004F004D004F00200041005800490053', '', 'Unicode_No_Compression', '', '', 127, 'YAY! BONUS 300 SMS ke semua operator kamu sudah aktif! Nikmati s.d jam 12mlm. Download AXISnet atau telp *123# dan temukan PROMO AXIS', 7, '', 'false', 2),
+('2018-07-18 09:23:19', '2018-07-18 08:56:23', '004100200073006500740020006F00660020006B00650079002F00760061006C00750065002000700061006900720073002000740068006100740020006D006100700020006100200067006900760065006E00200064006100740061005400790070006500200074006F00200069007400730020004D0049004D004500200074007900700065002C00200077006800690063006800200067006500740073002000730065006E007400200069006E00200074006800650020004100630063006500700074002000720065007100750065007300740020006800650061006400650072', '+6283818181831', 'Default_No_Compression', '', '+628315000032', -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 8, '', 'false', 0),
+('2018-07-18 09:26:34', '2018-07-18 09:26:24', '00530075006400610068002000630065006B002000700065006E00610077006100720061006E0020007300700065007300690061006C00200075006E00740075006B0020006B0061006D00750020006800610072006900200069006E0069003F002000430065006B0020002A0031003200330023002000730065006B006100720061006E00670020002600200061006D00620069006C002000700065006E00610077006100720061006E0020007400650072006200610069006B006E007900610021002000410046004F003000370041', 'AXIS', 'Default_No_Compression', '', '+62818445009', -1, 'Sudah cek penawaran spesial untuk kamu hari ini? Cek *123# sekarang & ambil penawaran terbaiknya! AFO07A', 9, '', 'false', 0),
+('2018-07-18 09:26:49', '2018-07-18 09:26:37', '0053006900610070002000670061006E002E002E', '+6281578034054', 'Default_No_Compression', '', '+62816124', -1, 'Siap gan..', 10, '', 'false', 0),
+('2018-07-18 09:59:37', '2018-07-18 09:59:28', '0028004100580049005300290020004B0075006F00740061002000700061006B00650074002000640061007400610020006B0061006D00750020006400690020006A0061006D002000300030002E00300030002D00310031002E00350039002000740065006C0061006800200064006900670075006E0061006B0061006E002000730065006C0075007200750068006E00790061002E002000500065006E006700670075006E00610061006E002000730065006C0061006E006A00750074006E0079006100200061006B0061006E002000640069006B0065006E0061006B0061006E0020007400610072006900660020006E006F0072006D0061006C002E00200049006E0066006F003800330038', '+628995313157', 'Default_No_Compression', '', '+628964011134', -1, '(AXIS) Kuota paket data kamu di jam 00.00-11.59 telah digunakan seluruhnya. Penggunaan selanjutnya akan dikenakan tarif normal. Info838', 11, '', 'false', 0);
 
 --
--- Trigger `sms_inbox`
+-- Triggers `sms_inbox`
 --
 DELIMITER $$
 CREATE TRIGGER `inbox_before_ins` BEFORE INSERT ON `sms_inbox` FOR EACH ROW begin
@@ -567,7 +607,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_outbox`
+-- Table structure for table `sms_outbox`
 --
 
 CREATE TABLE `sms_outbox` (
@@ -596,7 +636,7 @@ CREATE TABLE `sms_outbox` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Trigger `sms_outbox`
+-- Triggers `sms_outbox`
 --
 DELIMITER $$
 CREATE TRIGGER `outbox_after_ins_tr` AFTER INSERT ON `sms_outbox` FOR EACH ROW BEGIN
@@ -626,7 +666,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_outbox_multipart`
+-- Table structure for table `sms_outbox_multipart`
 --
 
 CREATE TABLE `sms_outbox_multipart` (
@@ -644,7 +684,7 @@ CREATE TABLE `sms_outbox_multipart` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_phones`
+-- Table structure for table `sms_phones`
 --
 
 CREATE TABLE `sms_phones` (
@@ -666,16 +706,16 @@ CREATE TABLE `sms_phones` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_phones`
+-- Dumping data for table `sms_phones`
 --
 
 INSERT INTO `sms_phones` (`ID`, `UpdatedInDB`, `InsertIntoDB`, `TimeOut`, `Send`, `Receive`, `IMEI`, `IMSI`, `NetCode`, `NetName`, `Client`, `Battery`, `Signal`, `Sent`, `Received`) VALUES
-('', '2018-07-17 10:06:48', '2018-07-17 10:00:47', '2018-07-17 10:06:58', 'yes', 'yes', '351589046379118', '510114113337585', '510 11', '', 'Gammu 1.39.0, Linux, kernel 4.15.0-24-generic (#26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018), GCC 7.2', 100, 36, 0, 0);
+('', '2018-07-18 10:08:22', '2018-07-18 09:23:19', '2018-07-18 10:08:32', 'yes', 'yes', '351589046379118', '510114113337585', '510 11', 'XLe', 'Gammu 1.39.0, Linux, kernel 4.15.0-24-generic (#26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018), GCC 7.2', 100, 33, 9, 4);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_sentitems`
+-- Table structure for table `sms_sentitems`
 --
 
 CREATE TABLE `sms_sentitems` (
@@ -702,7 +742,7 @@ CREATE TABLE `sms_sentitems` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_sentitems`
+-- Dumping data for table `sms_sentitems`
 --
 
 INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `DeliveryDateTime`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `SenderID`, `SequencePosition`, `Status`, `StatusError`, `TPMR`, `RelativeValidity`, `CreatorID`, `StatusCode`) VALUES
@@ -713,10 +753,24 @@ INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `
 ('2018-07-17 09:05:17', '2018-07-17 09:04:55', '2018-07-17 09:05:17', NULL, '00490020006B006E006F007700200074006800690073002000770061007300200061006C0072006500610064007900200061006E007300770065007200650064002C002000620075007400200049002000750073006500640020007400680069007300200061006E006400200065007800740065006E006400650064002000690074002000610020006C006900740074006C00650020006D006F0072006500200069006E0020006D007900200063006F0064006500200073006F0020007400680061007400200079006F00750020006400690064006E002700740020006800610076006500200073006500610072006300680020006200790020006F006E006C007900200074006800650020007500690064002E002000490020006A007500730074002000770061006E007400200074006F', '+6283818181831', 'Default_No_Compression', '050003180201', '+62818445009', -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to', 3, '', 1, 'SendingOKNoReport', -1, 53, 255, 'dede', -1),
 ('2018-07-17 09:05:19', '2018-07-17 09:04:55', '2018-07-17 09:05:19', NULL, '00200073006800610072006500200069007400200066006F007200200061006E0079006F006E006500200065006C00730065002000770068006F0020006D006100790020006E00650065006400200074006800610074002000660075006E006300740069006F006E0061006C006900740079002E', '+6283818181831', 'Default_No_Compression', '050003180202', '+62818445009', -1, ' share it for anyone else who may need that functionality.', 3, '', 2, 'SendingOKNoReport', -1, 54, 255, 'dede', -1),
 ('2018-07-17 09:59:29', '2018-07-17 09:09:28', '2018-07-17 09:59:29', NULL, '00490020006B006E006F007700200074006800690073002000770061007300200061006C0072006500610064007900200061006E007300770065007200650064002C002000620075007400200049002000750073006500640020007400680069007300200061006E006400200065007800740065006E006400650064002000690074002000610020006C006900740074006C00650020006D006F0072006500200069006E0020006D007900200063006F0064006500200073006F0020007400680061007400200079006F00750020006400690064006E002700740020006800610076006500200073006500610072006300680020006200790020006F006E006C007900200074006800650020007500690064002E002000490020006A007500730074002000770061006E007400200074006F', '+6283865765051', 'Default_No_Compression', '0500033F0201', '+62818445009', -1, 'I know this was already answered, but I used this and extended it a little more in my code so that you didn\'t have search by only the uid. I just want to', 4, '', 1, 'SendingOK', -1, 55, 255, 'dede', -1),
-('2018-07-17 09:59:30', '2018-07-17 09:09:28', '2018-07-17 09:59:30', NULL, '00200073006800610072006500200069007400200066006F007200200061006E0079006F006E006500200065006C00730065002000770068006F0020006D006100790020006E00650065006400200074006800610074002000660075006E006300740069006F006E0061006C006900740079002E', '+6283865765051', 'Default_No_Compression', '0500033F0202', '+62818445009', -1, ' share it for anyone else who may need that functionality.', 4, '', 2, 'SendingOK', -1, 56, 255, 'dede', -1);
+('2018-07-17 09:59:30', '2018-07-17 09:09:28', '2018-07-17 09:59:30', NULL, '00200073006800610072006500200069007400200066006F007200200061006E0079006F006E006500200065006C00730065002000770068006F0020006D006100790020006E00650065006400200074006800610074002000660075006E006300740069006F006E0061006C006900740079002E', '+6283865765051', 'Default_No_Compression', '0500033F0202', '+62818445009', -1, ' share it for anyone else who may need that functionality.', 4, '', 2, 'SendingOK', -1, 56, 255, 'dede', -1),
+('2018-07-18 08:25:00', '2018-07-18 08:24:50', '2018-07-18 08:25:00', NULL, '00740065007300740069006E00670020006D0065006C0061006C0075006900200066006F0072006D00200073006D0073', '08995313157', 'Default_No_Compression', '', '+62818445009', -1, 'testing melalui form sms', 5, '', 1, 'SendingOK', -1, 95, 255, 'Admin', -1),
+('2018-07-18 08:48:07', '2018-07-18 08:47:55', '2018-07-18 08:48:07', NULL, '00740065007300740069006E00670020006C0061006700690020006D00610073002000620072006F0020006C006500770061007400200066006F0072006D0020', '083865765051', 'Default_No_Compression', '', '+62818445009', -1, 'testing lagi mas bro lewat form ', 6, '', 1, 'SendingOK', -1, 96, 255, 'Admin', -1),
+('2018-07-18 08:49:12', '2018-07-18 08:49:00', '2018-07-18 08:49:12', NULL, '004100200073006500740020006F00660020006B00650079002F00760061006C00750065002000700061006900720073002000740068006100740020006D006100700020006100200067006900760065006E00200064006100740061005400790070006500200074006F00200069007400730020004D0049004D004500200074007900700065002C00200077006800690063006800200067006500740073002000730065006E007400200069006E00200074006800650020004100630063006500700074002000720065007100750065007300740020006800650061006400650072', '081576034054', 'Default_No_Compression', '', '+62818445009', -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 7, '', 1, 'SendingOK', -1, 97, 255, 'Admin', -1),
+('2018-07-18 08:51:47', '2018-07-18 08:51:15', '2018-07-18 08:51:47', NULL, '004100200073006500740020006F00660020006B00650079002F00760061006C00750065002000700061006900720073002000740068006100740020006D006100700020006100200067006900760065006E00200064006100740061005400790070006500200074006F00200069007400730020004D0049004D004500200074007900700065002C00200077006800690063006800200067006500740073002000730065006E007400200069006E00200074006800650020004100630063006500700074002000720065007100750065007300740020006800650061006400650072', '081578034054', 'Default_No_Compression', '', '+62818445009', -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 8, '', 1, 'SendingOK', -1, 98, 255, 'Admin', -1),
+('2018-07-18 08:56:23', '2018-07-18 08:55:50', '2018-07-18 08:56:23', NULL, '004100200073006500740020006F00660020006B00650079002F00760061006C00750065002000700061006900720073002000740068006100740020006D006100700020006100200067006900760065006E00200064006100740061005400790070006500200074006F00200069007400730020004D0049004D004500200074007900700065002C00200077006800690063006800200067006500740073002000730065006E007400200069006E00200074006800650020004100630063006500700074002000720065007100750065007300740020006800650061006400650072', '083818181831', 'Default_No_Compression', '', '+62818445009', -1, 'A set of key/value pairs that map a given dataType to its MIME type, which gets sent in the Accept request header', 9, '', 1, 'SendingOK', -1, 99, 255, 'Admin', -1),
+('2018-07-18 09:23:21', '2018-07-18 09:00:04', '2018-07-18 09:23:21', NULL, '0049006E0020007400680069007300200070006F0073007400200049002000730068006F007700200079006F0075002000640065006C0065007400650020006D0075006C007400690070006C00650020007200650063006F007200640073002000660072006F006D0020006D007900730071006C0020006400610074006100620061007300650020006F006E00200074006800650020006200610073006900730020006F0066002000730065006C0065006300740065006400200063006800650063006B0062006F007800200069006E0020007000680070002E00200059006F007500200068006100760065002000730068006F00770020006C006F007400730020006F00660020007400750074006F007200690061006C0020006F006E002000740068006900730020007400680069006E', '081578034054', 'Default_No_Compression', '050003980301', '+62818445009', -1, 'In this post I show you delete multiple records from mysql database on the basis of selected checkbox in php. You have show lots of tutorial on this thin', 10, '', 1, 'SendingOK', -1, 100, 255, 'Admin', -1),
+('2018-07-18 09:23:23', '2018-07-18 09:00:04', '2018-07-18 09:23:23', NULL, '00670073002000620075007400200074006F0064006100790020004900200068006100760065002000730068006F007700200079006F007500200068006F007700200074006F002000750073006500200041006A0061007800200061006E00640020004A0051007500650072007900200066006F0072002000640065006C0065007400650020006D0075006C007400690070006C00650020007200650063006F0072006400730020006F006E00200074006800650020006200610073006900730020006F006600200063006800650063006B0065006400200063006800650063006B0062006F0078006500730020006F006E0020006F006E0065002000730069006E0067006C006500200063006C00690063006B00200077006900740068006F007500740020007000610067006500200072', '081578034054', 'Default_No_Compression', '050003980302', '+62818445009', -1, 'gs but today I have show you how to use Ajax and JQuery for delete multiple records on the basis of checked checkboxes on one single click without page r', 10, '', 2, 'SendingOK', -1, 101, 255, 'Admin', -1),
+('2018-07-18 09:23:24', '2018-07-18 09:00:04', '2018-07-18 09:23:24', NULL, '006500660072006500730068002E0020', '081578034054', 'Default_No_Compression', '050003980303', '+62818445009', -1, 'efresh. ', 10, '', 3, 'SendingOK', -1, 102, 255, 'Admin', -1),
+('2018-07-18 09:23:26', '2018-07-18 09:09:07', '2018-07-18 09:23:26', NULL, '0049006E0020007400680069007300200070006F0073007400200049002000730068006F007700200079006F0075002000640065006C0065007400650020006D0075006C007400690070006C00650020007200650063006F007200640073002000660072006F006D0020006D007900730071006C0020006400610074006100620061007300650020006F006E00200074006800650020006200610073006900730020006F0066002000730065006C0065006300740065006400200063006800650063006B0062006F007800200069006E0020007000680070002E00200059006F007500200068006100760065002000730068006F00770020006C006F007400730020006F00660020007400750074006F007200690061006C0020006F006E002000740068006900730020007400680069006E', '081578034054', 'Default_No_Compression', '050003930301', '+62818445009', -1, 'In this post I show you delete multiple records from mysql database on the basis of selected checkbox in php. You have show lots of tutorial on this thin', 11, '', 1, 'SendingOK', -1, 103, 255, 'Admin', -1),
+('2018-07-18 09:23:27', '2018-07-18 09:09:07', '2018-07-18 09:23:27', NULL, '00670073002000620075007400200074006F0064006100790020004900200068006100760065002000730068006F007700200079006F007500200068006F007700200074006F002000750073006500200041006A0061007800200061006E00640020004A0051007500650072007900200066006F0072002000640065006C0065007400650020006D0075006C007400690070006C00650020007200650063006F0072006400730020006F006E00200074006800650020006200610073006900730020006F006600200063006800650063006B0065006400200063006800650063006B0062006F0078006500730020006F006E0020006F006E0065002000730069006E0067006C006500200063006C00690063006B00200077006900740068006F007500740020007000610067006500200072', '081578034054', 'Default_No_Compression', '050003930302', '+62818445009', -1, 'gs but today I have show you how to use Ajax and JQuery for delete multiple records on the basis of checked checkboxes on one single click without page r', 11, '', 2, 'SendingOK', -1, 104, 255, 'Admin', -1),
+('2018-07-18 09:23:29', '2018-07-18 09:09:07', '2018-07-18 09:23:29', NULL, '006500660072006500730068002E0020', '081578034054', 'Default_No_Compression', '050003930303', '+62818445009', -1, 'efresh. ', 11, '', 3, 'SendingOK', -1, 105, 255, 'Admin', -1),
+('2018-07-18 10:03:35', '2018-07-18 10:03:16', '2018-07-18 10:03:35', NULL, '00540068006500200069006E0064006900760069006400750061006C0020007300690067006E0061006C00730020006F006E00200061002000730065007200690061006C00200070006F00720074002000610072006500200075006E00690064006900720065006300740069006F006E0061006C00200061006E00640020007700680065006E00200063006F006E006E0065006300740069006E0067002000740077006F0020006400650076006900630065007300200074006800650020006F0075007400700075007400730020006F00660020006F006E006500200064006500760069006300650020006D00750073007400200062006500200063006F006E006E0065006300740065006400200074006F002000740068006500200069006E00700075007400730020006F006600200074', '+628995313157', 'Default_No_Compression', '0500037F0301', '+62818445009', -1, 'The individual signals on a serial port are unidirectional and when connecting two devices the outputs of one device must be connected to the inputs of t', 12, '', 1, 'SendingOK', -1, 106, 255, 'Admin', -1),
+('2018-07-18 10:03:36', '2018-07-18 10:03:16', '2018-07-18 10:03:36', NULL, '006800650020006F0074006800650072002E0020004400650076006900630065007300200061007200650020006400690076006900640065006400200069006E0074006F002000740077006F002000630061007400650067006F0072006900650073002000640061007400610020007400650072006D0069006E0061006C002000650071007500690070006D0065006E007400200028004400540045002900200061006E00640020006400610074006100200063006900720063007500690074002D007400650072006D0069006E006100740069006E0067002000650071007500690070006D0065006E0074002000280044004300450029002E002000410020006C0069006E00650020007400680061007400200069007300200061006E0020006F007500740070007500740020006F006E', '+628995313157', 'Default_No_Compression', '0500037F0302', '+62818445009', -1, 'he other. Devices are divided into two categories data terminal equipment (DTE) and data circuit-terminating equipment (DCE). A line that is an output on', 12, '', 2, 'SendingOK', -1, 107, 255, 'Admin', -1),
+('2018-07-18 10:03:37', '2018-07-18 10:03:16', '2018-07-18 10:03:37', NULL, '002000610020004400540045002000640065007600690063006500200069007300200061006E00200069006E0070007500740020006F006E002000610020004400430045002000640065007600690063006500200061006E00640020007600690063006500200076006500720073006100200073006F0020006100200044004300450020006400650076006900630065002000630061006E00200062006500200063006F006E006E0065006300740065006400200074006F002000610020004400540045002000640065007600690063006500200077006900740068002000610020007300740072006100690067006800740020007700690072006500640020006300610062006C0065002E', '+628995313157', 'Default_No_Compression', '0500037F0303', '+62818445009', -1, ' a DTE device is an input on a DCE device and vice versa so a DCE device can be connected to a DTE device with a straight wired cable.', 12, '', 3, 'SendingOK', -1, 108, 255, 'Admin', -1);
 
 --
--- Trigger `sms_sentitems`
+-- Triggers `sms_sentitems`
 --
 DELIMITER $$
 CREATE TRIGGER `update_stat_out` AFTER INSERT ON `sms_sentitems` FOR EACH ROW BEGIN
@@ -736,8 +790,8 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `vreservasi`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `vreservasi`
+-- (See below for the actual view)
 --
 CREATE TABLE `vreservasi` (
 `id_rsv` bigint(20)
@@ -779,8 +833,8 @@ CREATE TABLE `vreservasi` (
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `vsms`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `vsms`
+-- (See below for the actual view)
 --
 CREATE TABLE `vsms` (
 `ID` int(11) unsigned
@@ -796,7 +850,7 @@ CREATE TABLE `vsms` (
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `vreservasi`
+-- Structure for view `vreservasi`
 --
 DROP TABLE IF EXISTS `vreservasi`;
 
@@ -805,36 +859,36 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `vsms`
+-- Structure for view `vsms`
 --
 DROP TABLE IF EXISTS `vsms`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsms`  AS  select `a`.`ID` AS `ID`,`a`.`SenderNumber` AS `Number`,`a`.`TextDecoded` AS `TextDecoded`,`a`.`UpdatedInDB` AS `UpdatedInDB`,`a`.`Coding` AS `Coding`,`a`.`Class` AS `Class`,`a`.`Processed` AS `stat`,'inbox' AS `Type` from `sms_full_inbox` `a` union select `b`.`ID` AS `ID`,`b`.`DestinationNumber` AS `NUMBER`,`b`.`TextDecoded` AS `TextDecoded`,`b`.`UpdatedInDB` AS `UpdatedInDB`,`b`.`Coding` AS `Coding`,`b`.`Class` AS `Class`,`b`.`Status` AS `stat`,'outbox' AS `TYPE` from `sms_full_outbox` `b` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW `vsms`  AS  select `a`.`ID` AS `ID`,`a`.`SenderNumber` AS `Number`,`a`.`TextDecoded` AS `TextDecoded`,`a`.`UpdatedInDB` AS `UpdatedInDB`,`a`.`Coding` AS `Coding`,`a`.`Class` AS `Class`,`a`.`Processed` AS `stat`,'inbox' AS `Type` from `sms_full_inbox` `a` union select `b`.`ID` AS `ID`,`b`.`DestinationNumber` AS `Number`,`b`.`TextDecoded` AS `TextDecoded`,`b`.`UpdatedInDB` AS `UpdatedInDB`,`b`.`Coding` AS `Coding`,`b`.`Class` AS `Class`,`b`.`Status` AS `stat`,'outbox' AS `TYPE` from `sms_full_outbox` `b` ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `auth_groups`
+-- Indexes for table `auth_groups`
 --
 ALTER TABLE `auth_groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_login_attempts`
+-- Indexes for table `auth_login_attempts`
 --
 ALTER TABLE `auth_login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_users`
+-- Indexes for table `auth_users`
 --
 ALTER TABLE `auth_users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_users_groups`
+-- Indexes for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   ADD PRIMARY KEY (`id`),
@@ -843,7 +897,7 @@ ALTER TABLE `auth_users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- Indeks untuk tabel `res_jadwal`
+-- Indexes for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
@@ -852,49 +906,49 @@ ALTER TABLE `res_jadwal`
   ADD KEY `res_jadwal_ibfk_2` (`klinik_id`);
 
 --
--- Indeks untuk tabel `res_jns_pasien`
+-- Indexes for table `res_jns_pasien`
 --
 ALTER TABLE `res_jns_pasien`
   ADD PRIMARY KEY (`jns_id`);
 
 --
--- Indeks untuk tabel `res_refdokter`
+-- Indexes for table `res_refdokter`
 --
 ALTER TABLE `res_refdokter`
   ADD PRIMARY KEY (`id_dokter`);
 
 --
--- Indeks untuk tabel `res_refjns_layan`
+-- Indexes for table `res_refjns_layan`
 --
 ALTER TABLE `res_refjns_layan`
   ADD PRIMARY KEY (`id_jns_layan`);
 
 --
--- Indeks untuk tabel `res_refklinik`
+-- Indexes for table `res_refklinik`
 --
 ALTER TABLE `res_refklinik`
   ADD PRIMARY KEY (`id_klinik`);
 
 --
--- Indeks untuk tabel `res_sebab_sakit`
+-- Indexes for table `res_sebab_sakit`
 --
 ALTER TABLE `res_sebab_sakit`
   ADD PRIMARY KEY (`id_sebab`);
 
 --
--- Indeks untuk tabel `res_tgl_libur`
+-- Indexes for table `res_tgl_libur`
 --
 ALTER TABLE `res_tgl_libur`
   ADD PRIMARY KEY (`id_libur`);
 
 --
--- Indeks untuk tabel `res_tpasien`
+-- Indexes for table `res_tpasien`
 --
 ALTER TABLE `res_tpasien`
   ADD PRIMARY KEY (`norm`);
 
 --
--- Indeks untuk tabel `res_treservasi`
+-- Indexes for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   ADD PRIMARY KEY (`id_rsv`),
@@ -904,13 +958,13 @@ ALTER TABLE `res_treservasi`
   ADD KEY `sebab` (`sebab_id`);
 
 --
--- Indeks untuk tabel `sms_full_inbox`
+-- Indexes for table `sms_full_inbox`
 --
 ALTER TABLE `sms_full_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_full_outbox`
+-- Indexes for table `sms_full_outbox`
 --
 ALTER TABLE `sms_full_outbox`
   ADD PRIMARY KEY (`ID`),
@@ -918,19 +972,19 @@ ALTER TABLE `sms_full_outbox`
   ADD KEY `outbox_sender` (`SenderID`);
 
 --
--- Indeks untuk tabel `sms_gammu`
+-- Indexes for table `sms_gammu`
 --
 ALTER TABLE `sms_gammu`
   ADD PRIMARY KEY (`Version`);
 
 --
--- Indeks untuk tabel `sms_inbox`
+-- Indexes for table `sms_inbox`
 --
 ALTER TABLE `sms_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_outbox`
+-- Indexes for table `sms_outbox`
 --
 ALTER TABLE `sms_outbox`
   ADD PRIMARY KEY (`ID`),
@@ -938,19 +992,19 @@ ALTER TABLE `sms_outbox`
   ADD KEY `outbox_sender` (`SenderID`(250));
 
 --
--- Indeks untuk tabel `sms_outbox_multipart`
+-- Indexes for table `sms_outbox_multipart`
 --
 ALTER TABLE `sms_outbox_multipart`
   ADD PRIMARY KEY (`ID`,`SequencePosition`);
 
 --
--- Indeks untuk tabel `sms_phones`
+-- Indexes for table `sms_phones`
 --
 ALTER TABLE `sms_phones`
   ADD PRIMARY KEY (`IMEI`);
 
 --
--- Indeks untuk tabel `sms_sentitems`
+-- Indexes for table `sms_sentitems`
 --
 ALTER TABLE `sms_sentitems`
   ADD PRIMARY KEY (`ID`,`SequencePosition`),
@@ -960,106 +1014,106 @@ ALTER TABLE `sms_sentitems`
   ADD KEY `sentitems_sender` (`SenderID`(250));
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `auth_groups`
+-- AUTO_INCREMENT for table `auth_groups`
 --
 ALTER TABLE `auth_groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_login_attempts`
+-- AUTO_INCREMENT for table `auth_login_attempts`
 --
 ALTER TABLE `auth_login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_users`
+-- AUTO_INCREMENT for table `auth_users`
 --
 ALTER TABLE `auth_users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_users_groups`
+-- AUTO_INCREMENT for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_jadwal`
+-- AUTO_INCREMENT for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refdokter`
+-- AUTO_INCREMENT for table `res_refdokter`
 --
 ALTER TABLE `res_refdokter`
   MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refjns_layan`
+-- AUTO_INCREMENT for table `res_refjns_layan`
 --
 ALTER TABLE `res_refjns_layan`
   MODIFY `id_jns_layan` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refklinik`
+-- AUTO_INCREMENT for table `res_refklinik`
 --
 ALTER TABLE `res_refklinik`
   MODIFY `id_klinik` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=570;
 
 --
--- AUTO_INCREMENT untuk tabel `res_tgl_libur`
+-- AUTO_INCREMENT for table `res_tgl_libur`
 --
 ALTER TABLE `res_tgl_libur`
   MODIFY `id_libur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_treservasi`
+-- AUTO_INCREMENT for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_full_inbox`
+-- AUTO_INCREMENT for table `sms_full_inbox`
 --
 ALTER TABLE `sms_full_inbox`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_full_outbox`
+-- AUTO_INCREMENT for table `sms_full_outbox`
 --
 ALTER TABLE `sms_full_outbox`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_inbox`
+-- AUTO_INCREMENT for table `sms_inbox`
 --
 ALTER TABLE `sms_inbox`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_outbox`
+-- AUTO_INCREMENT for table `sms_outbox`
 --
 ALTER TABLE `sms_outbox`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `auth_users_groups`
+-- Constraints for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   ADD CONSTRAINT `auth_users_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `auth_groups` (`id`),
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `auth_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `res_jadwal`
+-- Constraints for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   ADD CONSTRAINT `res_jadwal_ibfk_1` FOREIGN KEY (`dokter_id`) REFERENCES `res_refdokter` (`id_dokter`),
@@ -1067,7 +1121,7 @@ ALTER TABLE `res_jadwal`
   ADD CONSTRAINT `res_jadwal_ibfk_3` FOREIGN KEY (`jns_layan_id`) REFERENCES `res_refjns_layan` (`id_jns_layan`);
 
 --
--- Ketidakleluasaan untuk tabel `res_treservasi`
+-- Constraints for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   ADD CONSTRAINT `res_treservasi_ibfk_1` FOREIGN KEY (`norm`) REFERENCES `res_tpasien` (`norm`),
