@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li class="treeview">
-                <a href="#">
+                <a href="#1">
                     <i class="fa fa-gears"></i> <span>Setting</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>

@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <ul class="nav nav-pills nav-stacked">
+                        <ul class="nav nav-pills nav-stacked ulnotelp">
                             <?php foreach ($datanotelp as $notelp) {?>
                             <li class="linotelp"><a href="#"><i class="<?=($notelp->stat == 'false' && $notelp->Type == 'inbox') ? 'fa fa-circle text-red':'fa fa-circle-o text-green';?>"></i>
                                     <span class="spnotelp text-bold"><?=$notelp->Number;?></span></a></li>   
@@ -87,7 +87,7 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
-                            <button type="button" id="btnbackxs" class="btn btn-primary btn-sm visible-xs"><i class="fa fa-arrow-left"></i> Back</button>
+                            <button type="button" id="btnbackxs" class="btn btn-primary btn-sm visible-xs text-bold">Back</button>
                             <!-- Check all button -->
 <!--                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
                             </button>
@@ -222,10 +222,12 @@ function get_currdev(){
         if (get_currdev()=='xs'){
             $("#msgbox").removeClass('hidden-xs').addClass('.visible-xs').show();
             $("#dvnotelp").removeClass('visible-xs').addClass('.hidden-xs').hide();
+            $("#btnbackxs").html('<i class="fa fa-backward"></i> '+notelp);
         } else {
             $("#dvnotelp").removeClass('hidden-xs').addClass('.visible-xs').show();
             $("#msgbox").removeClass('visible-xs').addClass('.hidden-xs');
         }
+        $(this).find('i.fa').removeClass('fa-circle text-red').addClass('fa-circle-o text-green');
     });
     
     $('#btn_hapus').click(function(){
@@ -279,5 +281,8 @@ function get_currdev(){
         $("#dvnotelp").removeClass('hidden-xs').addClass('.visible-xs').show();
         $("#msgbox").removeClass('visible-xs').addClass('.hidden-xs').hide;
     });
+    
+    $(".ulnotelp li:first-child").click();
+    
 });
 </script>

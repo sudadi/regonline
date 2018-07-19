@@ -89,7 +89,6 @@
                     <label class="control-label col-sm-2">Dokter</label>
                     <div class="col-sm-4">
                         <?php
-                        $option='';
                         $option[''] = 'Pilih Dokter';
                         foreach ($dokter as $dok) {
                             $option[$dok->id_dokter] = $dok->nama_dokter;
@@ -99,7 +98,7 @@
                     <label class="control-label col-sm-2">Klinik</label>
                     <div class="col-sm-4">
                         <?php
-                        $option='';
+                        unset($option);
                         $option[''] = 'Pilih Klinik';
                         foreach ($klinik as $poli) {
                             $option[$poli->id_klinik] = $poli->nama_klinik;
@@ -111,17 +110,17 @@
                     <label class="control-label col-sm-2">Layanan</label>
                     <div class="col-sm-4">
                         <?php
-                        $option='';
+                        unset($option);
                         $option[''] = 'Pilih Layanan';
                         foreach ($jnslayan as $layan) {
-                            $option[$layan->id_jnslayan] = $layan->jnslayan;
+                            $option[$layan->id_jns_layan] = $layan->jns_layan;
                         }
                         echo form_dropdown('jnslayan', $option, '', 'class="form-control" required');?>
                     </div>
                     <label class="control-label col-sm-2">Hari</label>
                     <div class="col-sm-4">
                         <?php
-                        $option='';
+                        unset($option);
                         $option[''] = 'Pilih Hari';
                         for($i=0;$i<7;$i++) {
                             $option[$i] = date('l', strtotime("Sunday +{$i} days"));

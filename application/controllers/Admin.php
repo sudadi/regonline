@@ -205,6 +205,14 @@ class Admin extends CI_Controller
         $data['content']['action']='admin/sms';
         $this->load->view('admin/main', $data);
     }
+    public function ajaxlistelp() {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        $this->load->model('mod_sms');
+        $data = $this->mod_sms->getsms("UpdatedInDB",false,"stat=false");
+        echo json_encode($data);
+    }
     public function ajaxsms() {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
