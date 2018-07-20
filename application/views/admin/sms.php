@@ -152,7 +152,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">No. Telp </label>
                     <div class="col-sm-4">
-                        <?=form_input(array('name'=>'notelp', 'id'=>'notelp', 'placeholder'=>'+628xxxxxxxx'), '', 'class="form-control" required');?>
+                        <?=form_input(array('name'=>'notelp', 'id'=>'notelp', 'placeholder'=>'08xxxxxxxx'), '', 'class="form-control" required');?>
                     </div>                    
                 </div>
                 <div class="form-group">
@@ -281,8 +281,9 @@ function get_currdev(){
         $("#dvnotelp").removeClass('hidden-xs').addClass('.visible-xs').show();
         $("#msgbox").removeClass('visible-xs').addClass('.hidden-xs').hide;
     });
-    
-    $(".ulnotelp li:first-child").click();
+    if (get_currdev() !== 'xs'){
+        $(".ulnotelp li:first-child").click();
+    }
     
 });
 </script>

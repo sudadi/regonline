@@ -7,7 +7,9 @@
         return $this->db->get_where('res_tpasien', $where)->row();
     }	
     function cekreserv($norm, $status){
-        $qry = $this->db->get_where("res_treservasi", "norm ={$norm} and status={$status}");
+        $this->db->join('res_jadwal', 'res_treservasi.jadwal_id=res_jadwal.id_jadwal');
+        $this->db->join('res_refklinik', 'res_refklinik.id_klinik=res_jadwal.klinik_id');
+        $qry = $this->db->get_where("res_treservasi", "res_treservasi.norm ={$norm} and res_treservasi.status={$status}");
         if ($qry->num_rows() > 0) return $qry->row(); 
     }	
     function getdokter($jenis) {

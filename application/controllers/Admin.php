@@ -200,7 +200,7 @@ class Admin extends CI_Controller
         $this->pageconf['base_url'] = base_url().'admin/sms/';
         $this->pageconf['total_rows'] = $jmldata;        
         $this->pagination->initialize($this->pageconf);
-        $data['content']['datanotelp']= $this->mod_sms->getsms('UpdatedInDB',true,null,$this->pageconf['per_page'],$this->uri->segment('3'));
+        $data['content']['datanotelp']= $this->mod_sms->getsms('TransTime',true,null,$this->pageconf['per_page'],$this->uri->segment('3'));
         $data['content']['datasms']= '';
         $data['content']['action']='admin/sms';
         $this->load->view('admin/main', $data);
@@ -220,7 +220,7 @@ class Admin extends CI_Controller
         if ($this->input->post()){
             $notelp=$this->input->post('notelp');
             $this->load->model('mod_sms');
-            $data = $this->mod_sms->getsms("UpdatedInDB",false,"Number='$notelp'");
+            $data = $this->mod_sms->getsms("TransTime",false,"Number='$notelp'");
             $this->db->update("sms_full_inbox", array("Processed"=>"true"), "SenderNumber='$notelp'");
         }
         echo json_encode($data);            
@@ -293,7 +293,7 @@ class Admin extends CI_Controller
     public function jadwal() {
         if ($this->input->get('hapus')) {
             $id= $this->input->get('hapus');
-            $this->db->delete('jadwal', 'id_jadwal='.$id);
+            $this->db->delete('res_jadwal', 'id_jadwal='.$id);
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah dihapus');    
                 redirect('admin/jadwal');
@@ -313,10 +313,10 @@ class Admin extends CI_Controller
             if ($this->input->post('edit')){
                 $idjadwal= $this->input->post('edit');
                 $status= $this->input->post('status');
-                $this->db->update('jadwal', array('id_dokter'=>$dokter,'id_klinik'=>$klinik,'jnslayan'=>$jnslayan,'kuota_perjam'=>$kuota,
+                $this->db->update('res_jadwal', array('dokter_id'=>$dokter,'klinik_id'=>$klinik,'jns_layan_id'=>$jnslayan,'kuota_perjam'=>$kuota,
                     'id_hari'=>$hari,'jam_mulai'=>$mulai,'jam_selesai'=>$selesai,'status'=>$status), 'id_jadwal='.$idjadwal);
             }else{
-                $this->db->insert('jadwal', array('id_dokter'=>$dokter,'id_klinik'=>$klinik,'jnslayan'=>$jnslayan,
+                $this->db->insert('res_jadwal', array('dokter_id'=>$dokter,'klinik_id'=>$klinik,'jns_layan_id'=>$jnslayan,
                     'kuota_perjam'=>$kuota,'id_hari'=>$hari,'jam_mulai'=>$mulai,'jam_selesai'=>$selesai,'status'=>$status));
             }
             if ($this->db->affected_rows()>0){
@@ -386,6 +386,11 @@ class Admin extends CI_Controller
     }
      public function users() {
         $this->data['page']='admin/users';
+        $this->data['content']='';
+        $this->load->view('admin/main', $this->data);
+    }
+    public function smsconf() {
+        $this->data['page']='admin/smsconf';
         $this->data['content']='';
         $this->load->view('admin/main', $this->data);
     }
