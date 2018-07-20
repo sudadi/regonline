@@ -25,7 +25,7 @@
                     <div class="box-body">
                         <div class="col-sm-12">
                             <div class="col-sm-2">
-                                <?=form_button('tambah', '<span class="fa fa-plus"></span> Tambah', 'class="btn btn-info" data-toggle="modal" data-target="#modal-jadwal"') ;?>
+                                <?=form_button('tambah', '<span class="fa fa-plus"></span> Tambah', 'id="btntambah" class="btn btn-info"') ;?>
                             </div>
                         </div>
                         <div class="clearfix"></div><p/>
@@ -163,6 +163,18 @@
 </div>
   
 <script>
+    $('#btntambah').click(function() {
+        $('#edit').val(false);
+        $('select[name=dokter]').val('');
+        $('select[name=klinik]').val('');
+        $('select[name=jnslayan]').val('');
+        $('select[name=status]').val('');
+        $('select[name=hari]').val('');
+        $('#mulai').val(0);
+        $('#selesai').val(0);
+        $('#kuota').val(0);
+        $("#modal-jadwal").modal();
+    })
     function editdata(id) {
         $.ajax({
             url : "<?php echo site_url('admin/ajaxjadwal/')?>"+id,
@@ -170,9 +182,9 @@
             dataType: "JSON",
             success: function(data)
             {
-                $('select[name=dokter]').val(data.id_dokter);
-                $('select[name=klinik]').val(data.id_klinik);
-                $('select[name=jnslayan]').val(data.jnslayan);
+                $('select[name=dokter]').val(data.dokter_id);
+                $('select[name=klinik]').val(data.klinik_id);
+                $('select[name=jnslayan]').val(data.jns_layan_id);
                 $('select[name=status]').val(data.status);
                 $('select[name=hari]').val(data.id_hari);
                 $('#mulai').val(data.jam_mulai);

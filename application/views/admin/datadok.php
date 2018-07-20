@@ -92,7 +92,7 @@
                         echo form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Aktif','0'=>'Non Aktif'),'1', 'class="form-control" required');?>
                     </div>
                 </div>
-                <?=form_input(array('name'=>'edit','id'=>'edit'),true);?>
+                <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'),false);?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>

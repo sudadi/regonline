@@ -41,7 +41,7 @@
     <!-- jQuery UI 1.11.4 -->
     <script src="<?=base_url('assets/bower_components/jquery-ui/jquery-ui.min.js');?>"></script>
 </head>
-<body class="hold-transition skin-red sidebar-mini">
+<body class="hold-transition skin-red fixed sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
     <header class="main-header">
@@ -49,7 +49,7 @@
             <span class="logo-mini"><b>R</b>SO</span>
             <span class="logo-lg"><b>Reservasi</b>Online</span>
         </a>
-        <nav class="navbar navbar-static-top">
+        <nav class="navbar navbar-fixed-top">
             <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
