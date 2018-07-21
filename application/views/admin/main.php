@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="<?=base_url('assets/dist/css/AdminLTE.css');?>">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="<?=base_url('assets/dist/css/skins/skin-red.min.css');?>">
+    <link rel="stylesheet" href="<?=base_url('assets/dist/css/skins/skin-blue.min.css');?>">
     <!-- Date Picker -->
     <link rel="stylesheet" href="<?=base_url('assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css');?>">
     <link rel="stylesheet" href="<?=base_url('assets/plugins/iCheck/square/blue.css');?>">
@@ -41,7 +41,7 @@
     <!-- jQuery UI 1.11.4 -->
     <script src="<?=base_url('assets/bower_components/jquery-ui/jquery-ui.min.js');?>"></script>
 </head>
-<body class="hold-transition skin-red fixed sidebar-mini">
+<body class="hold-transition skin-blue fixed sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
     <header class="main-header">

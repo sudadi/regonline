@@ -19,7 +19,7 @@
         <div class="row">
             <div id="dvnotelp" class="col-sm-3 col-xs-12">
                 <?=form_button('tulissms', '<span class="fa fa-plus"></span> Tulis Pesan', 'class="btn btn-primary btn-block margin-bottom" data-toggle="modal" data-target="#modal-sms"') ;?>
-                <div class="box box-solid">
+                <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">No. Telp</h3>
                         
@@ -35,23 +35,11 @@
                                     <span class="spnotelp text-bold"><?=$notelp->Number;?></span></a></li>   
                             <?php } ?>
                         </ul>
-<!--                        <div class="table-responsive mailbox-messages">
-                            <table id="tnotelp" class="table">
-                                <?php //var_dump($datanotelp);
-                                foreach ($datanotelp as $notelp) {?>
-                                <tr style="cursor: pointer;">
-                                    <?=($notelp->stat == 'false' && $notelp->Type == 'inbox') ? '<td class="text-bold">':'<td>';
-                                        echo $notelp->Number;?>
-                                    </td>
-                                </tr>
-                                <?php }?>
-                            </table>
-                        </div>-->
-                    </div>
-                  <!-- /.box-body -->
-                  <div class="box-footer text-center">
+                  <div class="box-group text-center">
                        <?php echo $this->pagination->create_links();?>
+                      <button id="btnpulsa" class="btn btn-primary col-xs-12">Cek pulsa</button>
                   </div>
+                </div>
                 </div>
                 <!-- /. box -->
                     <div class="box box-solid">
@@ -165,6 +153,44 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kirim</button>
+            </div>
+        </div>
+    </div>
+    <?=form_close();?>
+</div>
+<div class="modal fade" id="modal-pulsa">
+    <?=form_open($action, 'id="formpulsa" class="form-horizontal form-label-left"'); ?>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Cek Pulsa</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Template </label>
+                    <div class="col-sm-9">
+                        <?php
+                        unset($option);
+                        $option[''] = 'Pilih Format';
+                        $option['*123#'] = 'XL/Axis/Indosat Reg (*123#)';
+                        $option['*555#'] = 'Indosat Reg (*555#)';
+                        $option['*888#'] = 'Telkomsel Reg(*888#)';
+                        $option['*111#'] = 'Tri Reg (*111#)';
+                        echo form_dropdown(array('name'=>'oppulsa', 'id'=>'oppulsa'), $option, '', 'class="form-control" required');?>
+                    </div>                    
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Custom</label>
+                    <div class="col-sm-9">
+                        <?= form_input(array('name'=>'txtpulsa','id'=>'txtpulsa','placeholder'=>'*xxx#'), '', ' class="form-control" required');?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-send"></i> Kirim</button>
             </div>
         </div>
     </div>
@@ -284,6 +310,8 @@ function get_currdev(){
     if (get_currdev() !== 'xs'){
         $(".ulnotelp li:first-child").click();
     }
-    
+    $("#btnpulsa").click(function() {
+        $("#modal-pulsa").modal();  
+    })
 });
 </script>
