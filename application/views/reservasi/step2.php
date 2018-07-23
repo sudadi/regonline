@@ -190,11 +190,15 @@
     $("#poliklinik").change(function() {
         var klinik=$(this).val();
         var jenis=$('#jnslayan').val();
-        var tglcekin=$('#tglcekin');      
-        var iddokter=$('#dokter').val();
+        var tglcekin=$('#tglcekin'); 
+        if (jenis==1){
+            var iddokter=0;
+        }else {
+            var iddokter=$('#dokter').val();
+        }
         if (klinik !==''){
             $.ajax({
-                url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
+                url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data)

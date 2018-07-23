@@ -45,6 +45,10 @@
         $this->db->where('id_klinik',$idklinik);
         return $this->db->get('res_refklinik')->row();
     }
+    function getkuotaklinik($klinik) {
+        $this->db->select('kuota');
+        return $this->db->get_where("res_refklinik", "id_klinik=$klinik")->row();
+    }
     function getjadwal($klinik,$dokter,$jenis) {
         if ($dokter){
         $this->db->where('dokter_id', $dokter);

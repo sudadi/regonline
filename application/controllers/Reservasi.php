@@ -75,13 +75,15 @@ class Reservasi extends CI_Controller {
         echo json_encode($data); 
     }
     public function ajax_jadwal($klinik, $iddokter, $jenis) {
+        $perjam= $this->mod_reservasi->getkuotaklinik($klinik)->kuota;
+        //echo $perjam;
         $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
         $dtlibur = $this->mod_reservasi->getlibur();
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
             $startdate = strtotime($hari);
             $enddate = strtotime("+2 weeks", $startdate);
-            $perjam=$dtjadwal[$i]['kuota_perjam'];
+            //$perjam=$dtjadwal[$i]['kuota_perjam'];
             $starttime = $dtjadwal[$i]['jam_mulai'];
             $endtime = $dtjadwal[$i]['jam_selesai'];
             $perhari = floor((strtotime($endtime) - strtotime($starttime))/(60*60)) * $perjam;
@@ -89,7 +91,7 @@ class Reservasi extends CI_Controller {
                 $newdate = date("Y-m-d", $startdate); 
                 $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
                 if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
-                      //nothing          
+                      //nothing  or skip        
                 } else {
                     $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 'perhari'=>$perhari, 
                     'iddokter'=>$dtjadwal[$i]['dokter_id'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
@@ -116,7 +118,8 @@ class Reservasi extends CI_Controller {
         //var_dump($dtjadwal);
         $klinik=$dtjadwal->klinik_id;
         $dokter=$dtjadwal->dokter_id;
-        $perjam=$dtjadwal->kuota_perjam;
+        //$perjam=$dtjadwal->kuota_perjam;
+        $perjam= $this->mod_reservasi->getkuotaklinik($klinik)->kuota;
         $starttime= strtotime($dtjadwal->jam_mulai);
         $endtime=strtotime($dtjadwal->jam_selesai);
         $kuotaperjam=[];

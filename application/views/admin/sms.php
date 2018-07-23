@@ -77,18 +77,17 @@
                         <div class="mailbox-controls">
                             <button type="button" id="btnbackxs" class="btn btn-primary btn-sm visible-xs text-bold">Back</button>
                             <!-- Check all button -->
-<!--                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                            </button>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle visible-lg visible-md visible-sm" id="checkAll"><i class="fa fa-square-o"></i></button>
+                            <div class="btn-group visible-lg visible-md visible-sm">
+                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus" title="Hapus"><i class="fa fa-trash-o"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_balas" title="Balas"><i class="fa fa-reply"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_terus" title="Teruskan"><i class="fa fa-share"></i></button>
                             </div>
-                             /.btn-group 
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                            <div class="pull-right">
+                            <!-- /.btn-group -->
+                            <button type="button" class="btn btn-default btn-sm visible-lg visible-md visible-sm" id="btn_refresh" title="Penyegaran"><i class="fa fa-refresh"></i></button>
+<!--                            <div class="pull-right">
                                 
-                            </div>-->
+                            </div>
                             <!-- /.pull-right -->
                         </div>
                         <div class="mailbox-messages">
