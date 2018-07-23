@@ -40,7 +40,7 @@ class Admin extends CI_Controller
         $this->pageconf['per_page'] = 10;
         $this->pageconf['num_links'] = 2;
         $this->pageconf['uri_segment']=3;
-        $this->pageconf['full_tag_open'] = "<ul class='pagination pagination-sm' style='position:relative; top:-25px;'>";
+        $this->pageconf['full_tag_open'] = "<ul class='pagination pagination-sm' style='position:relative; top:-15px;'>";
         $this->pageconf['full_tag_close'] ="</ul>";
         $this->pageconf['num_tag_open'] = '<li>';
         $this->pageconf['num_tag_close'] = '</li>';
@@ -192,6 +192,14 @@ class Admin extends CI_Controller
                 $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
             }
             redirect('admin/sms','refresh');
+        } else if ($this->input->post('txtpulsa')) {
+            $txtpulsa = $this->input->post('txtpulsa');
+            $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$txtpulsa, "Coding"=>"8bit", "Class"=>"127" ,"CreatorID"=>"Admin"));
+            if ($this->db->affected_rows()>0 ) {
+                $this->session->set_flashdata("success", "Berhasil, pesan masuk dalam antrian pengiriman");
+            } else {
+                $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
+            }
         }        
         $data['page']='admin/sms';
         $this->load->library('pagination');

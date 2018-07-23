@@ -313,5 +313,8 @@ function get_currdev(){
     $("#btnpulsa").click(function() {
         $("#modal-pulsa").modal();  
     })
+    $("#oppulsa").change(function() {
+        $("#txtpulsa").val($(this).val());
+    })
 });
 </script>
