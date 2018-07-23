@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Waktu pembuatan: 23 Jul 2018 pada 17.45
--- Versi server: 5.7.22-0ubuntu18.04.1
--- Versi PHP: 7.2.7-0ubuntu0.18.04.2
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 23 Jul 2018 pada 20.14
+-- Versi server: 10.1.31-MariaDB
+-- Versi PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -107,7 +107,7 @@ CREATE TABLE `auth_users` (
 --
 
 INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1532333109, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1532360459, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
@@ -289,6 +289,7 @@ CREATE TABLE `res_refklinik` (
   `nama_klinik` varchar(100) NOT NULL,
   `kode_poli` varchar(5) NOT NULL,
   `tipe_layan` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1.Reguler; 2.Eksekutif',
+  `kuota` int(4) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0.Tidak Aktif; 1. Aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -296,24 +297,24 @@ CREATE TABLE `res_refklinik` (
 -- Dumping data untuk tabel `res_refklinik`
 --
 
-INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_layan`, `status`) VALUES
-(1, 'Ortopedi', 'ORT', 3, 1),
-(2, 'Gigi & Mulut', 'GP1', 1, 1),
-(3, 'Rehabilitasi Medik', 'IRM', 1, 1),
-(4, 'Penyakit Dalam', 'INT', 1, 1),
-(15, 'Akupuntur', 'AKP', 1, 1),
-(17, 'Neurologi & Saraf', 'SAR', 1, 1),
-(18, 'Bedah Umum', 'AKP', 1, 1),
-(24, 'Sub Sp. Spine', 'ORT', 1, 1),
-(100, 'Herbal', 'HER', 1, 0),
-(101, 'Ortopedi Wijaya Kusuma', 'ORT', 1, 0),
-(102, 'Sub. Sp Onkology', 'ORT', 1, 1),
-(103, 'Sub. Sp Hand and Micro Surgery', 'ORT', 1, 1),
-(104, 'Sub. Sp. Sport Medicine', 'ORT', 1, 1),
-(400, 'Sub. Sp. Adult Reconstruction', 'ORT', 1, 1),
-(401, 'Sub. Sp. Pediatric', 'ORT', 1, 1),
-(533, 'Rekam Medik', '', 1, 0),
-(569, 'Poli Anestesi', '', 1, 0);
+INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_layan`, `kuota`, `status`) VALUES
+(1, 'Ortopedi', 'ORT', 3, 20, 1),
+(2, 'Gigi & Mulut', 'GP1', 1, 0, 1),
+(3, 'Rehabilitasi Medik', 'IRM', 1, 0, 1),
+(4, 'Penyakit Dalam', 'INT', 1, 0, 1),
+(15, 'Akupuntur', 'AKP', 1, 0, 1),
+(17, 'Neurologi & Saraf', 'SAR', 1, 0, 1),
+(18, 'Bedah Umum', 'AKP', 1, 0, 1),
+(24, 'Sub Sp. Spine', 'ORT', 1, 0, 1),
+(100, 'Herbal', 'HER', 1, 0, 0),
+(101, 'Ortopedi Wijaya Kusuma', 'ORT', 1, 0, 0),
+(102, 'Sub. Sp Onkology', 'ORT', 1, 0, 1),
+(103, 'Sub. Sp Hand and Micro Surgery', 'ORT', 1, 0, 1),
+(104, 'Sub. Sp. Sport Medicine', 'ORT', 1, 0, 1),
+(400, 'Sub. Sp. Adult Reconstruction', 'ORT', 1, 0, 1),
+(401, 'Sub. Sp. Pediatric', 'ORT', 1, 0, 1),
+(533, 'Rekam Medik', '', 1, 0, 0),
+(569, 'Poli Anestesi', '', 1, 0, 0);
 
 -- --------------------------------------------------------
 
