@@ -77,15 +77,17 @@
                         <div class="mailbox-controls">
                             <button type="button" id="btnbackxs" class="btn btn-primary btn-sm visible-xs text-bold">Back</button>
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle visible-lg visible-md visible-sm" id="checkAll"><i class="fa fa-square-o"></i></button>
-                            <div class="btn-group visible-lg visible-md visible-sm">
+                            <div class="hidden-xs">
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll"><i class="fa fa-square-o"></i></button>
+                            <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm" id="btn_hapus" title="Hapus"><i class="fa fa-trash-o"></i></button>
                                 <button type="button" class="btn btn-default btn-sm" id="btn_balas" title="Balas"><i class="fa fa-reply"></i></button>
                                 <button type="button" class="btn btn-default btn-sm" id="btn_terus" title="Teruskan"><i class="fa fa-share"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm visible-lg visible-md visible-sm" id="btn_refresh" title="Penyegaran"><i class="fa fa-refresh"></i></button>
-<!--                            <div class="pull-right">
+                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh" title="Penyegaran"><i class="fa fa-refresh"></i></button>
+                            </div>
+<!--                        <div class="pull-right">
                                 
                             </div>
                             <!-- /.pull-right -->
@@ -106,14 +108,14 @@
                     <div class="box-footer no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll"><i class="fa fa-square-o"></i></button>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll1"><i class="fa fa-square-o"></i></button>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm" id="btn_balas" title="Balas"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm" id="btn_terus" title="Teruskan"><i class="fa fa-share"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus1" title="Hapus"><i class="fa fa-trash-o"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_balas1" title="Balas"><i class="fa fa-reply"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_terus1" title="Teruskan"><i class="fa fa-share"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh" title="Penyegaran"><i class="fa fa-refresh"></i></button>
+                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh1" title="Penyegaran"><i class="fa fa-refresh"></i></button>
 <!--                            <div class="pull-right">
                                  <?php echo $this->pagination->create_links();?>
                             </div>-->
@@ -177,7 +179,7 @@
                         $option['*555#'] = 'Indosat Reg (*555#)';
                         $option['*888#'] = 'Telkomsel Reg(*888#)';
                         $option['*111#'] = 'Tri Reg (*111#)';
-                        echo form_dropdown(array('name'=>'oppulsa', 'id'=>'oppulsa'), $option, '', 'class="form-control" required');?>
+                        echo form_dropdown(array('name'=>'oppulsa', 'id'=>'oppulsa'), $option, '', 'class="form-control"');?>
                     </div>                    
                 </div>
                 <div class="form-group">
@@ -219,6 +221,7 @@ function get_currdev(){
             dataType: "JSON",
             success: function(data)
             {
+                
                 $("#tsms").empty();
                 for (var i = 0; i < data.length; i++) {
                     var obstat;
@@ -242,6 +245,7 @@ function get_currdev(){
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert('Error : Data tidak ditemukan..!');
+                location.reload();
             }
         });
         if (get_currdev()=='xs'){
@@ -280,7 +284,10 @@ function get_currdev(){
                             $('tr#'+nobar[i]+'').css('background-color', '#ccc');
                             $('tr#'+nobar[i]+'').fadeOut('slow');
                         }
-                    }     
+                    },
+                    error: function() {
+                        location.reload();
+                    }
                 });
             }   
         } else {
@@ -301,6 +308,15 @@ function get_currdev(){
     });
     $("#btn_refresh").click(function() {
         $("#tnotelp tr").click();
+    });
+    $("#btn_hapus1").click(function() {
+        $("#btn_hapus").click();
+    });
+    $("#btn_balas1").click(function() {
+        $("#btn_balas").click();
+    });
+    $("#checkAll1").click(function() {
+        $("#checkAll").click();
     });
     $("#btnbackxs").click(function () {
         $("#dvnotelp").removeClass('hidden-xs').addClass('.visible-xs').show();

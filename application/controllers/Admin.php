@@ -109,12 +109,13 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $data);
     }
     public function ajaxdashres() {
-        if (!$this->input->is_ajax_request()) {
+        if ($this->input->is_ajax_request()) {
+            $this->load->model('mod_reservasi');
+            $data=$this->mod_reservasi->getgraphres('first_update BETWEEN (NOW() - INTERVAL 15 DAY) AND NOW()');
+            echo json_encode($data);
+        } else {
             exit('No direct script access allowed');
         }
-        $this->load->model('mod_reservasi');
-        $data=$this->mod_reservasi->getgraphres('first_update BETWEEN (NOW() - INTERVAL 15 DAY) AND NOW()');
-        echo json_encode($data);
     }
     public function reservasi() {
         if ($this->input->get('hapus')){
@@ -231,7 +232,10 @@ class Admin extends CI_Controller
             $data = $this->mod_sms->getsms("TransTime",false,"Number='$notelp'");
             $this->db->update("sms_full_inbox", array("Processed"=>"true"), "SenderNumber='$notelp'");
         }
-        echo json_encode($data);            
+        for ($i=0;$i < count($data);$i++) {
+        $data[$i]->TextDecoded = nl2br($data[$i]->TextDecoded);
+        }
+        echo json_encode($data);
     }
     public function ajaxdelsms() {
         if (!$this->input->is_ajax_request()) {
@@ -258,7 +262,7 @@ class Admin extends CI_Controller
     public function datadok() {
         if ($this->input->get('hapus')) {
             $id= $this->input->get('hapus');
-            $this->db->delete('refdokter', 'id_dokter='.$id);
+            $this->db->delete('res_refdokter', 'id_dokter='.$id);
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah dihapus');    
                 redirect('admin/datadok','refresh');
@@ -271,9 +275,9 @@ class Admin extends CI_Controller
             $namadr= $this->input->post('namadr');
             $status= $this->input->post('status');
             if ($this->input->post('edit')){
-                $this->db->update('refdokter', array('id_dokter'=>$iddr,'status'=>$status,'nama_dokter'=>$namadr), 'id_dokter='.$iddr);
+                $this->db->update('res_refdokter', array('id_dokter'=>$iddr,'status'=>$status,'nama_dokter'=>$namadr), 'id_dokter='.$iddr);
             }else{
-                $this->db->insert('refdokter', array('id_dokter'=>$iddr,'nama_dokter'=>$namadr,'status'=>$status));
+                $this->db->insert('res_refdokter', array('id_dokter'=>$iddr,'nama_dokter'=>$namadr,'status'=>$status));
             }
             if ($this->db->affected_rows()>0){
                $this->session->set_flashdata('success', 'Data sudah tersimpan');
@@ -294,8 +298,42 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $data);
     }
     public function dataklinik() {
+        if ($this->input->get('hapus')) {
+            $id= $this->input->get('hapus');
+            $this->db->delete('res_refklinik', 'id_klinik='.$id);
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah dihapus');    
+                redirect('admin/dataklinik','refresh');
+            } else {
+                $this->session->set_flashdata('error', 'Data GAGAL dihapus');
+            }            
+        }
+        if($this->input->post()){
+            $idklinik= $this->input->post('idklinik');
+            $nmklinik= $this->input->post('nmklinik');
+            $kuota= $this->input->post('kuota');
+            $status= $this->input->post('status');
+            if ($this->input->post('edit')){
+                $this->db->update('res_refklinik', array('id_klinik'=>$idklinik,'status'=>$status,'nama_klinik'=>$nmklinik,'kuota'=>$kuota), 'id_klinik='.$idklinik);
+            }else{
+                $this->db->insert('res_refklinik', array('id_klinik'=>$idklinik,'nama_klinik'=>$nmklinik,'status'=>$status,'kuota'=>$kuota));
+            }
+            if ($this->db->affected_rows()>0){
+               $this->session->set_flashdata('success', 'Data sudah tersimpan');
+               redirect('admin/dataklinik', 'refresh');
+            } else {
+                $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
+                redirect('admin/dataklinik', 'refresh');
+            }
+        }
+        $this->load->library('pagination');
+        $jmldata= count($this->mod_setting->getklinik());
+        $this->pageconf['base_url'] = base_url().'admin/dataklinik/';
+        $this->pageconf['total_rows'] = $jmldata;
+        $this->pagination->initialize($this->pageconf);
         $data['page']='admin/dataklinik';
-        $data['content']='';
+        $data['content']['dataklinik']= $this->mod_setting->getklinik($this->pageconf['per_page'],$this->uri->segment('3'));
+        $data['content']['action']='admin/dataklinik';
         $this->load->view('admin/main', $data);
     }
     public function jadwal() {
@@ -393,8 +431,13 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $this->data);
     }
      public function users() {
+        $this->load->library('pagination');
+        $jmldata= $this->mod_setting->getnumlibur();
+        $this->pageconf['base_url'] = base_url().'admin/users/';
+        $this->pageconf['total_rows'] = $jmldata;
+        $this->pagination->initialize($this->pageconf);	 
         $this->data['page']='admin/users';
-        $this->data['content']='';
+        $this->data['content']['datauser']= $this->mod_setting->getuser($this->pageconf['per_page'],$this->uri->segment('3'));
         $this->load->view('admin/main', $this->data);
     }
     public function smsconf() {

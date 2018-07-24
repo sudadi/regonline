@@ -243,6 +243,7 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown){
                     alert('Error : Data tidak ditemukan..!');
+                    location.reload();
                 }
             }); 
             //return false;
@@ -268,7 +269,8 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert('Error : Masukkan data secara urut..!');
+                    alert('Error : Data tidak ditemukan..!');
+                    location.reload();
                 }
             });
         }   
@@ -293,7 +295,8 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert('Error : Masukkan data secara urut..!');
+                    alert('Error : Data tidak ditemukan..!');
+                    location.reload();
                 }    
             });
         }
@@ -318,7 +321,8 @@
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error : Masukkan data secara urut..!');
+                alert('Error : Data tidak ditemukan..!');
+                location.reload();
             } 
         });       
     });
@@ -344,6 +348,7 @@
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert('Error : Data tidak ditemukan..!');
+                location.reload();
             }
         });
     }

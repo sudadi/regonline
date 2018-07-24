@@ -6,11 +6,8 @@
     function getdokter($number=null,$offset=null,$where=null) {
         return $this->db->get_where('res_refdokter',$where,$number,$offset)->result();
     }
-    function getklinik($number=null,$offset=null) {
-        if($number && $offset){
-            $this->db->limit($number, $offset);
-        }
-        return $this->db->get('res_refklinik')->result();
+    function getklinik($number=null,$offset=null,$where=null) {
+        return $this->db->get_where('res_refklinik',$where,$number,$offset)->result();
     }
     function getjnslayan() {
         return $this->db->get('res_refjns_layan')->result();
