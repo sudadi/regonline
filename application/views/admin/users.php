@@ -25,7 +25,10 @@
                     <div class="box-body">
                         <div class="col-sm-12">
                             <div class="col-sm-2">
-                                <?=form_button('tambah', '<span class="fa fa-plus"></span> Tambah', 'class="btn btn-info" onclick="return tambahklinik();"') ;?>
+                                <?=form_button('tambahuser', '<span class="fa fa-plus"></span> Tambah User', 'class="btn btn-info" onclick="return tambahuser();"') ;?>
+                            </div>
+                            <div class="col-sm-2">
+                                <?=form_button('tambahgroup', '<span class="fa fa-plus"></span> Tambah Group', 'class="btn btn-info" onclick="return tambahgroup();"') ;?>
                             </div>
                         </div>
                         <div class="clearfix"></div><p/>
@@ -35,79 +38,122 @@
                                     <tbody>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Nama Depan</th>
+                                            <th>Nama Belakang</th>
                                             <th>Nama Pengguna</th>
                                             <th>Email</th>
+                                            <th>Group</th>
                                             <th>Status</th>
                                             <th>Opsi</th>
                                         </tr>
                                         <?php 
                                         //$no = $this->uri->segment('3') + 1;
-                                        foreach($dataklinik as $klinik){ 
+                                        foreach($users as $user){ 
                                         ?>
-                                        <tr onclick="isidata(this);">
-                                            <td><?=$klinik->id_klinik;?></td>
-                                            <td><?=$klinik->nama_klinik;?></td>
-                                            <td><?=$klinik->kuota;?></td>
-                                            <td><?=$klinik->status ? '<span class="btn-xs btn-success">Aktif</span>':'<span class="btn-xs btn-default">Non Aktif</span>';?></td>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($user->id,ENT_QUOTES,'UTF-8');?></td>
+                                            <td><?php echo htmlspecialchars($user->first_name,ENT_QUOTES,'UTF-8');?></td>
+                                            <td><?php echo htmlspecialchars($user->last_name,ENT_QUOTES,'UTF-8');?></td>
+                                            <td><?php echo htmlspecialchars($user->username,ENT_QUOTES,'UTF-8');?></td>
+                                            <td><?php echo htmlspecialchars($user->email,ENT_QUOTES,'UTF-8');?></td>
                                             <td>
-                                                <a href="#" data-toggle="modal" data-target="#modal-klinik"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
-                                                <a href="<?=base_url('admin/dataklinik/?hapus='.$klinik->id_klinik);?>" onclick="return confirm('Yakin menghapus data ini ?')">
-                                                    <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Hapus</span></a>
-                                            </td>
-                                        </tr>
+                                                <?php foreach ($user->groups as $group):?>
+                                                    <?php echo anchor("auth/edit_group/".$group->id, htmlspecialchars($group->name,ENT_QUOTES,'UTF-8'),'title="Edit Goup" class="editgroup"') ;?><br />
+                                                <?php endforeach?>
+                                                </td>
+                                                <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'),'title="Deactivate" class="deactivate"') : anchor("auth/activate/". $user->id, lang('index_inactive_link'),'title="Activate" class="activate"');?></td>
+                                                <td><?php echo anchor("auth/edit_user/".$user->id, 'Edit', 'title="Edit User" class="edituser"') ;?></td>
+                                        </tr>                                            
                                     <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
-                        </div> <?php echo $this->pagination->create_links();?>
+                        </div> <?php //echo $this->pagination->create_links();?>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
-<div class="modal fade" id="modal-klinik">
-    <?=form_open($action, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
-    <div class="modal-dialog">
+<div class="modal fade" id="modal-users">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah Data Kinik</h4>
+                <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="control-label col-sm-2">ID</label>
-                    <div class="col-sm-4">
-                        <?=form_input(array('name'=>'idklinik','id'=>'idklinik'), '', 'class="form-control" required');?>
-                    </div>                    
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Nama Klinik</label>
-                    <div class="col-sm-10">
-                        <?=form_input(array('name'=>'nmklinik','id'=>'nmklinik'), '', 'class="form-control" required');?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Kuota</label>
-                    <div class="col-sm-10">
-                        <?=form_input(array('name'=>'kuota','id'=>'kuota'), '', 'class="form-control" required');?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Status</label>
-                    <div class="col-sm-4">
-                        <?php
-                        echo form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Aktif','0'=>'Non Aktif'),'1', 'class="form-control" required');?>
-                    </div>
-                </div>
-                <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'),false);?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
-            </div>
+            <div class="modal-body"></div>
         </div>
     </div>
-    <?=form_close();?>
 </div>
+<script>
+function tambahuser(){
+    $.ajax({
+        url: "<?php echo base_url('auth/create_user')?>",
+        type: "GET",
+        datatype: "HTML",
+        success: function(data){
+            $(".modal-title").text('');
+            $(".modal-body").html(data);
+            $("#modal-users").modal();
+        }
+    });
+};
+function tambahgroup(){
+    $.ajax({
+        url: "<?php echo base_url('auth/create_group')?>",
+        type: "GET",
+        datatype: "HTML",
+        success: function(data){
+            $(".modal-title").text('');
+            $(".modal-body").html(data);
+            $("#modal-users").modal();
+        }
+    });
+};
+$(document).ready(function() {
+    $(".deactivate").click(function() {
+        url=$(this).attr("href");
+        $.ajax({
+           url: url,
+           type: "GET",
+           dataType: "HTML",
+           success: function(data){
+               $(".modal-title").text('Update Status User');
+               $(".modal-body").html(data);
+               $("#modal-users").modal();
+           }
+        });
+        return false;
+    });
+    $(".editgroup").click(function() {
+        url=$(this).attr("href");
+        $.ajax({
+           url: url,
+           type: "GET",
+           dataType: "HTML",
+           success: function(data){
+               $(".modal-title").text('Edit Group');
+               $(".modal-body").html(data);
+               $("#modal-users").modal();
+           }
+        });
+        return false;
+    });
+    $(".edituser").click(function() {
+        url=$(this).attr("href");
+        $.ajax({
+           url: url,
+           type: "GET",
+           dataType: "HTML",
+           success: function(data){
+               $(".modal-title").text('Edit User');
+               $(".modal-body").html(data);
+               $("#modal-users").modal();
+           }
+        });
+        return false;
+    });
+});
+</script>

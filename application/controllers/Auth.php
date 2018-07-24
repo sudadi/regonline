@@ -15,12 +15,15 @@ class Auth extends CI_Controller
         } else if (!$this->ion_auth->is_admin()) {
             return show_error('You must be an administrator to view this page.');
         } else {
+            $this->load->model('mod_sms');
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             $this->data['users'] = $this->ion_auth->users()->result();
             foreach ($this->data['users'] as $k => $user) {
                 $this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
             }
-            $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'index', $this->data);
+            $this->data['page']='admin/users';
+            $this->data['content']['users']= $this->data['users'];
+            $this->_render_page('admin' . DIRECTORY_SEPARATOR . 'main', $this->data);
         }
     }
     public function login() {

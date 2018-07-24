@@ -20,7 +20,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Setting <small> Data Dokter</small></h3>
+                        <h3 class="box-title">Setting <small> Data Klinik</small></h3>
                     </div>
                     <div class="box-body">
                         <div class="col-sm-12">
