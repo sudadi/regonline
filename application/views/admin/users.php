@@ -75,18 +75,7 @@
         </div>
     </section>
 </div>
-<div class="modal fade" id="modal-users">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body"></div>
-        </div>
-    </div>
-</div>
+<div class="modal fade" id="modal-users"></div>
 <script>
 function tambahuser(){
     $.ajax({
@@ -94,8 +83,7 @@ function tambahuser(){
         type: "GET",
         datatype: "HTML",
         success: function(data){
-            $(".modal-title").text('');
-            $(".modal-body").html(data);
+            $("#modal-users").html(data);
             $("#modal-users").modal();
         }
     });
@@ -106,8 +94,7 @@ function tambahgroup(){
         type: "GET",
         datatype: "HTML",
         success: function(data){
-            $(".modal-title").text('');
-            $(".modal-body").html(data);
+            $("#modal-users").html(data);
             $("#modal-users").modal();
         }
     });
@@ -116,41 +103,38 @@ $(document).ready(function() {
     $(".deactivate").click(function() {
         url=$(this).attr("href");
         $.ajax({
-           url: url,
-           type: "GET",
-           dataType: "HTML",
-           success: function(data){
-               $(".modal-title").text('Update Status User');
-               $(".modal-body").html(data);
-               $("#modal-users").modal();
-           }
+            url: url,
+            type: "GET",
+            dataType: "HTML",
+            success: function(data){
+                $("#modal-users").html(data);
+                $("#modal-users").modal();
+            }
         });
         return false;
     });
     $(".editgroup").click(function() {
         url=$(this).attr("href");
         $.ajax({
-           url: url,
-           type: "GET",
-           dataType: "HTML",
-           success: function(data){
-               $(".modal-title").text('Edit Group');
-               $(".modal-body").html(data);
-               $("#modal-users").modal();
-           }
+            url: url,
+            type: "GET",
+            dataType: "HTML",
+            success: function(data){
+                $("#modal-users").html(data);
+                $("#modal-users").modal();
+            }
         });
         return false;
     });
     $(".edituser").click(function() {
         url=$(this).attr("href");
         $.ajax({
-           url: url,
-           type: "GET",
-           dataType: "HTML",
-           success: function(data){
-               $(".modal-title").text('Edit User');
-               $(".modal-body").html(data);
-               $("#modal-users").modal();
+            url: url,
+            type: "GET",
+            dataType: "HTML",
+            success: function(data){
+                $("#modal-users").html(data);
+                $("#modal-users").modal();
            }
         });
         return false;
