@@ -23,7 +23,14 @@
                         <h3 class="box-title">Setting <small> SMS & Modem</small></h3>
                     </div>
                     <div class="box-body">
-                        
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">[Auto] SMS Konfirmasi</h3>
+                            </div>
+                            <div class="box-body table-responsive no-padding">
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
