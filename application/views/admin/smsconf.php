@@ -62,18 +62,25 @@
                         <div class="form-group col-sm-7">
                             <label for="premodem">Prefix</label>
                             <div class="">
-                                <?=form_input(array('name'=>'premodem','id'=>'premodem',), $premask=NULL, 'class="form-control" required');?>
+                                <?=form_input(array('name'=>'premodem','id'=>'premodem',), NULL, 'class="form-control" required');?>
                             </div>
                         </div>
                         <div class="form-group col-sm-3">
                             <label class="" for="modem">Modem</label>
                             <div class="">
-                                <?=form_dropdown('modem', $option=NULL, '', 'class="form-control" required');?>
+                                <?php 
+                                $option[''] = "-Pilih Modem-";
+                                $option[1]="Modem1";
+                                $option[2]="Modem2";
+                                $option[3]="Modem3";
+                                $option[4]="Modem4";
+                                echo form_dropdown('modem', $option, '', 'class="form-control" required');?>
                             </div>
                         </div>
+                        <?=form_input(array('name'=>'editmodem','type'=>'hidden'));?>
                         <div class="form-group col-sm-2">
-                            <label for="sbtmodem" class="col-xs-12">&nbsp;</label>
-                            <button type="submit" id="smtmodem" class="btn btn-default"><i class="fa fa-save"></i> Simpan</button>
+                            <label for="smtmodem" class="col-xs-12">&nbsp;</label>
+                            <button type="submit" name="smtmodem" value="true" class="btn btn-default"><i class="fa fa-save"></i> Simpan</button>
                         </div>
                         <?=form_close();?>
                         <div class="col-sm-12">
@@ -88,7 +95,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        <?php
+                                        $i=0;
+                                        foreach ($rtmodem as $modem) {
+                                        $i++; ?>
+                                        <tr>
+                                            <td><?=$i;?></td>
+                                            <td><?=$modem->prefix;?></td>
+                                            <td><?=$modem->modem;?></td>
+                                            <td>
+                                                <button class="btn btn-warning" value="<?=$modem->id;?>" onclick="modemedit($this);">Edit</button>&nbsp;
+                                                <button class="btn btn-danger">Hapus</button>
+                                            </td>
+                                        </tr>                                            
+                                        <?php } ?>
                                     </tbody>
                                 </table>                                        
                             </div>
@@ -106,27 +126,73 @@
                             <strong>PREFIX : </strong>Awalan sms (Reg / Info dsb)<br/>
                             <strong>ARGUMENT : </strong>norm, id_dokter, id_klinik, id_jns_layan.
                         </p>
-                        <?=form_open('admin/smsconf', array('role'=>'form')) ;?>
-                        <div class="form-group col-sm-3">
-                            <label for="premask">Prefix</label>
-                            <div class="">
-                                <?=form_input(array('name'=>'premask','id'=>'premask',), $premask=NULL, 'class="form-control" required');?>
+                        <div class="col-sm-12">
+                            <div class="table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Prefix</th>
+                                            <th>Argument</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>                                        
                             </div>
                         </div>
-                        <div class="form-group col-sm-7">
-                            <label class="" for="format">Argument</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Template SMS</h3>
+                    </div>
+                    <div class="box-body">
+                        <?=form_open('admin/smsconf', array('role'=>'form')) ;?>
+                        <div class="form-group col-sm-8">
+                            <label for="premask">Text Template</label>
                             <div class="">
-                                <?=form_input(array('name'=>'argmask','id'=>'argmask'), $argmask=NULL, 'class="form-control" required');?>
+                                <?= form_textarea(array('name'=>'texttpl','id'=>'texttpl', 'rows'=>'2'), NULL, 'class="form-control" required');?>
                             </div>
                         </div>
                         <div class="form-group col-sm-2">
                             <label for="submit" class="col-xs-12">&nbsp;</label>
-                            <button type="submit" id="smtmask" class="btn btn-default"><i class="fa fa-save"></i> Simpan</button>
+                            <button type="submit" id="smttpl" class="btn btn-default"><i class="fa fa-save"></i> Simpan</button>
                         </div>
                         <?=form_close();?>
+                        <div class="col-sm-12">
+                            <div class="table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Text Template</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>                                        
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>                        
+            </div>
         </div>
     </section>
 </div>
+<script>
+    function modemedit(x){
+        var prefix = $(this).closest('tr').children('td:eq(1)').text();  
+        var modem = $(this).closest('tr').children('td:eq(2)').text();
+        $("#premodem").html(prefix);
+    };
+$(document).ready(function() {
+    
+})
+</script>

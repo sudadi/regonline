@@ -15,4 +15,6 @@ class Mod_sms extends CI_Model {
 //    public function getsms($where) {
 //        return $this->db->get_where('vsms', $where)->result_array();
 //    }
+    
+    
 }
