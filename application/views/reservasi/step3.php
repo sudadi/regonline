@@ -105,7 +105,7 @@ echo form_close();
 <script type="text/javascript">
     $('#back').click(function(){
         $('form[name=formstep3]').attr('action','<?php echo site_url("reservasi/step2");?>');
-        $('form[name=formstep3]').submit();
+        //$('form[name=formstep3]').submit();
     });
 
     function Validasi(){

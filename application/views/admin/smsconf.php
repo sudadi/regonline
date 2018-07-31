@@ -70,10 +70,10 @@
                             <div class="">
                                 <?php 
                                 $option[''] = "-Pilih Modem-";
-                                $option[1]="Modem1";
-                                $option[2]="Modem2";
-                                $option[3]="Modem3";
-                                $option[4]="Modem4";
+                                $option["Modem1"]="Modem1";
+                                $option["Modem2"]="Modem2";
+                                $option["Modem3"]="Modem3";
+                                $option["Modem4"]="Modem4";
                                 echo form_dropdown('modem', $option, '', 'class="form-control" required');?>
                             </div>
                         </div>
