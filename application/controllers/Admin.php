@@ -473,4 +473,11 @@ class Admin extends CI_Controller
         $data['content']['smskonfirm']= $this->mod_setting->getkonfirm();
         $this->load->view('admin/main', $data);
     }
+    public function postinfo() {
+        $this->load->model('mod_setting');
+        $data['page']='admin/postinfo';
+        $data['content']['rtmodem']='';
+        $data['content']['smskonfirm']= '';
+        $this->load->view('admin/main', $data);
+    }
 }

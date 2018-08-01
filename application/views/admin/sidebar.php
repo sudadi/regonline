@@ -27,6 +27,11 @@
                     <i class="fa fa-line-chart"></i> <span>Laporan</span>
                 </a>
             </li>
+            <li>
+                <a href="<?=base_url('admin/postinfo');?>">
+                    <i class="fa fa-line-chart"></i> <span>Post Info</span>
+                </a>
+            </li>
             <li class="treeview">
                 <a href="#1">
                     <i class="fa fa-gears"></i> <span>Setting</span>

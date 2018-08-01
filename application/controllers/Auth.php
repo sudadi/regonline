@@ -103,10 +103,10 @@ class Auth extends CI_Controller
             $identity = $this->session->userdata('identity');
             $change = $this->ion_auth->change_password($identity, $this->input->post('old'), $this->input->post('new'));
             if ($change) {
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                $this->session->set_flashdata('success', $this->ion_auth->messages());
                 $this->logout();
             } else  {
-                $this->session->set_flashdata('message', $this->ion_auth->errors());
+                $this->session->set_flashdata('error', $this->ion_auth->errors());
                 redirect('auth/change_password', 'refresh');
             }
         }
@@ -218,10 +218,10 @@ class Auth extends CI_Controller
             $activation = $this->ion_auth->activate($id);
         }
         if ($activation) {
-            $this->session->set_flashdata('message', $this->ion_auth->messages());
+            $this->session->set_flashdata('success', $this->ion_auth->messages());
             redirect("auth", 'refresh');
         } else {
-            $this->session->set_flashdata('message', $this->ion_auth->errors());
+            $this->session->set_flashdata('error', $this->ion_auth->errors());
             redirect("auth/forgot_password", 'refresh');
         }
     }
@@ -249,6 +249,7 @@ class Auth extends CI_Controller
 
                 if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) {
                     $this->ion_auth->deactivate($id);
+                    $this->session->set_flashdata('success', $this->ion_auth->messages());
                 }
             }
             redirect('auth', 'refresh');
@@ -403,11 +404,11 @@ class Auth extends CI_Controller
                 }
 
                 if ($this->ion_auth->update($user->id, $data)) {
-                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    $this->session->set_flashdata('success', $this->ion_auth->messages());
                     $this->redirectUser();
 
                 } else {
-                    $this->session->set_flashdata('message', $this->ion_auth->errors());
+                    $this->session->set_flashdata('error', $this->ion_auth->errors());
                     $this->redirectUser();
 
                 }
@@ -416,6 +417,7 @@ class Auth extends CI_Controller
 
         $this->data['csrf'] = $this->_get_csrf_nonce();
         $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+        $this->data['id'] = $id;
         $this->data['user'] = $user;
         $this->data['groups'] = $groups;
         $this->data['currentGroups'] = $currentGroups;
@@ -512,14 +514,15 @@ class Auth extends CI_Controller
                 $group_update = $this->ion_auth->update_group($id, $_POST['group_name'], $_POST['group_description']);
 
                 if ($group_update) {
-                    $this->session->set_flashdata('message', $this->lang->line('edit_group_saved'));
+                    $this->session->set_flashdata('success', $this->lang->line('edit_group_saved'));
                 } else {
-                    $this->session->set_flashdata('message', $this->ion_auth->errors());
+                    $this->session->set_flashdata('error', $this->ion_auth->errors());
                 }
                 redirect("auth", 'refresh');
             }
         }
         $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+        $this->data['id']=$id;
         $this->data['group'] = $group;
         $readonly = $this->config->item('admin_group', 'ion_auth') === $group->name ? 'readonly' : '';
         $this->data['group_name'] = array(

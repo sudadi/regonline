@@ -1,4 +1,4 @@
-<?=form_open("auth/create_group", 'id="formreserv" class="form-horizontal form-label-left"'); ?>
+<?=form_open("auth/edit_group/".$id, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

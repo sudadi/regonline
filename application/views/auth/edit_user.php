@@ -1,5 +1,5 @@
 
-<?=form_open("auth/create_user", 'id="formreserv" class="form-horizontal form-label-left"'); ?>
+<?=form_open("auth/edit_user/".$id, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -34,15 +34,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-4"><?php echo lang('edit_user_password_label', 'password');?><i class="text-red">*</i></label>
+                    <label class="control-label col-sm-4"><?php echo lang('edit_user_password_label', 'password');?></label>
                     <div class="col-sm-7">
-                        <?php echo form_input($password, '', 'class="form-control" required');?>
+                        <?php echo form_input($password, '', 'class="form-control" ');?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-4"><?php echo lang('edit_user_password_confirm_label', 'password_confirm');?><i class="text-red">*</i></label>
+                    <label class="control-label col-sm-4"><?php echo lang('edit_user_password_confirm_label', 'password_confirm');?></label>
                     <div class="col-sm-7">
-                        <?php echo form_input($password_confirm, '', 'class="form-control" required');?>
+                        <?php echo form_input($password_confirm, '', 'class="form-control" ');?>
                     </div>
                 </div>
                 <?php if ($this->ion_auth->is_admin()): ?>
