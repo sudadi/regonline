@@ -188,8 +188,8 @@
 </script>
 <script>
   $(document).ready(function () {
-    $('.sidebar-menu').tree()
-  })
+    $('.sidebar-menu').tree();
+  });
 </script>
 <!-- iCheck -->
 <script src="<?=base_url('assets/plugins/iCheck/icheck.min.js');?>"></script>
