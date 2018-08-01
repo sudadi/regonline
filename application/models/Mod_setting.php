@@ -37,7 +37,10 @@
     function getnumlibur() {
        return $this->db->get('res_tgl_libur')->num_rows(); 
     }
-    public function getmodemrt($where=null) {
+    function getmodemrt($where=null) {
         return $this->db->get_where('sms_routing', $where)->result();
+    }
+    function getkonfirm() {
+        return $this->db->get_where('sms_konfirm', 'id=1')->row();
     }
  }

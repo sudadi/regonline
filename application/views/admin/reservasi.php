@@ -42,7 +42,7 @@
                                             <th>TL</th>
                                             <th>Klinik</th>
                                             <th>Dokter</th>
-                                            <th>Bayar</th>
+                                            <th>Jaminan</th>
                                             <th>Layanan</th>
                                             <th>Reservasi</th>
                                             <th>Kode</th>
@@ -66,7 +66,7 @@
                                             <td><?=$res->nama_klinik;?></td>
                                             <td><?=$res->notelp;?></td>
                                             <td class="text-nowrap"><?=$res->nama_dokter;?></td>
-                                            <td><?=$res->jns_nama;?></td>
+                                            <td><?=$res->nama_jaminan;?></td>
                                             <td><?=$res->jns_layan;?></td>
                                             <td><?=$res->waktu_rsv;?></td>
                                             <td><?=$res->nores;?></td>

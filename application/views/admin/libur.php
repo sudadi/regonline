@@ -36,8 +36,8 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Tanggal</th>
-                                            <th>Status</th>
                                             <th>Keterangan</th>
+                                            <th>Status</th>
                                             <th>Opsi</th>
                                         </tr>
                                         <?php 
@@ -47,8 +47,8 @@
                                         <tr onclick="isidata(this);">
                                             <td><?=$libur->id_libur;?></td>
                                             <td><?=$libur->tanggal;?></td>
-                                            <td><?= $libur->status ? '<span class="btn btn-xs btn-success">Aktif</span>':'<span class="btn btn-xs btn-default">Non Aktif</span>';?></td>
                                             <td><?=$libur->ket;?></td>
+                                            <td><?= $libur->status ? '<span class="btn btn-xs btn-success">Aktif</span>':'<span class="btn btn-xs btn-default">Non Aktif</span>';?></td>
                                             <td>
                                                 <a href="#" data-toggle="modal" data-target="#modal-edit"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
                                                 <a href="<?=base_url('admin/libur/?hapus='.$libur->id_libur);?>" onclick="return confirm('Yakin menghapus data ini ?')">

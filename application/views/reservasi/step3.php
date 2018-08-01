@@ -62,9 +62,9 @@
     </div>
     <div class="box-body">
         <div class="form-group">
-            <label for="jenispas" class="col-sm-1 control-label">Pasien</label>
+            <label for="jenispas" class="col-sm-1 control-label">Penjamin</label>
             <div class="col-sm-4 col-md-3">
-                <?php echo form_input('jenispas', $jenispas, 'class="form-control" readonly');?>
+                <?php echo form_input('jnsjaminan', $jnsjaminan, 'class="form-control" readonly');?>
             </div>
             <label for="nmklinik" class="col-sm-1 control-label">Klinik</label>
             <div class="col-sm-4 col-md-4">
@@ -99,7 +99,7 @@
     echo form_hidden('idjadwal', $idjadwal);
     echo form_hidden('idklinik', $idklinik);
     echo form_hidden('iddokter', $iddokter);
-    echo form_hidden('jnspasien', $jnspasien);
+    echo form_hidden('idjaminan', $idjaminan);
 echo form_close();
 ?>
 <script type="text/javascript">

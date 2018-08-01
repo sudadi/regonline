@@ -444,7 +444,7 @@ class Admin extends CI_Controller
         if ($this->input->post()) {
             if ($this->input->post('smtmodem')){
                 if ($this->input->post('editmodem')){
-                    $this->db->update("sms_routing", array('prefix'=> $this->input->post('premodem'), 'modem'=> $this->input->post('modem')),"id=$this->input->post('editmodem')");
+                    $this->db->update("sms_routing", array('prefix'=> $this->input->post('premodem'), 'modem'=> $this->input->post('modem')),"id=".$this->input->post('editmodem'));
                 } else {
                     $this->db->insert('sms_routing', array('prefix'=> $this->input->post('premodem'), 'modem'=> $this->input->post('modem')));
                 }
@@ -453,12 +453,24 @@ class Admin extends CI_Controller
                 } else {
                     $this->session->set_flashdata('error', 'GAGAL, data tidak disimpan');
                 }
-                redirect('admin/smsconf');
+                redirect('admin/smsconf', 'refresh');
             }
         }
+        if ($this->input->post('smtkonfirm')) {
+            if ($this->input->post('fmtkonfirm')){
+                $this->db->update('sms_konfirm', array('format'=> $this->input->post('fmtkonfirm')), 'id=1');
+            }
+            if ($this->db->affected_rows() > 0){
+                    $this->session->set_flashdata('success', 'Data berhasil disimpan');
+            } else {
+                $this->session->set_flashdata('error', 'GAGAL, data tidak disimpan');
+            }
+            redirect('admin/smsconf');
+        }
         $this->load->model('mod_setting');
-        $this->data['page']='admin/smsconf';
-        $this->data['content']['rtmodem']=$this->mod_setting->getmodemrt();
-        $this->load->view('admin/main', $this->data);
+        $data['page']='admin/smsconf';
+        $data['content']['rtmodem']=$this->mod_setting->getmodemrt();
+        $data['content']['smskonfirm']= $this->mod_setting->getkonfirm();
+        $this->load->view('admin/main', $data);
     }
 }

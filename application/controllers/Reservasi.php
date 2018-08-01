@@ -139,7 +139,7 @@ class Reservasi extends CI_Controller {
             $tgllahir = $this->input->post('tgllahir');
             $this->cekvalpas($norm, $tgllahir);
             if ($this->session->userdata('status')=='0') {
-                $jenispas= $this->mod_reservasi->getjnspasien($this->input->post('jnspasien'));
+                $jnsjaminan= $this->mod_reservasi->getjnspasien($this->input->post('jnsjaminan'));
                 $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
                 $klinik= $this->mod_reservasi->getklinikbyid($this->input->post('poliklinik'));
                 $datatgl= explode("|",$this->input->post('tglcekin'));
@@ -150,8 +150,8 @@ class Reservasi extends CI_Controller {
                 $data['content']['nmdokter']= $dokter->nama_dokter;
                 $data['content']['idklinik']= $this->input->post('poliklinik');
                 $data['content']['nmklinik']= $klinik->nama_klinik;
-                $data['content']['jnspasien']= $this->input->post('jnspasien');
-                $data['content']['jenispas']= $jenispas->jns_nama;
+                $data['content']['idjaminan']= $this->input->post('jnsjaminan');
+                $data['content']['jnsjaminan']= $jnsjaminan->nama_jaminan;
                 $data['content']['jnslayan']= $this->input->post('jnslayan');
                 if($this->input->post('jnslayan')==1) {
                     $data['content']['layanan']= "Reguler";
@@ -182,17 +182,19 @@ class Reservasi extends CI_Controller {
             $kodeklinik=$dataklinik->kode_poli;
             $datares= array('norm'=>$this->input->post('norm'),
                 'waktu_rsv'=>$waktursv,'jadwal_id'=>$this->input->post('idjadwal'),
-                'jns_pasien_id'=>$this->input->post('jnspasien'),
+                'jns_jaminan_id'=>$this->input->post('idjaminan'),
                 'sebab_id'=>$this->input->post('sebab'),
                 'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'WEB');
             $this->db->insert('res_treservasi', $datares);
             if ($this->db->affected_rows()>0){
-                $this->session->set_userdata('status', '1');
-                $this->session->set_flashdata('success', 'Data sudah tersimpan');
                 $idres=$this->db->insert_id();
                 $nores=$kodeklinik.'-'.$idres;
                 $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
                 $this->session->set_userdata('nmklinik',$nmklinik);
+                $this->load->model('mod_sms');
+                $this->mod_sms->sendkonfirm($idres);
+                $this->session->set_userdata('status', '1');
+                $this->session->set_flashdata('success', 'Reservasi berhasil, data sudah tersimpan');
                 redirect('reservasi/finish/'.$idres);
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');

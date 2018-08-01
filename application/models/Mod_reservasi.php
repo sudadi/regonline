@@ -76,7 +76,7 @@
         return $this->db->get('res_jadwal')->row();
     }
     function getjnspasien($idjenis) {
-        return $this->db->get_where("res_jns_pasien", "jns_flag = 1 and jns_id = $idjenis")->row();
+        return $this->db->get_where("res_jns_jaminan", "flag_jaminan = 1 and id_jaminan = $idjenis")->row();
     }
     function getsebabsakit() {
         return $this->db->get('res_sebab_sakit')->result_array();
