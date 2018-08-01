@@ -23,12 +23,12 @@
                         <h3 class="box-title">Setting <small> Data Users</small></h3>
                     </div>
                     <div class="box-body">
-                        <div class="col-sm-12">
-                            <div class="col-sm-2">
-                                <?=form_button('tambahuser', '<span class="fa fa-plus"></span> Tambah User', 'class="btn btn-info" onclick="return tambahuser();"') ;?>
+                        <div class="col-sm-12 no-padding">
+                            <div class="form-group col-xs-6 col-sm-2">
+                                <?=form_button('tambahuser', '<span class="fa fa-user-plus"></span> Tambah User', 'class="btn btn-info" onclick="return tambahuser();"') ;?>
                             </div>
-                            <div class="col-sm-2">
-                                <?=form_button('tambahgroup', '<span class="fa fa-plus"></span> Tambah Group', 'class="btn btn-info" onclick="return tambahgroup();"') ;?>
+                            <div class="from-group col-xs-6 col-sm-2">
+                                <?=form_button('tambahgroup', '<span class="fa fa-users"></span> Tambah Group', 'class="btn btn-info" onclick="return tambahgroup();"') ;?>
                             </div>
                         </div>
                         <div class="clearfix"></div><p/>
@@ -42,7 +42,7 @@
                                             <th>Nama Belakang</th>
                                             <th>Nama Pengguna</th>
                                             <th>Email</th>
-                                            <th>Group</th>
+                                            <th class="nowrap">Member Of</th>
                                             <th>Status</th>
                                             <th>Opsi</th>
                                         </tr>
@@ -58,11 +58,13 @@
                                             <td><?php echo htmlspecialchars($user->email,ENT_QUOTES,'UTF-8');?></td>
                                             <td>
                                                 <?php foreach ($user->groups as $group):?>
-                                                    <?php echo anchor("auth/edit_group/".$group->id, htmlspecialchars($group->name,ENT_QUOTES,'UTF-8'),'title="Edit Goup" class="editgroup"') ;?><br />
+                                                <div style="padding: 3px 3px 0px 0px;">
+                                                    <?php echo anchor("auth/edit_group/".$group->id, htmlspecialchars($group->name,ENT_QUOTES,'UTF-8'),'title="Edit Goup" class="editgroup btn btn-xs btn-success"') ;?><br />
+                                                </div>
                                                 <?php endforeach?>
                                                 </td>
-                                                <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'),'title="Deactivate" class="deactivate"') : anchor("auth/activate/". $user->id, lang('index_inactive_link'),'title="Activate" class="activate"');?></td>
-                                                <td><?php echo anchor("auth/edit_user/".$user->id, 'Edit', 'title="Edit User" class="edituser"') ;?></td>
+                                                <td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link'),'title="Deactivate" class="deactivate btn btn-xs btn-info"') : anchor("auth/activate/". $user->id, lang('index_inactive_link'),'title="Activate" class="activate btn btn-xs btn-default"');?></td>
+                                                <td><?php echo anchor("auth/edit_user/".$user->id, '<i class="fa fa-edit "></i> Edit', 'title="Edit User" class="edituser btn btn-xs btn-warning"') ;?></td>
                                         </tr>                                            
                                     <?php } ?>
                                     </tbody>

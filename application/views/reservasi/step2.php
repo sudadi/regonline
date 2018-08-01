@@ -6,13 +6,13 @@
     <?=form_open($action, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
     <div class="box-body">
         <div class="form-group">
-            <label for="jnspasien" class="col-sm-2 control-label">Jenis Pasien</label>
+            <label for="jnsjaminan" class="col-sm-2 control-label">Jenis Jaminan</label>
             <div class="col-sm-6 col-md-4">
                 <?php 
                     $option[''] = '-Pilih Jenis Pasien-';
                     $option[2] = 'Pasien Umum';
                     $option[5] = 'Pasien BPJS';
-                    echo form_dropdown('jnspasien', $option, '', 'class="form-control" id="jnspasien" required');
+                    echo form_dropdown('jnsjaminan', $option, '', 'class="form-control" id="jnsjaminan" required');
                 ?>
             </div>
         </div>
@@ -83,9 +83,9 @@
     </form>
 </div>
 <script>
-    $("#jnspasien").change(function() {
-        var jnspasien=$(this).val();
-        if (jnspasien==5){ //jika bpjs
+    $("#jnsjaminan").change(function() {
+        var jnsjaminan=$(this).val();
+        if (jnsjaminan==5){ //jika bpjs
             $('#jnslayan').val(1).change();
             $(".jnslayan").fadeOut(800, function(){ 
                 $(".jnslayan").hide();

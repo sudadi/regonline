@@ -24,7 +24,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <?php $this->load->view('reservasi/header'); ?>
 <body class="hold-transition skin-yellow fixed sidebar-mini">
 <div class="wrapper">
