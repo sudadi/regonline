@@ -18,7 +18,7 @@
                     <?php echo form_open($action, 'method="POST"');?>
                       <div class="form-group has-feedback">
                         <?php echo form_input($identity);?>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                       </div>
                       <div class="form-group has-feedback">
                         <?php echo form_input($password);?>
@@ -37,7 +37,7 @@
                         </div>
                       </div>
                     </form>
-                    <a href="#">I forgot my password</a><br>
+                    <a href="#" id="forgotpass">I forgot my password</a><br>
                   </div>
                 </div>
             </div>
@@ -47,3 +47,17 @@
         </div>
     </section>
 </div>
+<div class="modal fade" id="modal-login"></div>
+<script>
+$("#forgotpass").click(function() {
+    $.ajax({
+        url: "<?=base_url('auth/forgot_password');?>",
+        method: "GET",
+        datatype: "html",
+        success: function(data){
+            $("#modal-login").html(data);
+            $("#modal-login").modal();
+        }
+    })
+});
+</script>

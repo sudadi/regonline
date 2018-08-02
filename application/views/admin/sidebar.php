@@ -43,7 +43,7 @@
                     <li><a href="<?=base_url('admin/jadwal');?>"><i class="fa fa-circle-o"></i> Data Jadwal</a></li>
                     <li><a href="<?=base_url('admin/libur');?>"><i class="fa fa-circle-o"></i> Data Libur</a></li>
                     <li><a href="<?=base_url('auth');?>"><i class="fa fa-circle-o"></i> Data User</a></li>
-                    <li><a href="<?=base_url('admin/smsconf');?>"><i class="fa fa-circle-o"></i> SMS & Modem</a></li>
+                    <li><a href="<?=base_url('admin/genset');?>"><i class="fa fa-circle-o"></i> General Setting</a></li>
                 </ul>
             </li>
         </ul>

@@ -73,29 +73,30 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah Data Kinik</h4>
+                <h4 class="modal-title">Add New Clinic</h4>
             </div>
             <div class="modal-body">
+                <p><?php echo "Please enter the clinic's information below.";?></p>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">ID</label>
+                    <label class="control-label col-sm-3">ID</label>
                     <div class="col-sm-4">
                         <?=form_input(array('name'=>'idklinik','id'=>'idklinik'), '', 'class="form-control" required');?>
                     </div>                    
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Nama Klinik</label>
-                    <div class="col-sm-10">
+                    <label class="control-label col-sm-3">Clinic Name</label>
+                    <div class="col-sm-8">
                         <?=form_input(array('name'=>'nmklinik','id'=>'nmklinik'), '', 'class="form-control" required');?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Kuota</label>
-                    <div class="col-sm-10">
+                    <label class="control-label col-sm-3">Quota</label>
+                    <div class="col-sm-8">
                         <?=form_input(array('name'=>'kuota','id'=>'kuota'), '', 'class="form-control" required');?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Status</label>
+                    <label class="control-label col-sm-3">Status</label>
                     <div class="col-sm-4">
                         <?php
                         echo form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Aktif','0'=>'Non Aktif'),'1', 'class="form-control" required');?>
@@ -105,7 +106,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>
     </div>
@@ -125,6 +126,7 @@
         $('#kuota').val(x[2].innerHTML);
         $('#status select').val(status);
         $('#edit').val(true);
+        $(".modal-title").text("Edit Clinic Data");
     }
     function tambahklinik(){
         $('#idklinik').val('');
@@ -132,6 +134,7 @@
         $('#kuota').val('');
         $('#status').val(1);
         $('#edit').val('');
+        $(".modal-title").text("Add New Clinic");
         $('#modal-klinik').modal();
     }
 </script>

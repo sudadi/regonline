@@ -129,9 +129,11 @@ class Admin extends CI_Controller
             $waktursv=date('Y/m/d H:i:s', strtotime($datatgl[2].$this->input->post('jamcekin')));
             $dataklinik= $this->mod_reservasi->getklinikbyid($this->input->post('klinik'));
             $kodeklinik=$dataklinik->kode_poli;
+            $norm=$this->input->post('norm');
+            $notelp= $this->input->post('notelp');
             $datares= array('norm'=>$this->input->post('norm'),
                 'waktu_rsv'=>$waktursv,'jadwal_id'=>$datatgl[0],
-                'jns_pasien_id'=>$this->input->post('jnspasien'),
+                'jns_jaminan_id'=>$this->input->post('jnsjaminan'),
                 'sebab_id'=>$this->input->post('sebab'),
                 'status'=>1, 'user_id'=>2, 
                 'jenis_rsv'=>$this->input->post('jenisres'));
@@ -143,10 +145,13 @@ class Admin extends CI_Controller
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
                 if(empty($this->input->post('edit'))){
-                    $this->session->set_userdata('status', '1');
+                    //$this->session->set_userdata('status', '1');
                     $idres=$this->db->insert_id();
                     $nores=$kodeklinik.'-'.$idres;
                     $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                    $this->db->update('res_tpasien', array('notelp'=>$notelp), "norm={$norm}");
+                    $this->load->model('mod_sms');
+                    $this->mod_sms->sendkonfirm($idres);
                 }
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
@@ -371,6 +376,8 @@ class Admin extends CI_Controller
             } else {
                 $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
             }
+            echo $this->db->last_query();
+            //die();
         }
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getjmljadwal();
@@ -440,7 +447,7 @@ class Admin extends CI_Controller
         $this->data['content']['datauser']= $this->mod_setting->getuser($this->pageconf['per_page'],$this->uri->segment('3'));
         $this->load->view('admin/main', $this->data);
     }
-    public function smsconf() {
+    public function genset() {
         if ($this->input->post()) {
             if ($this->input->post('smtmodem')){
                 if ($this->input->post('editmodem')){
@@ -465,10 +472,10 @@ class Admin extends CI_Controller
             } else {
                 $this->session->set_flashdata('error', 'GAGAL, data tidak disimpan');
             }
-            redirect('admin/smsconf');
+            redirect('admin/genset');
         }
         $this->load->model('mod_setting');
-        $data['page']='admin/smsconf';
+        $data['page']='admin/genset';
         $data['content']['rtmodem']=$this->mod_setting->getmodemrt();
         $data['content']['smskonfirm']= $this->mod_setting->getkonfirm();
         $this->load->view('admin/main', $data);

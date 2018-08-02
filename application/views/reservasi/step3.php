@@ -30,7 +30,7 @@
            <label for="notelp" class="col-sm-2 control-label">No. HP *</label>
            <div class="col-sm-4 col-md-4">
                <?php
-               echo form_input('notelp', '', 'class="form-control" id="notelp" placeholder="081xxxxxxxxx" required');
+               echo form_input('notelp', $notelp, 'class="form-control" id="notelp" placeholder="081xxxxxxxxx" required');
                ?>
            </div>
         </div>

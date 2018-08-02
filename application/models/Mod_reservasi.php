@@ -85,9 +85,8 @@
         return $this->db->get('res_tgl_libur')->result_array();
     }
     function getreserv($idres) {
-        $this->db->join('res_tpasien', 'res_treservasi.norm=res_tpasien.norm');
         $this->db->where('id_rsv', $idres);
-        return $this->db->get('res_treservasi')->row();
+        return $this->db->get('vreservasi')->row();
     }
     function getantrian($idklinik, $tglres) {
         $this->db->select();

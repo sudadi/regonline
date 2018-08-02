@@ -25,7 +25,7 @@
                     <div class="box-body">
                         <div class="col-sm-12">
                             <div class="col-sm-2">
-                                <?=form_button('tambah', '<span class="fa fa-plus"></span> Tambah', 'id="btntambah" class="btn btn-info"') ;?>
+                                <?=form_button(array('name'=>'btntambah','id'=>'btntambah'), '<span class="fa fa-plus"></span> Tambah', 'class="btn btn-info"') ;?>
                             </div>
                         </div>
                         <div class="clearfix"></div><p/>
@@ -151,11 +151,11 @@
                         ?>
                     </div>
                 </div>
-                <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'), FALSE);?>
+                <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'), '');?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>
     </div>
@@ -164,7 +164,7 @@
   
 <script>
     $('#btntambah').click(function() {
-        $('#edit').val(false);
+        $('#edit').val('');
         $('select[name=dokter]').val('');
         $('select[name=klinik]').val('');
         $('select[name=jnslayan]').val('');

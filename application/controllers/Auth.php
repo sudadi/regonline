@@ -46,7 +46,7 @@ class Auth extends CI_Controller
                     'id' => 'identity',
                     'type' => 'text',
                     'value' => $this->form_validation->set_value('identity'),
-                    'class'=>'form-control', 'placeholder'=>'Email'
+                    'class'=>'form-control', 'placeholder'=>'User'
             );
             $this->data['content']['password'] = array('name' => 'password',
                     'id' => 'password',
@@ -140,7 +140,7 @@ class Auth extends CI_Controller
                     $this->ion_auth->set_error('forgot_password_email_not_found');
                 }
                 $this->session->set_flashdata('message', $this->ion_auth->errors());
-                redirect("auth/forgot_password", 'refresh');
+                redirect("auth/", 'refresh');
             }
 
             $forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
@@ -148,11 +148,12 @@ class Auth extends CI_Controller
             if ($forgotten) {
                 // if there were no errors
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
+               
             }  else  {
                 $this->session->set_flashdata('message', $this->ion_auth->errors());
-                redirect("auth/forgot_password", 'refresh');
+                //redirect("auth/forgot_password", 'refresh');
             }
+             redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
         }
     }
     public function reset_password($code = NULL) {

@@ -70,9 +70,10 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah Data Dokter</h4>
+                <h4 class="modal-title">Add New Physician</h4>
             </div>
             <div class="modal-body">
+                <p><?php echo "Please enter the physician's information below.";?></p>
                 <div class="form-group">
                     <label class="control-label col-sm-2">ID</label>
                     <div class="col-sm-4">
@@ -80,8 +81,8 @@
                     </div>                    
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Nama</label>
-                    <div class="col-sm-10">
+                    <label class="control-label col-sm-2">Name</label>
+                    <div class="col-sm-9">
                         <?=form_input(array('name'=>'namadr','id'=>'namadr'), '', 'class="form-control" required');?>
                     </div>
                 </div>
@@ -89,14 +90,14 @@
                     <label class="control-label col-sm-2">Status</label>
                     <div class="col-sm-4">
                         <?php
-                        echo form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Aktif','0'=>'Non Aktif'),'1', 'class="form-control" required');?>
+                        echo form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Enable','0'=>'Disable'),'1', 'class="form-control" required');?>
                     </div>
                 </div>
                 <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'),false);?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>
     </div>
@@ -106,7 +107,7 @@
     function isidata(row){
         var x=row.cells;
         var status=x[2].innerHTML;
-        if (status === 'Aktif') {
+        if (status === 'Enable') {
             status = 1;
         }else{
             status = 0;
@@ -114,12 +115,14 @@
         $('#iddr').val(x[0].innerHTML);
         $('#namadr').val(x[1].innerHTML);
         $('#status select').val(status);
+        $(".modal-title").text("Edit Physician Data");
     }
     function tambahdr(){
         $('#iddr').val('');
         $('#namadr').val('');
         $('#status').val(1);
         $('#edit').val('');
+        $(".modal-title").text("Add New Physician");
         $('#modal-dokter').modal();
     }
 </script>

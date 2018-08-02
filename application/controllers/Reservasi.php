@@ -32,6 +32,7 @@ class Reservasi extends CI_Controller {
             $this->session->set_userdata('tgllahir', $tgllahir);
             $this->session->set_userdata('namapas', $datapas->nama);
             $this->session->set_userdata('alamat', $datapas->alamat);
+            $this->session->set_userdata('notelp', $datapas->notelp);
             $dataresv = $this->mod_reservasi->cekreserv($norm, '1');
             if ($dataresv) {
                 $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
@@ -163,6 +164,7 @@ class Reservasi extends CI_Controller {
                 $data['content']['namapas']=$this->session->userdata('namapas');
                 $data['content']['tgllahir']=$this->session->userdata('tgllahir');
                 $data['content']['alamat']=$this->session->userdata('alamat');
+                $data['content']['notelp']=$this->session->userdata('notelp');
                 $data['page'] = 'reservasi/step3';
                 $data['action'] = site_url('reservasi/simpan');
                 $this->load->view('reservasi/main', $data);
@@ -180,7 +182,8 @@ class Reservasi extends CI_Controller {
             $nmklinik=$this->input->post('nmklinik');
             $dataklinik= $this->mod_reservasi->getklinikbyid($idklinik);
             $kodeklinik=$dataklinik->kode_poli;
-            $datares= array('norm'=>$this->input->post('norm'),
+            $norm= $this->input->post('norm');
+            $datares= array('norm'=>$norm,
                 'waktu_rsv'=>$waktursv,'jadwal_id'=>$this->input->post('idjadwal'),
                 'jns_jaminan_id'=>$this->input->post('idjaminan'),
                 'sebab_id'=>$this->input->post('sebab'),
@@ -190,6 +193,7 @@ class Reservasi extends CI_Controller {
                 $idres=$this->db->insert_id();
                 $nores=$kodeklinik.'-'.$idres;
                 $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                $this->db->update('res_tpasien', array('notelp'=>$this->input->post('notelp')), 'norm='.$norm);
                 $this->session->set_userdata('nmklinik',$nmklinik);
                 $this->load->model('mod_sms');
                 $this->mod_sms->sendkonfirm($idres);

@@ -26,7 +26,7 @@
                         <p> 
                             <strong>FORMAT : </strong>Format sms konfirmasi dapat berisi parameter ([norm], [nama], [resno], [reswaktu], [respoli], [resdokter], [reslayan], [resjamin]).
                         </p>
-                        <?=form_open('admin/smsconf', array('role'=>'form')) ;?>
+                        <?=form_open('admin/genset', array('role'=>'form')) ;?>
                         <div class="form-group col-sm-8">
                             <label for="fmtkonfirm">Format</label>
                             <div class="">
@@ -80,7 +80,7 @@
                             <strong>PREFIX : </strong>Awalan sms (0812, 0899, 0856, ...)<br/>
                             <strong>MODEM : </strong>Modem yang di digunakan.
                         </p>
-                        <?=form_open('admin/smsconf', array('role'=>'form')) ;?>
+                        <?=form_open('admin/genset', array('role'=>'form')) ;?>
                         <div class="form-group col-sm-6">
                             <label for="premodem">Prefix</label>
                             <div class="">
@@ -141,7 +141,7 @@
                         <h3 class="box-title">Template SMS</h3>
                     </div>
                     <div class="box-body">
-                        <?=form_open('admin/smsconf', array('role'=>'form')) ;?>
+                        <?=form_open('admin/genset', array('role'=>'form')) ;?>
                         <div class="form-group col-sm-6">
                             <label for="txttpl">Text Template</label>
                             <div class="">

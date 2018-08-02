@@ -118,13 +118,13 @@
                 </div>
                 <hr>
                 <div class="form-group">
-                    <label for="jnspasien" class="col-sm-2 control-label">Jenis Pasien</label>
+                    <label for="jnsjaminan" class="col-sm-2 control-label">Jenis Jaminan</label>
                     <div class="col-sm-4">
                         <?php 
                             $option[''] = '-Pilih Jenis Pasien-';
                             $option[2] = 'Pasien Umum';
                             $option[5] = 'Pasien BPJS';
-                            echo form_dropdown('jnspasien', $option, '', 'class="form-control" id="jnspasien" required');
+                            echo form_dropdown('jnsjaminan', $option, '', 'class="form-control" id="jnsjaminan" required');
                         ?>
                     </div>
                     <label for="jnslayan" class="col-sm-2 control-label">Jenis Layanan</label>
@@ -207,12 +207,23 @@
     <?=form_close();?>
 </div>
 <script>
+    function clearform(){
+        $('#norm').val('');
+        $('input[name*=nama]').val('');
+        $('input[name*=notelp]').val('');
+        $('#jnsjaminan').val('');
+        $('#dokter').val('');
+        $('select[name=klinik]').val('');
+        $('select[name=jnslayan]').val('');
+        $('input[name*=jenisres]').val('');
+    };
     function showmodal(elm){
+        clearform();
         var jenisres=$(elm).attr('name');
         if (jenisres === 'wa'){
             $('.modal-title').html('Reservasi WA');
             $("input[name*='jenisres']").val("WA");
-        } else {
+        } else if (jenisres === 'sms') {
             $('.modal-title').html('Reservasi SMS');
             $("input[name*='jenisres']").val("SMS");
         }
@@ -239,14 +250,16 @@
                 dataType: "JSON",
                 success: function(data){
                     $("input*[name='nama']").val(data.nama);
-                    console.log($("input*[name='nama']").val(data.nama));
+                    $("input*[name='notelp']").val(data.notelp);
+                    //console.log($("input*[name='nama']").val(data.nama));
+                    $("#jnsjaminan").focus();
                 },
                 error: function (jqXHR, textStatus, errorThrown){
                     alert('Error : Data tidak ditemukan..!');
                     location.reload();
                 }
             }); 
-            //return false;
+            return false;
         }
     });
     $("#dokter").change(function(){
@@ -337,11 +350,12 @@
                 //$('.jamcekin').html('<input type="time" name="jamcekin" required />');
                 $('#norm').val(data.norm);
                 $('input[name*=nama]').val(data.nama);
-                $('#jnspasien').val(data.cara_bayar);
+                $('input[name*=notelp]').val(data.notelp);
+                $('#jnsjaminan').val(data.id_jaminan );
                 $('#dokter').val(data.id_dokter);
                 $('select[name=klinik]').val(data.id_klinik);
                 $('select[name=jnslayan]').val(data.id_jnslayan);
-                $('input[name*=jenisres]').val(data.jenisresv);
+                $('input[name*=jenisres]').val(data.jenis_rsv);
                 $('#edit').val(idrsv);
                 $('#modal-reservasi').modal();
             },
