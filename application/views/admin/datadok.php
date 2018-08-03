@@ -35,6 +35,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Nama</th>
+                                            <th>No. Telp</th>
                                             <th>Status</th>
                                             <th>Opsi</th>
                                         </tr>
@@ -45,6 +46,7 @@
                                         <tr onclick="isidata(this);">
                                             <td><?=$dokter->id_dokter;?></td>
                                             <td><?=$dokter->nama_dokter;?></td>
+                                            <td><?=$dokter->telp_dokter;?></td>
                                             <td><?=$dokter->status ? '<span class="btn-xs btn-success">Aktif</span>':'<span class="btn-xs btn-default">Non Aktif</span>';?></td>
                                             <td>
                                                 <a href="#" data-toggle="modal" data-target="#modal-dokter"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
@@ -87,13 +89,19 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-2">No. Telp</label>
+                    <div class="col-sm-9">
+                        <?=form_input(array('name'=>'telpdr','id'=>'telpdr'), '', 'class="form-control" required');?>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-2">Status</label>
                     <div class="col-sm-4">
                         <?php
                         echo form_dropdown(array('name'=>'status','id'=>'status'), array('1'=>'Enable','0'=>'Disable'),'1', 'class="form-control" required');?>
                     </div>
                 </div>
-                <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'),false);?>
+                <?=form_input(array('name'=>'edit','id'=>'edit','type'=>'hidden'),true);?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -106,7 +114,7 @@
 <script>
     function isidata(row){
         var x=row.cells;
-        var status=x[2].innerHTML;
+        var status=x[3].innerHTML;
         if (status === 'Enable') {
             status = 1;
         }else{
@@ -114,6 +122,7 @@
         }
         $('#iddr').val(x[0].innerHTML);
         $('#namadr').val(x[1].innerHTML);
+        $('#telpdr').val(x[2].innerHTML);
         $('#status select').val(status);
         $(".modal-title").text("Edit Physician Data");
     }

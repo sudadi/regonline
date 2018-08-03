@@ -72,7 +72,7 @@
                                             <td><?=$res->nores;?></td>
                                             <td><?=$res->nourut;?></td>
                                             <td><?=$res->first_update;?></td>
-                                            <td><?=$res->status ? '<span class="btn btn-xs btn-success">Aktif</span>':'<span class="btn btn-xs btn-default">Non Aktif</span>';?></td>
+                                            <td><?=$res->status ? '<span class="btn btn-xs btn-success status">Aktif</span>':'<span class="btn btn-xs btn-default status">Non Aktif</span>';?></td>
                                             <td><span class="btn btn-xs btn-info"><?=$res->sync?'True':'False';?></span></td>
                                             <td class="text-nowrap">
                                                 <a href="#" onclick="editdata(<?=$res->id_rsv;?>)"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
@@ -200,11 +200,42 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>
     </div>
     <?=form_close();?>
+</div>
+<div class="modal fade" id="modal-status">
+    <?=form_open($action, 'id="formstatus" class="form-horizontal form-label-left"'); ?>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Status</h4>
+            </div>
+            <div class="modal-body">
+                    <label for="dpstatus" class="control-label">Status</label>
+                    <?php
+                    unset($option);
+                    $option= array(0=>'Disable',1=>'Active',4=>'Batal By User');
+                    echo form_dropdown(array('name'=>'dpstatus','id'=>'dpstatus'), $option, 1, 'class="form-control"');
+                    ?>
+                <div class="alasan">
+                    <label for="alasan" class="control-label">Alasan</label>
+                    <?=form_textarea(array('name'=>'alasan','rows'=>'2'),'','class="form-control"'); 
+                    echo form_input(array('name'=>'idres','type'=>'hidden','id'=>'idres'));
+                    ?>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+    <?=form_close(); ?>
 </div>
 <script>
     function clearform(){
@@ -365,5 +396,20 @@
                 location.reload();
             }
         });
-    }
+    };
+    $('.status').click(function() {
+        $('#idres').val($(this).closest('tr').children('td:eq(0)').text());
+        $('#modal-status').modal();
+    });
+//    $('#dpstatus').change(function() {
+//        if ($(this).val() == 4) {  
+//            $(".alasan").fadeIn(800, function(){ 
+//                $(".alasan").show();
+//            });  
+//        } else {
+//            $(".alasan").fadeOut(800, function(){ 
+//                $(".alasan").hide();
+//            });
+//        };
+//    });
 </script>

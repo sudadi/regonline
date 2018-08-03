@@ -46,7 +46,7 @@ class Auth extends CI_Controller
                     'id' => 'identity',
                     'type' => 'text',
                     'value' => $this->form_validation->set_value('identity'),
-                    'class'=>'form-control', 'placeholder'=>'User'
+                    'class'=>'form-control', 'placeholder'=>'Username'
             );
             $this->data['content']['password'] = array('name' => 'password',
                     'id' => 'password',

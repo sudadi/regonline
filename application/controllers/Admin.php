@@ -141,6 +141,7 @@ class Admin extends CI_Controller
                 $this->db->insert('res_treservasi', $datares);
             } else {
                 $this->db->update('res_treservasi', $datares, "id_rsv={$this->input->post('edit')}");
+                $edit='[Revisi]\n';
             }
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
@@ -151,7 +152,7 @@ class Admin extends CI_Controller
                     $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
                     $this->db->update('res_tpasien', array('notelp'=>$notelp), "norm={$norm}");
                     $this->load->model('mod_sms');
-                    $this->mod_sms->sendkonfirm($idres);
+                    $this->mod_sms->sendkonfirm($idres, $edit);
                 }
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
@@ -281,16 +282,19 @@ class Admin extends CI_Controller
             $iddr= $this->input->post('iddr');
             $namadr= $this->input->post('namadr');
             $status= $this->input->post('status');
+            $telpdr= $this->input->post('telpdr');
             if ($this->input->post('edit')){
-                $this->db->update('res_refdokter', array('id_dokter'=>$iddr,'status'=>$status,'nama_dokter'=>$namadr), 'id_dokter='.$iddr);
+                $this->db->update('res_refdokter', array('id_dokter'=>$iddr,'status'=>$status,'nama_dokter'=>$namadr,'telp_dokter'=>$telpdr), 'id_dokter='.$iddr);
             }else{
-                $this->db->insert('res_refdokter', array('id_dokter'=>$iddr,'nama_dokter'=>$namadr,'status'=>$status));
+                $this->db->insert('res_refdokter', array('id_dokter'=>$iddr,'nama_dokter'=>$namadr,'telp_dokter'=>$telpdr,'status'=>$status));
             }
             if ($this->db->affected_rows()>0){
                $this->session->set_flashdata('success', 'Data sudah tersimpan');
             } else {
                 $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
             }
+            echo $this->db->last_query();
+            die();
             redirect('admin/datadok');
         }
         $this->load->library('pagination');
