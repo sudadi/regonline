@@ -15,6 +15,9 @@ class Mod_sms extends CI_Model {
 //    public function getsms($where) {
 //        return $this->db->get_where('vsms', $where)->result_array();
 //    }
+    public function sendsms($notelp,$pesan) {
+        return $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$notelp, "TextDecoded"=>$pesan, "CreatorID"=>"Admin"));
+    }
     public function sendkonfirm($idres, $edit=null) {
         $res= $this->db->get_where('vreservasi', 'id_rsv='.$idres)->row();
         $format= $this->db->get_where('sms_konfirm', 'id=1')->row();
@@ -27,5 +30,7 @@ class Mod_sms extends CI_Model {
             return false;
         }
     }
-    
+    public function cekpulsa($ussd) {
+        return $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$ussd, "Coding"=>"8bit", "Class"=>"127" ,"CreatorID"=>"Admin"));
+    }
 }

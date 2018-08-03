@@ -119,43 +119,58 @@ class Admin extends CI_Controller
         }
     }
     public function reservasi() {
+        $this->load->model('mod_reservasi');
         if ($this->input->get('hapus')){
             $this->db->delete("res_treservasi", "id_rsv={$this->input->get('hapus')}");
             redirect('admin/reservasi');
         }
-        $this->load->model('mod_reservasi');
         if ($this->input->post()){
-            $datatgl= explode("|",$this->input->post('tglcekin'));
-            $waktursv=date('Y/m/d H:i:s', strtotime($datatgl[2].$this->input->post('jamcekin')));
-            $dataklinik= $this->mod_reservasi->getklinikbyid($this->input->post('klinik'));
-            $kodeklinik=$dataklinik->kode_poli;
-            $norm=$this->input->post('norm');
-            $notelp= $this->input->post('notelp');
-            $datares= array('norm'=>$this->input->post('norm'),
-                'waktu_rsv'=>$waktursv,'jadwal_id'=>$datatgl[0],
-                'jns_jaminan_id'=>$this->input->post('jnsjaminan'),
-                'sebab_id'=>$this->input->post('sebab'),
-                'status'=>1, 'user_id'=>2, 
-                'jenis_rsv'=>$this->input->post('jenisres'));
-            if(empty($this->input->post('edit'))){
-                $this->db->insert('res_treservasi', $datares);
-            } else {
-                $this->db->update('res_treservasi', $datares, "id_rsv={$this->input->post('edit')}");
-                $edit='[Revisi]\n';
-            }
-            if ($this->db->affected_rows()>0){
-                $this->session->set_flashdata('success', 'Data sudah tersimpan');
-                if(empty($this->input->post('edit'))){
-                    //$this->session->set_userdata('status', '1');
-                    $idres=$this->db->insert_id();
-                    $nores=$kodeklinik.'-'.$idres;
-                    $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
-                    $this->db->update('res_tpasien', array('notelp'=>$notelp), "norm={$norm}");
-                    $this->load->model('mod_sms');
-                    $this->mod_sms->sendkonfirm($idres, $edit);
+            $this->load->model('mod_sms');
+            if ($this->input->post('savestat')){
+                $idres= $this->input->post('idres');
+                $status= $this->input->post('dpstatus');
+                $alasan= $this->input->post('alasan');
+                $notelp= $this->input->post('telpstat');
+                if($this->db->update('res_treservasi', array('status'=>$status), 'id_rsv='.$idres)) {
+                    if($status==4){
+                        $this->mod_sms->sendsms($notelp, $alasan);
+                    }
+                    $this->session->set_flashdata('success', 'Update data BERHASIL');
+                } else {
+                    $this->session->set_flashdata('error', 'Update data GAGAL');
                 }
-            } else {
-                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+            } else if ($this->input->post('saveres')){
+                $datatgl= explode("|",$this->input->post('tglcekin'));
+                $waktursv=date('Y/m/d H:i:s', strtotime($datatgl[2].$this->input->post('jamcekin')));
+                $dataklinik= $this->mod_reservasi->getklinikbyid($this->input->post('klinik'));
+                $kodeklinik=$dataklinik->kode_poli;
+                $norm=$this->input->post('norm');
+                $notelp= $this->input->post('notelp');
+                $datares= array('norm'=>$this->input->post('norm'),
+                    'waktu_rsv'=>$waktursv,'jadwal_id'=>$datatgl[0],
+                    'jns_jaminan_id'=>$this->input->post('jnsjaminan'),
+                    'sebab_id'=>$this->input->post('sebab'),
+                    'status'=>1, 'user_id'=>2, 
+                    'jenis_rsv'=>$this->input->post('jenisres'));
+                if(empty($this->input->post('edit'))){
+                    $this->db->insert('res_treservasi', $datares);
+                } else {
+                    $this->db->update('res_treservasi', $datares, "id_rsv={$this->input->post('edit')}");
+                    $edit='[Koreksi]\n';
+                }
+                if ($this->db->affected_rows()>0){
+                    $this->session->set_flashdata('success', 'Data sudah tersimpan');
+                    if(empty($this->input->post('edit'))){
+                        //$this->session->set_userdata('status', '1');
+                        $idres=$this->db->insert_id();
+                        $nores=$kodeklinik.'-'.$idres;
+                        $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                        $this->db->update('res_tpasien', array('notelp'=>$notelp), "norm={$norm}");
+                        $this->mod_sms->sendkonfirm($idres, $edit);
+                    }
+                } else {
+                    $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+                }
             }
             redirect('admin/reservasi');
         }
@@ -190,26 +205,26 @@ class Admin extends CI_Controller
     
     public function sms() {
         $this->load->model('mod_sms');
-        if ($this->input->post('pesan') && $this->input->post('notelp')) {
-            $pesan= $this->input->post('pesan');
-            $notelp= $this->input->post('notelp');
-            $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$notelp, "TextDecoded"=>$pesan, "CreatorID"=>"Admin"));
-            if ($this->db->affected_rows()>0 ) {
-                $this->session->set_flashdata("success", "Berhasil, pesan masuk dalam antrian pengiriman");
-            } else {
-                $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
+        if ($this->input->post()){
+            if ($this->input->post('pesan') && $this->input->post('notelp')) {
+                $pesan= $this->input->post('pesan');
+                $notelp= $this->input->post('notelp');
+                if ($this->mod_sms->sendsms($notelp, $pesan)) {
+                    $this->session->set_flashdata("success", "Berhasil, pesan masuk dalam antrian pengiriman");
+                } else {
+                    $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
+                }
+            } else if ($this->input->post('kirimussd')) {
+                $ussd = $this->input->post('txtussd');            
+                if ($this->mod_sms->cekpulsa($ussd)) {
+                    $this->session->set_flashdata("success", "Berhasil, pesan masuk dalam antrian pengiriman");
+                } else {
+                    $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
+                }
+                unset($_POST);
             }
             redirect('admin/sms');
-        } else if ($this->input->post('txtpulsa')) {
-            $txtpulsa = $this->input->post('txtpulsa');
-            $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$txtpulsa, "Coding"=>"8bit", "Class"=>"127" ,"CreatorID"=>"Admin"));
-            if ($this->db->affected_rows()>0 ) {
-                $this->session->set_flashdata("success", "Berhasil, pesan masuk dalam antrian pengiriman");
-            } else {
-                $this->session->set_flashdata("error", "Gagal, pesan tidak tersimpan");
-            }
-            //redirect('admin/datadok');
-        }        
+        }
         $data['page']='admin/sms';
         $this->load->library('pagination');
         $datanotelp=$this->mod_sms->getsms('UpdatedInDB',true,null);
@@ -241,7 +256,7 @@ class Admin extends CI_Controller
             $this->db->update("sms_full_inbox", array("Processed"=>"true"), "SenderNumber='$notelp'");
         }
         for ($i=0;$i < count($data);$i++) {
-        $data[$i]->TextDecoded = nl2br($data[$i]->TextDecoded);
+            $data[$i]->TextDecoded = nl2br($data[$i]->TextDecoded);
         }
         echo json_encode($data);
     }
@@ -293,8 +308,6 @@ class Admin extends CI_Controller
             } else {
                 $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
             }
-            echo $this->db->last_query();
-            die();
             redirect('admin/datadok');
         }
         $this->load->library('pagination');
@@ -312,11 +325,11 @@ class Admin extends CI_Controller
             $id= $this->input->get('hapus');
             $this->db->delete('res_refklinik', 'id_klinik='.$id);
             if ($this->db->affected_rows()>0){
-                $this->session->set_flashdata('success', 'Data sudah dihapus');    
-                redirect('admin/dataklinik');
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
             } else {
                 $this->session->set_flashdata('error', 'Data GAGAL dihapus');
-            }            
+            }    
+            redirect('admin/dataklinik');            
         }
         if($this->input->post()){
             $idklinik= $this->input->post('idklinik');
@@ -350,11 +363,11 @@ class Admin extends CI_Controller
             $id= $this->input->get('hapus');
             $this->db->delete('res_jadwal', 'id_jadwal='.$id);
             if ($this->db->affected_rows()>0){
-                $this->session->set_flashdata('success', 'Data sudah dihapus');    
-                redirect('admin/jadwal');
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
             } else {
                 $this->session->set_flashdata('error', 'Data GAGAL dihapus');
-            }            
+            }                
+            redirect('admin/jadwal');
         }
         if($this->input->post()){
             $dokter= $this->input->post('dokter');
@@ -376,12 +389,10 @@ class Admin extends CI_Controller
             }
             if ($this->db->affected_rows()>0){
                $this->session->set_flashdata('success', 'Data sudah tersimpan');
-               redirect('admin/jadwal');
             } else {
                 $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
             }
-            echo $this->db->last_query();
-            //die();
+            redirect('admin/jadwal');
         }
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getjmljadwal();
@@ -408,11 +419,11 @@ class Admin extends CI_Controller
             $id= $this->input->get('hapus');
             $this->db->delete('tgl_libur', 'id_libur='.$id);
             if ($this->db->affected_rows()>0){
-                $this->session->set_flashdata('success', 'Data sudah dihapus');    
-                redirect('admin/libur');
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
             } else {
                 $this->session->set_flashdata('error', 'Data GAGAL dihapus');
-            }            
+            }                
+            redirect('admin/libur');
         }
         if($this->input->post()){
             $tgl= $this->input->post('tgl');
@@ -426,10 +437,10 @@ class Admin extends CI_Controller
             }
             if ($this->db->affected_rows()>0){
                $this->session->set_flashdata('success', 'Data sudah tersimpan');
-               redirect('admin/libur');
             } else {
                 $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
             }
+            redirect('admin/libur');
         }
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getnumlibur();
@@ -458,25 +469,24 @@ class Admin extends CI_Controller
                     $this->db->update("sms_routing", array('prefix'=> $this->input->post('premodem'), 'modem'=> $this->input->post('modem')),"id=".$this->input->post('editmodem'));
                 } else {
                     $this->db->insert('sms_routing', array('prefix'=> $this->input->post('premodem'), 'modem'=> $this->input->post('modem')));
+                }                
+            } else if ($this->input->post('smtkonfirm')) {
+                if ($this->input->post('fmtkonfirm')){
+                    $this->db->update('sms_konfirm', array('format'=> $this->input->post('fmtkonfirm')), 'id=1');
                 }
-                if ($this->db->affected_rows() > 0){
-                    $this->session->set_flashdata('success', 'Data berhasil disimpan');
-                } else {
-                    $this->session->set_flashdata('error', 'GAGAL, data tidak disimpan');
-                }
-                redirect('admin/smsconf', 'refresh');
-            }
-        }
-        if ($this->input->post('smtkonfirm')) {
-            if ($this->input->post('fmtkonfirm')){
-                $this->db->update('sms_konfirm', array('format'=> $this->input->post('fmtkonfirm')), 'id=1');
             }
             if ($this->db->affected_rows() > 0){
-                    $this->session->set_flashdata('success', 'Data berhasil disimpan');
+                $this->session->set_flashdata('success', 'Data berhasil disimpan');
             } else {
                 $this->session->set_flashdata('error', 'GAGAL, data tidak disimpan');
             }
-            redirect('admin/genset');
+            redirect('admin/genset', 'refresh');
+        } else if ($this->input->get('delmodem')){
+            if($this->db->delete('sms_routing', 'id='.$this->input->post('delmodem'))){
+                $this->session->set_flashdata('success', 'Hapus data BERHASIL');
+            } else {
+                $this->session->set_flashdata('error', 'Hapus data GAGAL');
+            }
         }
         $this->load->model('mod_setting');
         $data['page']='admin/genset';

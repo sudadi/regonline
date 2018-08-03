@@ -68,74 +68,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="box box-default">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modem Routing</h3>
-                    </div>
-                    <div class="box-body">
-                        <p> 
-                            <strong>PREFIX : </strong>Awalan sms (0812, 0899, 0856, ...)<br/>
-                            <strong>MODEM : </strong>Modem yang di digunakan.
-                        </p>
-                        <?=form_open('admin/genset', array('role'=>'form')) ;?>
-                        <div class="form-group col-sm-6">
-                            <label for="premodem">Prefix</label>
-                            <div class="">
-                                <?=form_input(array('name'=>'premodem','id'=>'premodem',), NULL, 'class="form-control" required');?>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label class="" for="modem">Modem</label>
-                            <div class="">
-                                <?php 
-                                $option[''] = "-Pilih Modem-";
-                                $option["Modem1"]="Modem1";
-                                $option["Modem2"]="Modem2";
-                                $option["Modem3"]="Modem3";
-                                $option["Modem4"]="Modem4";
-                                echo form_dropdown('modem', $option, '', 'id="modem" class="form-control" required');?>
-                            </div>
-                        </div>
-                        <?=form_input(array('name'=>'editmodem','type'=>'hidden','id'=>'editmodem'));?>
-                        <div class="form-group col-sm-2">
-                            <label for="smtmodem" class="col-xs-12">&nbsp;</label>
-                            <button type="submit" name="smtmodem" id="smtmodem" value="true" class="btn btn-default"><i class="fa fa-save"></i> Simpan</button>
-                        </div>
-                        <?=form_close();?>
-                        <div class="col-sm-12">
-                            <div class="table-responsive no-padding">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Prefix No. GSM</th>
-                                            <th>Modem</th>
-                                            <th>Opsi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        foreach ($rtmodem as $modem) { ?>
-                                        <tr>
-                                            <td><?=$modem->id;?></td>
-                                            <td><?=$modem->prefix;?></td>
-                                            <td><?=$modem->modem;?></td>
-                                            <td>
-                                                <button class="btn btn-xs btn-warning" value="<?=$modem->id;?>" onclick="modemedit(this);"><i class="fa fa-edit "></i> Edit</button>&nbsp;
-                                                <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> Hapus</button>
-                                            </td>
-                                        </tr>                                            
-                                        <?php } ?>
-                                    </tbody>
-                                </table>                                        
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
+                </div>            
                 <div class="box box-default">
                     <div class="box-header with-border">
                         <h3 class="box-title">Template SMS</h3>
@@ -178,6 +111,69 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Modem Routing</h3>
+                    </div>
+                    <div class="box-body">
+                        <p> 
+                            <strong>PREFIX : </strong>Awalan sms (0812, 0899, 0856, ...)<br/>
+                            <strong>MODEM : </strong>Modem yang di digunakan.
+                        </p>
+                        <?=form_open('admin/genset', array('role'=>'form')) ;?>
+                        <div class="form-group col-sm-6">
+                            <label for="premodem">Prefix</label>
+                            <div class="">
+                                <?=form_input(array('name'=>'premodem','id'=>'premodem',), NULL, 'class="form-control" required');?>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="" for="modem">Modem</label>
+                            <div class="">
+                                <?php 
+                                $option=array(''=>'-Pilih Modem-','Modem1'=>'Modem1','Modem2'=>'Modem2','Modem3'=>'Modem3','Modem4'=>'Modem4','Modem5'=>'Modem5');
+                                echo form_dropdown('modem', $option, '', 'id="modem" class="form-control" required');?>
+                            </div>
+                        </div>
+                        <?=form_input(array('name'=>'editmodem','type'=>'hidden','id'=>'editmodem'));?>
+                        <div class="form-group col-sm-2">
+                            <label for="smtmodem" class="col-xs-12">&nbsp;</label>
+                            <button type="submit" name="smtmodem" id="smtmodem" value="true" class="btn btn-default"><i class="fa fa-save"></i> Simpan</button>
+                        </div>
+                        <?=form_close();?>
+                        <div class="col-sm-12">
+                            <div class="table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Prefix No. GSM</th>
+                                            <th>Modem</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($rtmodem as $modem) { ?>
+                                        <tr>
+                                            <td><?=$modem->id;?></td>
+                                            <td><?=$modem->prefix;?></td>
+                                            <td><?=$modem->modem;?></td>
+                                            <td class="text-nowrap">
+                                                <button class="btn btn-xs btn-warning" value="<?=$modem->id;?>" onclick="modemedit(this);"><i class="fa fa-edit "></i> Edit</button>&nbsp;
+                                                <a href="<?=base_url('admin/genset/?delmodem='.$modem->id);?>" onclick="return confirm('Yakin menghapus data ini ?')">
+                                                    <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Hapus</span></a>
+                                            </td>
+                                        </tr>                                            
+                                        <?php } ?>
+                                    </tbody>
+                                </table>                                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </div>
@@ -190,6 +186,7 @@ function modemedit(x){
     $("#modem").val(modem).change();
     $("#editmodem").val(id);
     $("#smtmodem").html('<i class="fa fa-save"></i> Update');
+    return false;
 };
 
 $(document).ready(function() {

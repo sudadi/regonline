@@ -72,12 +72,15 @@
                                             <td><?=$res->nores;?></td>
                                             <td><?=$res->nourut;?></td>
                                             <td><?=$res->first_update;?></td>
-                                            <td><?=$res->status ? '<span class="btn btn-xs btn-success status">Aktif</span>':'<span class="btn btn-xs btn-default status">Non Aktif</span>';?></td>
+                                            <td><?php
+                                                $status=array(0=>'Disable',1=>'Active',2=>'Checkin',3=>'Cancel By System',4=>'Cancel By User'); ?>
+                                                <span class="btn btn-xs <?=($res->status==1) ? 'btn-success':'btn-default';?> status" title="Update Status"><?=$status[$res->status];?></span>
+                                            </td>
                                             <td><span class="btn btn-xs btn-info"><?=$res->sync?'True':'False';?></span></td>
                                             <td class="text-nowrap">
                                                 <a href="#" onclick="editdata(<?=$res->id_rsv;?>)"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
                                                 <a href="<?=base_url('admin/reservasi/?hapus='.$res->id_rsv);?>" onclick="return confirm('Yakin menghapus data ini ?')">
-                                                    <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Hapus</span></a>
+                                                    <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Delete</span></a>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -200,7 +203,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                <button type="submit" name="saveres" value="true" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>
     </div>
@@ -226,12 +229,13 @@
                     <label for="alasan" class="control-label">Alasan</label>
                     <?=form_textarea(array('name'=>'alasan','rows'=>'2'),'','class="form-control"'); 
                     echo form_input(array('name'=>'idres','type'=>'hidden','id'=>'idres'));
+                    echo form_input(array('name'=>'telpstat','type'=>'hidden','id'=>'notelpstat'));
                     ?>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                <button type="submit" name="savestat" value="true" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>
     </div>
@@ -264,16 +268,15 @@
         if(e.which === 13) {
             if ($('#norm').val().length >= 6){
                 $('#shownorm').click();
-                return false;  
             }
         }
+        return false;  
     });
     $('#shownorm').click(function(){
         var norm=$('#norm').val();
         console.log(norm);
         if (norm.length < 6){
             alert('No. RM SALAH, minimal 6 digit angka.');
-            return false;
         } else {
             $.ajax({
                 url : "<?php echo site_url('admin/ajaxpasien/')?>"+norm,
@@ -290,8 +293,8 @@
                     location.reload();
                 }
             }); 
-            return false;
         }
+        return false;
     });
     $("#dokter").change(function(){
         var iddokter=$(this).val();
@@ -399,6 +402,7 @@
     };
     $('.status').click(function() {
         $('#idres').val($(this).closest('tr').children('td:eq(0)').text());
+        $('#telpstat').val($(this).closest('tr').children('td:eq(5)').text());
         $('#modal-status').modal();
     });
 //    $('#dpstatus').change(function() {

@@ -185,13 +185,13 @@
                 <div class="form-group">
                     <label class="control-label col-sm-3">Custom</label>
                     <div class="col-sm-9">
-                        <?= form_input(array('name'=>'txtpulsa','id'=>'txtpulsa','placeholder'=>'*xxx#'), '', ' class="form-control" required');?>
+                        <?= form_input(array('name'=>'txtussd','id'=>'txtussd','placeholder'=>'*xxx#'), '', ' class="form-control" required');?>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-send"></i> Kirim</button>
+                <button type="submit" name="kirimussd" value="trus" class="btn btn-primary"><i class="fa fa-send"></i> Kirim</button>
             </div>
         </div>
     </div>
@@ -204,7 +204,7 @@
 <script>
 $(document).ready(function(){
 function get_currdev(){
-    return $('.device-check:visible').attr('data-device')
+    return $('.device-check:visible').attr('data-device');
 };
     
     var notelp;
@@ -226,7 +226,7 @@ function get_currdev(){
                 for (var i = 0; i < data.length; i++) {
                     var obstat;
                     if (data[i].Type === 'outbox') {
-                        if (data[i].stat == 1) {
+                        if (data[i].stat === 1) {
                             obstat='text-green';
                         } else {
                             obstat='text-red';
@@ -248,7 +248,7 @@ function get_currdev(){
                 location.reload();
             }
         });
-        if (get_currdev()=='xs'){
+        if (get_currdev()==='xs'){
             $("#msgbox").removeClass('hidden-xs').addClass('.visible-xs').show();
             $("#dvnotelp").removeClass('visible-xs').addClass('.hidden-xs').hide();
             $("#btnbackxs").html('<i class="fa fa-backward"></i> '+notelp);
@@ -327,9 +327,9 @@ function get_currdev(){
     }
     $("#btnpulsa").click(function() {
         $("#modal-pulsa").modal();  
-    })
+    });
     $("#oppulsa").change(function() {
-        $("#txtpulsa").val($(this).val());
-    })
+        $("#txtussd").val($(this).val());
+    });
 });
 </script>
