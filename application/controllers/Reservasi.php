@@ -75,37 +75,67 @@ class Reservasi extends CI_Controller {
         $data = $this->mod_reservasi->getklinik($iddokter, $jenis);
         echo json_encode($data); 
     }
-    public function ajax_jadwal($klinik, $iddokter, $jenis) {
-        $perjam= $this->mod_reservasi->getkuotaklinik($klinik)->kuota;
-        //echo $perjam;
-        $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
+    private function cekjadawal($klinik=null, $iddokter=null, $jenis=null, $idjadwal=null) {
+        if ($idjadwal){
+            
+        } else {
+            $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
+        }
         $dtlibur = $this->mod_reservasi->getlibur();
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
             $startdate = strtotime($hari);
             $enddate = strtotime("+2 weeks", $startdate);
-            //$perjam=$dtjadwal[$i]['kuota_perjam'];
-            $starttime = $dtjadwal[$i]['jam_mulai'];
-            $endtime = $dtjadwal[$i]['jam_selesai'];
-            $perhari = floor((strtotime($endtime) - strtotime($starttime))/(60*60)) * $perjam;
             while ($startdate < $enddate) {
                 $newdate = date("Y-m-d", $startdate); 
                 $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
                 if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
                       //nothing  or skip        
                 } else {
-                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 'perhari'=>$perhari, 
-                    'iddokter'=>$dtjadwal[$i]['dokter_id'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
-                    'terpakai'=>$this->mod_reservasi->getkuotatgl(date("Y/m/d", $startdate), $klinik, $iddokter));
+                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 
+                    'iddokter'=>$dtjadwal[$i]['dokter_id'],'idklinik'=>$dtjadwal[$i]['klinik_id'],'idjadwal'=>$dtjadwal[$i]['id_jadwal']);
                 }
                 $startdate = strtotime("+1 week", $startdate);
             }            
         }  
-        sort($jadwal);
-        for ($i=0; $i<count($jadwal); $i++){             
-            $jadwal[$i]['sisa'] = $jadwal[$i]['perhari'] - $jadwal[$i]['terpakai'];
+        
+        return sort($jadwal);
+    }
+    public function ajax_jadwal($klinik, $iddokter, $jenis) {
+        if ($jadwal= $this->cekjadawal($klinik, $iddokter, $jenis)){
+            echo json_encode($jadwal);
         }
-        echo json_encode($jadwal);
+//    public function ajax_jadwal($klinik, $iddokter, $jenis) {
+//        $perjam= $this->mod_reservasi->getkuotaklinik($klinik)->kuota;
+//        //echo $perjam;
+//        $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
+//        $dtlibur = $this->mod_reservasi->getlibur();
+//        for($i=0; $i < count($dtjadwal); $i++){
+//            $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
+//            $startdate = strtotime($hari);
+//            $enddate = strtotime("+2 weeks", $startdate);
+//            //$perjam=$dtjadwal[$i]['kuota_perjam'];
+//            $starttime = $dtjadwal[$i]['jam_mulai'];
+//            $endtime = $dtjadwal[$i]['jam_selesai'];
+//            $perhari = floor((strtotime($endtime) - strtotime($starttime))/(60*60)) * $perjam;
+//            while ($startdate < $enddate) {
+//                $newdate = date("Y-m-d", $startdate); 
+//                $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
+//                if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
+//                      //nothing  or skip        
+//                } else {
+//                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 'perhari'=>$perhari, 
+//                    'iddokter'=>$dtjadwal[$i]['dokter_id'], 'idjadwal'=>$dtjadwal[$i]['id_jadwal'],
+//                    'terpakai'=>$this->mod_reservasi->getkuotatgl(date("Y/m/d", $startdate), $klinik, $iddokter));
+//                }
+//                $startdate = strtotime("+1 week", $startdate);
+//            }            
+//        }  
+//        sort($jadwal);
+//        for ($i=0; $i<count($jadwal); $i++){             
+//            $jadwal[$i]['sisa'] = $jadwal[$i]['perhari'] - $jadwal[$i]['terpakai'];
+//        }
+//        echo json_encode($jadwal);
 //        $int='+2 week';
 //        $startDate = date('Y/m/d');
 //        echo date('l Y/m/d',strtotime($startDate));
@@ -115,14 +145,9 @@ class Reservasi extends CI_Controller {
 //        echo date('l Y-m-d', $i);
     }
     public function ajax_jamcekin($idjadwal,$tglcekin) {
-        $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
-        //var_dump($dtjadwal);
-        $klinik=$dtjadwal->klinik_id;
-        $dokter=$dtjadwal->dokter_id;
-        //$perjam=$dtjadwal->kuota_perjam;
-        $perjam= $this->mod_reservasi->getkuotaklinik($klinik)->kuota;
-        $starttime= strtotime($dtjadwal->jam_mulai);
-        $endtime=strtotime($dtjadwal->jam_selesai);
+        $dtjadwal= $this->cekjadawal($idjadwal);
+        $klinik=$dtjadwal[0]['klinik_id'];
+        $dokter=$dtjadwal[0]['dokter_id'];
         $kuotaperjam=[];
         while ($starttime <= $endtime) {
             $jamcekin=date('H:i:s', $starttime);
@@ -134,6 +159,24 @@ class Reservasi extends CI_Controller {
         }
          echo json_encode($kuotaperjam);
     }
+//    public function ajax_jamcekin($idjadwal,$tglcekin) {
+//        $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
+//        $klinik=$dtjadwal->klinik_id;
+//        $dokter=$dtjadwal->dokter_id;
+//        $perjam= $this->mod_reservasi->getkuotaklinik($klinik)->kuota;
+//        $starttime= strtotime($dtjadwal->jam_mulai);
+//        $endtime=strtotime($dtjadwal->jam_selesai);
+//        $kuotaperjam=[];
+//        while ($starttime <= $endtime) {
+//            $jamcekin=date('H:i:s', $starttime);
+//            $dipakai= $this->mod_reservasi->getkuotajam($klinik,$dokter,$tglcekin,$jamcekin);
+//            if ($perjam-$dipakai >0) {
+//                $kuotaperjam[]=array('jam'=>$jamcekin, 'kouta'=>$perjam, 'sisa'=>$perjam-$dipakai);
+//            }
+//            $starttime = strtotime("+1 hours", $starttime);
+//        }
+//         echo json_encode($kuotaperjam);
+//    }
     public function step3() {
         if ($this->input->post()){   
             $norm = $this->input->post('norm');
@@ -145,7 +188,7 @@ class Reservasi extends CI_Controller {
                 $klinik= $this->mod_reservasi->getklinikbyid($this->input->post('poliklinik'));
                 $datatgl= explode("|",$this->input->post('tglcekin'));
                 $data['content']['idjadwal']= $datatgl[0];
-                $data['content']['tglcekin']= $datatgl[2];
+                $data['content']['tglcekin']= $datatgl[1];
                 $data['content']['jamcekin']= $this->input->post('jamcekin');
                 $data['content']['iddokter']= $this->input->post('dokter');
                 $data['content']['nmdokter']= $dokter->nama_dokter;

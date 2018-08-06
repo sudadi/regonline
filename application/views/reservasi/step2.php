@@ -206,7 +206,7 @@
                     tglcekin.empty();
                     tglcekin.append('<option value="">-Pilih Tanggal-</option>');
                     for (var i = 0; i < data.length; i++) {
-                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].iddokter+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
                     console.log(data[i].idjadwal);
                     }
                 },
@@ -222,7 +222,7 @@
         var cekin = dtcekin.split('|');
         var jamcekin=$("#jamcekin");
         $('#dokter').val(cekin[1]);
-        var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[2];
+        var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[1];
         console.log(url);
         $.ajax({
             url : url,
