@@ -208,7 +208,7 @@ class Reservasi extends CI_Controller {
     }
     public function finish($idres) {
         if ($this->session->userdata('status')=='1'){
-            $datares= $this->mod_reservasi->getresfull('id_rsv='.$idres);
+            $datares= $this->mod_reservasi->getreserv($idres);
             $data['page'] = 'reservasi/finish';
             $data['action'] = site_url('reservasi');
             $data['content']['norm']= $this->session->userdata('norm');
