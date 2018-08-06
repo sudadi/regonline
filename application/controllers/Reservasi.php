@@ -148,14 +148,13 @@ class Reservasi extends CI_Controller {
         $dtjadwal= $this->cekjadawal($idjadwal);
         $klinik=$dtjadwal[0]['klinik_id'];
         $dokter=$dtjadwal[0]['dokter_id'];
-        $kuotaperjam=[];
-        while ($starttime <= $endtime) {
-            $jamcekin=date('H:i:s', $starttime);
-            $dipakai= $this->mod_reservasi->getkuotajam($klinik,$dokter,$tglcekin,$jamcekin);
-            if ($perjam-$dipakai >0) {
-                $kuotaperjam[]=array('jam'=>$jamcekin, 'kouta'=>$perjam, 'sisa'=>$perjam-$dipakai);
+        $kuota=$this->model_reservasi->getkuotajam($idjadwal);
+        foreach ($kuota as $value) {
+            $dipakai= $this->mod_reservasi->getdipakai($idjadwal,$tglcekin,$value->jam);
+            $sisa = $value->kuota - $dipakai;
+            if ( $sisa>0){
+                $kuotaperjam[]=array('jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);
             }
-            $starttime = strtotime("+1 hours", $starttime);
         }
          echo json_encode($kuotaperjam);
     }
