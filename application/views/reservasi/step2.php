@@ -206,7 +206,7 @@
                     tglcekin.empty();
                     tglcekin.append('<option value="">-Pilih Tanggal-</option>');
                     for (var i = 0; i < data.length; i++) {
-                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+')</option>');
                     console.log(data[i].idjadwal);
                     }
                 },
@@ -221,7 +221,6 @@
         var dtcekin=$(this).val();
         var cekin = dtcekin.split('|');
         var jamcekin=$("#jamcekin");
-        $('#dokter').val(cekin[1]);
         var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[1];
         console.log(url);
         $.ajax({
@@ -232,6 +231,7 @@
                 jamcekin.empty();
                 jamcekin.append('<option value="">-Pilih Waktu Kunjungan-</option>');
                 for (var i = 0; i < data.length; i++) {
+                    $('#dokter').val(data[i].iddokter);
                     jamcekin.append('<option value="'+data[i].jam+'">'+data[i].jam+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
                 }
             },

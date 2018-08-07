@@ -66,9 +66,9 @@
         }
         return  $this->db->count_all_results();
     }
-    function getdipakai($klinik,$dokter,$tglcekin,$jamcekin) {
+    function getdipakai($idjadwal,$tglcekin,$jamcekin) {
         $this->db->from('vreservasi');
-        $this->db->where("id_klinik=$klinik and id_dokter=$dokter and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
+        $this->db->where("id_jadwal=$idjadwal and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
         return $this->db->count_all_results();
     }
     function getkuotajam($idjadwal) {
@@ -76,7 +76,7 @@
     }
     function getjadwalbyid($idjadwal) {
         $this->db->where('id_jadwal', $idjadwal);
-        return $this->db->get('res_jadwal')->row();
+        return $this->db->get('res_jadwal')->result_array();
     }
     function getjnspasien($idjenis) {
         return $this->db->get_where("res_jns_jaminan", "flag_jaminan = 1 and id_jaminan = $idjenis")->row();

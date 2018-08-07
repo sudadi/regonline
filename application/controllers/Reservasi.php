@@ -77,7 +77,7 @@ class Reservasi extends CI_Controller {
     }
     private function cekjadawal($klinik=null, $iddokter=null, $jenis=null, $idjadwal=null) {
         if ($idjadwal){
-            
+            $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
         } else {
             $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
         }
@@ -98,8 +98,8 @@ class Reservasi extends CI_Controller {
                 $startdate = strtotime("+1 week", $startdate);
             }            
         }  
-        
-        return sort($jadwal);
+        sort($jadwal);
+        return $jadwal;
     }
     public function ajax_jadwal($klinik, $iddokter, $jenis) {
         if ($jadwal= $this->cekjadawal($klinik, $iddokter, $jenis)){
@@ -145,15 +145,15 @@ class Reservasi extends CI_Controller {
 //        echo date('l Y-m-d', $i);
     }
     public function ajax_jamcekin($idjadwal,$tglcekin) {
-        $dtjadwal= $this->cekjadawal($idjadwal);
-        $klinik=$dtjadwal[0]['klinik_id'];
-        $dokter=$dtjadwal[0]['dokter_id'];
-        $kuota=$this->model_reservasi->getkuotajam($idjadwal);
+        $dtjadwal= $this->cekjadawal(null,null,null,$idjadwal);   
+        $idklinik=$dtjadwal[0]['idklinik'];
+        $iddokter=$dtjadwal[0]['iddokter'];   
+        $kuota=$this->mod_reservasi->getkuotajam($idjadwal);
         foreach ($kuota as $value) {
             $dipakai= $this->mod_reservasi->getdipakai($idjadwal,$tglcekin,$value->jam);
             $sisa = $value->kuota - $dipakai;
             if ( $sisa>0){
-                $kuotaperjam[]=array('jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);
+                $kuotaperjam[]=array('idjadwal'=>$idjadwal,'idklinik'=>$idklinik,'iddokter'=>$iddokter,'jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);
             }
         }
          echo json_encode($kuotaperjam);
@@ -201,7 +201,7 @@ class Reservasi extends CI_Controller {
                 } else {
                     $data['content']['layanan']= "Eksekutif";
                 }
-                $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($datatgl[2].' '.$this->input->post('jamcekin')));
+                $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($datatgl[1].' '.$this->input->post('jamcekin')));
                 $data['content']['norm']= $this->session->userdata('norm');
                 $data['content']['namapas']=$this->session->userdata('namapas');
                 $data['content']['tgllahir']=$this->session->userdata('tgllahir');

@@ -226,7 +226,7 @@ function get_currdev(){
                 for (var i = 0; i < data.length; i++) {
                     var obstat;
                     if (data[i].Type === 'outbox') {
-                        if (data[i].stat === 1) {
+                        if (data[i].stat ==='1') {
                             obstat='text-green';
                         } else {
                             obstat='text-red';

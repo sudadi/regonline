@@ -337,7 +337,7 @@
                     tglcekin.empty();
                     tglcekin.append('<option value="">-Pilih Tanggal-</option>');
                     for (var i = 0; i < data.length; i++) {
-                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].iddokter+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
+                        tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].iddokter+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'</option>');
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown)
