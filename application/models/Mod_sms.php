@@ -15,7 +15,7 @@ class Mod_sms extends CI_Model {
 //    public function getsms($where) {
 //        return $this->db->get_where('vsms', $where)->result_array();
 //    }
-    public function sendsms($notelp,$pesan) {
+    public function sendsms($notelp,$pesan,$modem=null) {
         return $this->db->insert('sms_full_outbox', array("DestinationNumber"=>$notelp, "TextDecoded"=>$pesan, "CreatorID"=>"Admin"));
     }
     public function sendkonfirm($idres, $edit=null) {

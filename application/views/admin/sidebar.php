@@ -29,7 +29,7 @@
             </li>
             <li>
                 <a href="<?=base_url('admin/postinfo');?>">
-                    <i class="fa fa-line-chart"></i> <span>Post Info</span>
+                    <i class="fa fa-line-chart"></i> <span>Posting Info</span>
                 </a>
             </li>
             <li class="treeview">
