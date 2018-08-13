@@ -120,6 +120,13 @@ class Admin extends CI_Controller
     }
     public function reservasi() {
         $this->load->model('mod_reservasi');
+        if ($this->input->get('filtglres')){
+            $filtglres = $this->input->get('filtglres');
+            $where = "waktu_rsv>='$filtglres'";
+        } else {
+            $filtglres = date('Y-m-d');
+            $where = "waktu_rsv >='$filtglres'";
+        }
         if ($this->input->get('hapus')){
             $this->db->delete("res_treservasi", "id_rsv={$this->input->get('hapus')}");
             redirect('admin/reservasi');
@@ -177,7 +184,8 @@ class Admin extends CI_Controller
         $data['page']='admin/reservasi';
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
         $data['content']['klinik']= $this->mod_setting->getklinik(0,1000);
-        $data['content']['datares']= $this->mod_reservasi->getresfull("waktu_rsv>=CURRENT_DATE()");
+        $data['content']['datares']= $this->mod_reservasi->getresfull($where);
+        $data['content']['filtglres']= $filtglres;
         $data['content']['action']='admin/reservasi';
         $this->load->view('admin/main', $data);
     }

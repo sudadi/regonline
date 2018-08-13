@@ -30,7 +30,19 @@
                             </div>
                         <div class="clearfix"></div><p/>
                         <div class="box box-info">
-                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <?=form_open('admin/reservasi', array('method'=>'GET')); ?>
+                                <div class="form-group">
+                                    <label class="col-sm-2">Tgl. Res.</label>
+                                    <div class="col-sm-2">
+                                        <?=form_input(array('name'=>'filtglres','type'=>'date'),$filtglres,'class="form-control"');?>
+                                    </div>
+                                    <div class="col-sm-2">                                        
+                                        <?=form_button(array('name'=>'view','type'=>'submit'), '<span class="fa fa-eye"></span> View', 'class="btn btn-primary"');?>
+                                    </div>
+                                </div>
+                                <?=form_close();?>
+                            </div>
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover" id="dttable">
                                     <thead>
@@ -416,4 +428,5 @@
 //            });
 //        };
 //    });
+console.log("<?=$filtglres;?>");
 </script>
