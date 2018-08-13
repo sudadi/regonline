@@ -122,7 +122,7 @@ class Admin extends CI_Controller
         $this->load->model('mod_reservasi');
         if ($this->input->get('filtglres')){
             $filtglres = $this->input->get('filtglres');
-            $where = "waktu_rsv>='$filtglres'";
+            $where = "date(waktu_rsv)='$filtglres'";
         } else {
             $filtglres = date('Y-m-d');
             $where = "waktu_rsv >='$filtglres'";
@@ -286,9 +286,11 @@ class Admin extends CI_Controller
         echo json_encode($res);        
     }
     public function laporan() {
-        $this->data['page']='admin/laporan';
-        $this->data['content']='';
-        $this->load->view('admin/main', $this->data);
+        $this->load->model('mod_reservasi');
+        $where = "waktu_rsv>='".date('Y-m-d'."'");
+        $data['page']='admin/laporan';
+        $data['content']['datares']= $this->mod_reservasi->getresfull($where);
+        $this->load->view('admin/main', $data);
     }
     public function datadok() {
         if ($this->input->get('hapus')) {

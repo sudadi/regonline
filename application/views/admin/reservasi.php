@@ -31,9 +31,9 @@
                         <div class="clearfix"></div><p/>
                         <div class="box box-info">
                             <div class="box-header with-border">
-                                <?=form_open('admin/reservasi', array('method'=>'GET')); ?>
+                                <?=form_open('admin/reservasi', 'method="GET" class="form-horizontal'); ?>
                                 <div class="form-group">
-                                    <label class="col-sm-2">Tgl. Res.</label>
+                                    <label class="control-label col-sm-1">Tgl. Res.</label>
                                     <div class="col-sm-2">
                                         <?=form_input(array('name'=>'filtglres','type'=>'date'),$filtglres,'class="form-control"');?>
                                     </div>
