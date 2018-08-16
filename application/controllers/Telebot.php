@@ -1,4 +1,4 @@
-<?php //defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -40,7 +40,7 @@ class Telebot extends CI_Controller
             }
             file_put_contents($idfile, $update_id + 1);
             
-            sleep(5);
+            sleep(1);
         }
     }
     
@@ -116,7 +116,21 @@ class Telebot extends CI_Controller
         $fromid = $message['from']['id'];
 
         switch (true) {
-
+            
+            case $pesan == '/start' :
+                $this->telebot_lib->sendApiAction($chatid);
+                $text = "Selamat Datang di bot RESERVASi Pasien\n"
+                ."*RS Ortopedi Prof.DR.R. Soeharso Surakarta*\n";
+                $parse = "HTML";
+                $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
+                $keyboard = [
+                    ['/reservasi'],
+                    ['/s&k', '/bantuan'],
+                    
+                ];
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan Klik tombol /reservasi untuk mulai.', $keyboard);
+                break;
+            
             case $pesan == '/id':
                 $this->telebot_lib->sendApiAction($chatid);
                 $text = 'ID Kamu adalah: '.$fromid;
