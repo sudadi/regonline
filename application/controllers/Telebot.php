@@ -111,86 +111,128 @@ class Telebot extends CI_Controller
     {
         // if ($GLOBALS['debug']) mypre($message);
         $this->load->model('mod_telebot');
+        $this->load->model('mod_reservasi');
         $pesan = $message['text'];
         $chatid = $message['chat']['id'];
         $fromid = $message['from']['id'];
-        $dataResTele= $this->mod_telebot->getrestele("fromid=$fromid");
-        if ($dataResTele) {
-            
-        } else {
-            switch (true) {
+        $inkeyboard = FALSE;
+        switch (true) {
 
-                case $pesan == '/start' :
-                    $this->telebot_lib->sendApiAction($chatid);
-                    $text = "Selamat Datang di bot RESERVASI Pasien\n"
-                    ."*RS Ortopedi Prof.DR.R. Soeharso Surakarta*\n";
-                    $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
-                    $keyboard = [
-                        ['/reservasi'],
-                        ['/ketentuan', '/bantuan'],
+            case $pesan == '/start' :
+                $this->telebot_lib->sendApiAction($chatid);
+                $text = "Selamat Datang di bot RESERVASI Pasien\n"
+                ."*RS Ortopedi Prof.DR.R. Soeharso Surakarta*\n";
+                $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
+                $keyboard = [
+                    ['/reservasi'],
+                    ['/ketentuan', '/bantuan'],
 
-                    ];
-                    $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan Klik tombol /reservasi untuk mulai.', $keyboard);
-                    break;
+                ];
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan Klik tombol /reservasi untuk mulai.', $keyboard);
+                break;
 
-                case $pesan=='/reservasi' :
-                    $this->telebot_lib->sendApiAction($chatid);
+            case $pesan=='/reservasi' :
+                if($this->mod_telebot->newteleres($fromid)){
                     $text = "Mohon masukkan No. Rekam Medis (NoRM) Anda :";
+                } else {
+                    $text = "Maaf perintah /reservasi gagal, silahkan ulangi lagi!";                        
+                }
+                $this->telebot_lib->sendApiAction($chatid);
+                $this->telebot_lib->sendApiMsg($chatid, $text);
+                break;
+
+            case $pesan == '/id':
+                $this->telebot_lib->sendApiAction($chatid);
+                $text = 'ID Kamu adalah: '.$fromid;
+                $this->telebot_lib->sendApiMsg($chatid, $text);
+                break;
+
+            case $pesan == '!keyboard':
+                $this->telebot_lib->sendApiAction($chatid);
+                $keyboard = [
+                    ['tombol 1', 'tombol 2'],
+                    ['!keyboard', '!inline'],
+                    ['!hide'],
+                ];
+                $this->telebot_lib->sendApiKeyboard($chatid, 'tombol pilihan', $keyboard);
+                break;
+
+            case $pesan == '!inline':
+                $this->telebot_lib->sendApiAction($chatid);
+                $inkeyboard = [
+                    [
+                        ['text' => 'Update 1', 'callback_data' => 'data update 1'],
+                        ['text' => 'Update 2', 'callback_data' => 'data update 2'],
+                    ],
+                    [
+                        ['text' => 'keyboard on', 'callback_data' => '!keyboard'],
+                        ['text' => 'keyboard inline', 'callback_data' => '!inline'],
+                    ],
+                    [
+                        ['text' => 'keyboard off', 'callback_data' => '!hide'],
+                    ],
+                ];
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Tampilan Inline', $inkeyboard, true);
+                break;
+
+            case $pesan == '!hide':
+                $this->telebot_lib->sendApiAction($chatid);
+                $this->telebot_lib->sendApiHideKeyboard($chatid, 'keyboard off');
+                break;
+
+            case preg_match("/\/echo (.*)/", $pesan, $hasil):
+                $this->telebot_lib->sendApiAction($chatid);
+
+                $text = '*Echo:* '.$hasil[1];
+                $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
+                break;
+
+            default:
+                $dataResTele= $this->mod_telebot->getrowteleres("fromid=$fromid");
+                if ($dataResTele) {
+                    $status = $dataResTele->status;
+                    switch ($status) {
+                        case 'norm':
+                            if($this->mod_reservasi->cekdatpas("norm='".$pesan."'") && 
+                            $this->mod_telebot->updteleres($fromid,'ttl',array('name'=>'norm','val'=>$pesan))){
+                                $text = "Mohon masukkan Tgl. lahir Anda dd/mm/yyyy\n(ct. 21/06/1978) :";                        
+                            } else {
+                                $text = "Nomor Rekam Medis (No.RM) tidak ditemukan(salah)!\n"
+                                        . "Mohon masukkan No.RM yang benar :";
+                            }
+                            break;
+                            
+                        case 'ttl':
+                            $tgl = DateTime::createFromFormat('d/m/Y', $pesan)->format('Y-m-d');
+                            if($this->mod_reservasi->cekdatpas("norm='".$dataResTele->norm."' and tgl_lahir='".$tgl."'") && 
+                            $this->mod_telebot->updteleres($fromid,'jaminan')){
+                                $text = "Pilih jenis jaminan :";    
+                                $inkeyboard = [
+                                    [
+                                        ['text' => 'Umum'],
+                                        ['text' => 'JKN'],
+                                        ['text' => 'IKS'],
+                                    ],                                    
+                                ];
+                            } else {
+                                $text = "Tanggal lahir tidak sesuai (salah)!\n"
+                                        . "Mohon masukkan tanggal yang benar :";
+                            }
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                } else {
+                    $text = "Maaf, kami tidak mengerti perintah {$pesan} yang Anda maksud.";                    
+                }
+                $this->telebot_lib->sendApiAction($chatid);
+                if ($inkeyboard){
+                    $this->telebot_lib->sendApiKeyboard($chatid, $text, $inkeyboard, true);
+                } else {
                     $this->telebot_lib->sendApiMsg($chatid, $text);
-                    break;
-
-                case $pesan == '/id':
-                    $this->telebot_lib->sendApiAction($chatid);
-                    $text = 'ID Kamu adalah: '.$fromid;
-                    $this->telebot_lib->sendApiMsg($chatid, $text);
-                    break;
-
-                case $pesan == '!keyboard':
-                    $this->telebot_lib->sendApiAction($chatid);
-                    $keyboard = [
-                        ['tombol 1', 'tombol 2'],
-                        ['!keyboard', '!inline'],
-                        ['!hide'],
-                    ];
-                    $this->telebot_lib->sendApiKeyboard($chatid, 'tombol pilihan', $keyboard);
-                    break;
-
-                case $pesan == '!inline':
-                    $this->telebot_lib->sendApiAction($chatid);
-                    $inkeyboard = [
-                        [
-                            ['text' => 'Update 1', 'callback_data' => 'data update 1'],
-                            ['text' => 'Update 2', 'callback_data' => 'data update 2'],
-                        ],
-                        [
-                            ['text' => 'keyboard on', 'callback_data' => '!keyboard'],
-                            ['text' => 'keyboard inline', 'callback_data' => '!inline'],
-                        ],
-                        [
-                            ['text' => 'keyboard off', 'callback_data' => '!hide'],
-                        ],
-                    ];
-                    $this->telebot_lib->sendApiKeyboard($chatid, 'Tampilan Inline', $inkeyboard, true);
-                    break;
-
-                case $pesan == '!hide':
-                    $this->telebot_lib->sendApiAction($chatid);
-                    $this->telebot_lib->sendApiHideKeyboard($chatid, 'keyboard off');
-                    break;
-
-                case preg_match("/\/echo (.*)/", $pesan, $hasil):
-                    $this->telebot_lib->sendApiAction($chatid);
-
-                    $text = '*Echo:* '.$hasil[1];
-                    $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
-                    break;
-
-                default:
-                    $this->telebot_lib->sendApiAction($chatid);
-                    $text = "Maaf, kami tidak mengerti perintah yang Anda maksud.";
-                    $this->telebot_lib->sendApiMsg($chatid, $text);
-                    break;
-            }
+                }
+                break;
         }
     }
 

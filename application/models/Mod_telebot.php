@@ -12,8 +12,29 @@ class Mod_telebot extends CI_Model {
         parent::__construct();
     }
     
-    function getrestele($where=null) {
-        return null;
+    function getrowteleres($where=null) {
+        $result = $this->db->get_where('res_telebot', $where, 1);
+        return $result->row();
+    }
+    
+    function newteleres($fromid) {
+        $this->db->insert('res_telebot',array('fromid'=>$fromid,'status'=>'norm'));
+        return $this->db->affected_rows();
+    }
+    
+    function updteleres($fromid, $status, $col) {
+        $set = array('status'=>$status);
+        if ($col){
+            $set[$col['name']]=$col['val'];
+        }
+        $this->db->where('fromid', $fromid);
+        $this->db->update('res_telebot',$set);
+        return $this->db->affected_rows();
+    }
+    
+    function delteleres($fromid) {
+        $this->db->delete('res_telebot', 'fromid={$fromid}');
+        return $this->db->affected_rows();
     }
 
 }
