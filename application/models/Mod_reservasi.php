@@ -36,7 +36,7 @@
         if ($iddokter){
             $this->db->where('dokter_id', $iddokter);
         }
-        $this->db->where("(tipe_layan = 3 or tipe_layan=$jenis)");
+        $this->db->where("(jns_layan_id =$jenis)");
         $this->db->group_by('res_refklinik.id_klinik');
         $res = $this->db->get();
         return $res->result();
@@ -68,7 +68,7 @@
     }
     function getdipakai($idjadwal,$tglcekin,$jamcekin) {
         $this->db->from('vreservasi');
-        $this->db->where("id_jadwal=$idjadwal and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
+        $this->db->where("id_jadwal='$idjadwal' and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
         return $this->db->count_all_results();
     }
     function getkuotajam($idjadwal) {
@@ -79,7 +79,7 @@
         return $this->db->get('res_jadwal')->result_array();
     }
     function getjnspasien($idjenis) {
-        return $this->db->get_where("res_jns_jaminan", "flag_jaminan = 1 and id_jaminan = $idjenis")->row();
+        return $this->db->get_where("res_jns_jaminan", "flag_jaminan = 1 and id_jaminan = '$idjenis'")->row();
     }
     function getsebabsakit() {
         return $this->db->get('res_sebab_sakit')->result_array();

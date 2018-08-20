@@ -22,18 +22,14 @@ class Mod_telebot extends CI_Model {
         return $this->db->affected_rows();
     }
     
-    function updteleres($fromid, $status, $col) {
-        $set = array('status'=>$status);
-        if ($col){
-            $set[$col['name']]=$col['val'];
-        }
+    function updteleres($fromid, $set) {        
         $this->db->where('fromid', $fromid);
         $this->db->update('res_telebot',$set);
         return $this->db->affected_rows();
     }
     
     function delteleres($fromid) {
-        $this->db->delete('res_telebot', 'fromid={$fromid}');
+        $this->db->delete('res_telebot', "fromid={$fromid}");
         return $this->db->affected_rows();
     }
 
