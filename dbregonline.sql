@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Agu 2018 pada 23.23
+-- Waktu pembuatan: 20 Agu 2018 pada 22.28
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 5.6.35
 
@@ -107,7 +107,7 @@ CREATE TABLE `auth_users` (
 --
 
 INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1534149625, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'uLqRuZhJcW3CwF9799i.Te', 1268889823, 1534790574, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (2, '127.0.0.1', 'web', '57f99d889086c8456456dcccd6401aef0ba2058c', NULL, '', NULL, NULL, NULL, NULL, 1268889823, NULL, 1, 'Registrasi', 'Web', 'RSO', NULL);
 
 -- --------------------------------------------------------
@@ -157,7 +157,8 @@ INSERT INTO `res_jadwal` (`id_jadwal`, `dokter_id`, `klinik_id`, `jns_layan_id`,
 (6, 111, 1, 1, 2, '07:30:00', '15:00:00', 20, 1),
 (7, 111, 1, 1, 3, '07:30:00', '15:00:00', 20, 1),
 (8, 111, 1, 1, 4, '07:30:00', '15:00:00', 20, 1),
-(9, 111, 1, 1, 5, '07:30:00', '15:00:00', 20, 1);
+(9, 111, 1, 1, 5, '07:30:00', '15:00:00', 20, 1),
+(10, 8, 104, 2, 2, '09:00:00', '15:00:00', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -215,7 +216,8 @@ INSERT INTO `res_kuota` (`id_kuota`, `id_jadwal`, `jam`, `kuota`) VALUES
 (2, 6, '07:30:00', 30),
 (3, 7, '07:30:00', 30),
 (4, 8, '07:30:00', 30),
-(5, 9, '07:30:00', 30);
+(5, 9, '07:30:00', 30),
+(6, 10, '09:00:00', 5);
 
 -- --------------------------------------------------------
 
@@ -324,7 +326,7 @@ CREATE TABLE `res_refklinik` (
 --
 
 INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_layan`, `kuota`, `status`) VALUES
-(1, 'Ortopedi', 'ORT', 3, 20, 1),
+(1, 'Ortopedi', 'ORT', 1, 20, 1),
 (2, 'Gigi &amp; Mulut', 'GP1', 1, 3, 1),
 (3, 'Rehabilitasi Medik', 'IRM', 1, 0, 1),
 (4, 'Penyakit Dalam', 'INT', 1, 0, 1),
@@ -334,7 +336,7 @@ INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_laya
 (24, 'Sub Sp. Spine', 'ORT', 1, 0, 1),
 (100, 'Herbal', 'HER', 1, 0, 0),
 (101, 'Ortopedi Wijaya Kusuma', 'ORT', 1, 0, 0),
-(102, 'Sub. Sp Onkology', 'ORT', 1, 0, 1),
+(102, 'Sub. Sp Onkology', 'ORT', 2, 0, 1),
 (103, 'Sub. Sp Hand and Micro Surgery', 'ORT', 1, 0, 1),
 (104, 'Sub. Sp. Sport Medicine', 'ORT', 1, 0, 1),
 (400, 'Sub. Sp. Adult Reconstruction', 'ORT', 1, 0, 1),
@@ -392,7 +394,7 @@ CREATE TABLE `res_telebot` (
 --
 
 INSERT INTO `res_telebot` (`id_telebot`, `fromid`, `norm`, `jaminan_id`, `jnslayan_id`, `dokter_id`, `klinik_id`, `tgl_res`, `jam`, `status`) VALUES
-(2, '535459157', '133469', NULL, NULL, NULL, NULL, NULL, NULL, 'jaminan');
+(11, '535459157', '133469', 2, 2, NULL, NULL, NULL, NULL, 'dokter');
 
 -- --------------------------------------------------------
 
@@ -1279,13 +1281,13 @@ ALTER TABLE `auth_users_groups`
 -- AUTO_INCREMENT untuk tabel `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
-  MODIFY `id_jadwal` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_jadwal` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `res_kuota`
 --
 ALTER TABLE `res_kuota`
-  MODIFY `id_kuota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_kuota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `res_refdokter`
@@ -1309,7 +1311,7 @@ ALTER TABLE `res_refklinik`
 -- AUTO_INCREMENT untuk tabel `res_telebot`
 --
 ALTER TABLE `res_telebot`
-  MODIFY `id_telebot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_telebot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `res_tgl_libur`
