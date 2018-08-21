@@ -49,6 +49,33 @@
         $this->db->select('kuota');
         return $this->db->get_where("res_refklinik", "id_klinik=$klinik")->row();
     }
+    function cekjadawal($klinik=null, $iddokter=null, $jenis=null, $idjadwal=null) {
+        $hari_ID = array (1=>'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu');
+        if ($idjadwal){
+            $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
+        } else {
+            $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
+        }
+        $dtlibur = $this->mod_reservasi->getlibur();
+        for($i=0; $i < count($dtjadwal); $i++){
+            $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
+            $startdate = strtotime($hari);
+            $enddate = strtotime("+2 weeks", $startdate);
+            while ($startdate < $enddate) {
+                $newdate = date("Y-m-d", $startdate); 
+                $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
+                if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
+                      //nothing  or skip        
+                } else {
+                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>$hari_ID[date("N", $startdate)], 
+                    'iddokter'=>$dtjadwal[$i]['dokter_id'],'idklinik'=>$dtjadwal[$i]['klinik_id'],'idjadwal'=>$dtjadwal[$i]['id_jadwal']);
+                }
+                $startdate = strtotime("+1 week", $startdate);
+            }            
+        }  
+        sort($jadwal);
+        return $jadwal;
+    }
     function getjadwal($klinik,$dokter,$jenis) {
         if ($dokter){
         $this->db->where('dokter_id', $dokter);

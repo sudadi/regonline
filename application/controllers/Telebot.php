@@ -143,7 +143,7 @@ class Telebot extends CI_Controller
                 
             case $pesan == '/batal':
                 $text ="Yakin akan membatalkan proses reservasi ini.? \n"
-                    . "Ketik 'Ya yakin batal' jika a=Anda yakin.\n";
+                    . "Ketik 'Ya yakin batal' jika Anda yakin.\n";
                 $this->telebot_lib->sendApiAction($chatid);
                 $this->telebot_lib->sendApiMsg($chatid, $text);
                 break;
@@ -219,8 +219,9 @@ class Telebot extends CI_Controller
                             break;
                             
                         case 'ttl':
-                            $tgl = DateTime::createFromFormat('d/m/Y', $pesan)->format('Y-m-d');
-                            $datPas = $this->mod_reservasi->cekdatpas("norm='".$dataResTele->norm."' and tgl_lahir='".$tgl."'");
+                            if ($tgl=date('Y/m/d', strtotime($pesan))){
+                                $datPas = $this->mod_reservasi->cekdatpas("norm='".$dataResTele->norm."' and tgl_lahir='".$tgl."'");
+                            }
                             if($datPas && $this->mod_telebot->updteleres($chatid,array('status'=>'jaminan'))){
                                 $text = "Selamat datang *{$datPas->nama}* \n\n"
                                         . "Pilih jenis jaminan :";    
@@ -251,7 +252,7 @@ class Telebot extends CI_Controller
                                 $text = "Pilih Poliklinik tujuan :";
                                 $kliniks = $this->mod_reservasi->getklinik(false, 1);
                                 foreach ($kliniks as $klinik) {
-                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"$klinik->id_klinik"];
+                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"klinik ".$klinik->id_klinik];
                                 }
                                 $inkeyboard = [$pilihan];
                                 
@@ -273,7 +274,7 @@ class Telebot extends CI_Controller
                                 $text = "Pilih Poliklinik tujuan :";
                                 $kliniks = $this->mod_reservasi->getklinik(false, 1);
                                 foreach ($kliniks as $klinik) {
-                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"$klinik->id_klinik"];
+                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"klinik ".$klinik->id_klinik];
                                 }
                                 $inkeyboard = [$pilihan];
                             } else if ($pesan[0]=='layanan' && $pesan[1] == '2' && $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'dokter'))){
@@ -295,32 +296,45 @@ class Telebot extends CI_Controller
                             break;
                             
                         case 'dokter':
+                            $pesan = explode(' ', $pesan);
                             $dokters = $this->mod_reservasi->getdokter(2);
                             foreach ($dokters as $dokter) {
-                                if ($dokter->id_dokter == $pesan){
+                                if ($dokter->id_dokter == $pesan[1]){
                                     $valid = TRUE;
-                                } else {
-                                    $valid = false;
-                                }
+                                } 
                             }
-                            if ($valid && $this->mod_telebot->updteleres($chatid,array('dokter_id'=>(int)$pesan,'status'=>'klinik'))){
+                            if ($valid && $pesan[0]==dokter && $this->mod_telebot->updteleres($chatid,array('dokter_id'=>(int)$pesan[1],'status'=>'klinik'))){
                                 $text = "Pilih Poliklinik tujuan :";
-                                $kliniks = $this->mod_reservasi->getklinik($pesan, 2);
+                                $kliniks = $this->mod_reservasi->getklinik($pesan[1], 2);
                                 foreach ($kliniks as $klinik) {
-                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"$klinik->id_klinik"];
+                                    $pilihan[]= ['text'=>$klinik->nama_klinik, 'callback_data'=>"klinik ".$klinik->id_klinik];
                                 }
                                 $inkeyboard = [$pilihan];
                             }
                             break;
                             
                         case 'klinik':
+                            $pesan = explode(' ', $pesan);
                             $jnslayan=$dataResTele->jnslayan_id;
                             if ($jnslayan == 1){
                                 $iddokter = 0;
                             } else {
                                 $iddokter = $dataResTele->dokter_id;
                             }
-                            
+                            $jadwal=$this->mod_reservasi->getjadwal($pesan[1],$iddokter,$jnslayan);
+                            if ($pesan[0]=='klinik' && $jadwal){
+                                if ($this->mod_telebot->updteleres($chatid,array('klinik_id'=>(int)$pesan[1],'status'=>'tglres'))){
+                                    $tgls=$this->mod_reservasi->cekjadawal($pesan[1], $iddokter, $jnslayan);
+                                    $i=$x=0;
+                                    foreach ($tgls as $tgl) {
+                                        $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"tgl".$tgl['jadwaltgl']];
+                                        if($x%2==0)$i++;
+                                        $x++;
+                                    }
+                                    $text="Siliahkan pilih tanggal Reservasi :";
+                                    $inkeyboard = $pilihan;
+                                }
+                            }
                             break;
                                                         
                         default:

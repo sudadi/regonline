@@ -75,34 +75,9 @@ class Reservasi extends CI_Controller {
         $data = $this->mod_reservasi->getklinik($iddokter, $jenis);
         echo json_encode($data); 
     }
-    private function cekjadawal($klinik=null, $iddokter=null, $jenis=null, $idjadwal=null) {
-        if ($idjadwal){
-            $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
-        } else {
-            $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
-        }
-        $dtlibur = $this->mod_reservasi->getlibur();
-        for($i=0; $i < count($dtjadwal); $i++){
-            $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
-            $startdate = strtotime($hari);
-            $enddate = strtotime("+2 weeks", $startdate);
-            while ($startdate < $enddate) {
-                $newdate = date("Y-m-d", $startdate); 
-                $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
-                if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
-                      //nothing  or skip        
-                } else {
-                    $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>date("l", $startdate), 
-                    'iddokter'=>$dtjadwal[$i]['dokter_id'],'idklinik'=>$dtjadwal[$i]['klinik_id'],'idjadwal'=>$dtjadwal[$i]['id_jadwal']);
-                }
-                $startdate = strtotime("+1 week", $startdate);
-            }            
-        }  
-        sort($jadwal);
-        return $jadwal;
-    }
+    
     public function ajax_jadwal($klinik, $iddokter, $jenis) {
-        if ($jadwal= $this->cekjadawal($klinik, $iddokter, $jenis)){
+        if ($jadwal= $this->mod_reservasi->cekjadawal($klinik, $iddokter, $jenis)){
             echo json_encode($jadwal);
         }
 //    public function ajax_jadwal($klinik, $iddokter, $jenis) {
