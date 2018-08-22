@@ -120,17 +120,7 @@ class Reservasi extends CI_Controller {
 //        echo date('l Y-m-d', $i);
     }
     public function ajax_jamcekin($idjadwal,$tglcekin) {
-        $dtjadwal= $this->cekjadawal(null,null,null,$idjadwal);   
-        $idklinik=$dtjadwal[0]['idklinik'];
-        $iddokter=$dtjadwal[0]['iddokter'];   
-        $kuota=$this->mod_reservasi->getkuotajam($idjadwal);
-        foreach ($kuota as $value) {
-            $dipakai= $this->mod_reservasi->getdipakai($idjadwal,$tglcekin,$value->jam);
-            $sisa = $value->kuota - $dipakai;
-            if ( $sisa>0){
-                $kuotaperjam[]=array('idjadwal'=>$idjadwal,'idklinik'=>$idklinik,'iddokter'=>$iddokter,'jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);
-            }
-        }
+        $kuotaperjam=$this->mod_reservasi->getjamcekin($idjadwal,$tglcekin);
          echo json_encode($kuotaperjam);
     }
 //    public function ajax_jamcekin($idjadwal,$tglcekin) {

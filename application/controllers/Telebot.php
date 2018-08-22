@@ -8,7 +8,9 @@
 
 class Telebot extends CI_Controller
 {
-    
+    public $dataResTele;
+
+
     public function __construct()
     {
         parent::__construct();
@@ -105,7 +107,90 @@ class Telebot extends CI_Controller
 
         $this->prosesPesanTeks($messageupdate);
     }
+    
+    private function casenorm($chatid, $pesan) {
+        if($this->mod_reservasi->cekdatpas("norm='".$pesan."'") && 
+        $this->mod_telebot->updteleres($chatid,array('status'=>'ttl','norm'=>$pesan))){
+            $text = "Mohon masukkan Tgl. lahir Anda dd-mm-yyyy\n(ct. 21-06-1978) :";                        
+        } else {
+            $text = "Nomor Rekam Medis (No.RM) tidak ditemukan(salah)!\n"
+                    . "Mohon masukkan No.RM yang benar :";
+        }
+        return $text;
+    }
+    
+    private function casettl($chatid, $pesan, $text=null) {
+        if ($tgl=date('Y/m/d', strtotime($pesan))){
+                $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."' and tgl_lahir='".$tgl."'");
+            }
+        if($text || ($datPas && $this->mod_telebot->updteleres($chatid,array('ttl'=>"$tgl",'status'=>'jaminan')))){
+            if (!$text){
+            $text = "Selamat datang *{$datPas->nama}* \n\n"
+            . "Pilih jenis jaminan :";}    
+            $inkeyboard = [
+                [
+                    ['text' => 'Umum', 'callback_data' => 'jaminan 2'],
+                    ['text' => 'JKN', 'callback_data' => 'jaminan 5'],
+                    ['text' => 'IKS', 'callback_data' => 'jaminan 7'],
+                ],                                    
+            ];
+        } else {
+            $text = "Tanggal lahir tidak sesuai (salah)!\n"
+                    . "Mohon masukkan tanggal yang benar :";
+        }
+        return array($text, $inkeyboard);
+    }
+    
+    private function casejaminan($chatid, $pesan, $text) {
+        $pesan = explode(' ', $pesan);
+        if ($pesan[0]=='jaminan' && ($pesan[1] == '2' || $pesan[1] == '7') && ($text ||$this->mod_telebot->updteleres($chatid,array('status'=>'layanan','jaminan_id'=>$pesan[1])))){                            
+            if(!$text) $text = "Pilih jenis layanan :";
+            $inkeyboard = [
+                [
+                    ['text' => 'Reguler', 'callback_data' => 'layanan 1'],
+                    ['text' => 'Eksekutif', 'callback_data' => 'layanan 2'],
+                ],                                    
+            ];
+        } else if ($pesan[0] == 'jaminan' && $pesan[1] == '5' && ($text || $this->mod_telebot->updteleres($chatid,array('status'=>'klinik','jnslayan_id'=>1,'jaminan_id'=>(int)$pesan[1])))) {
+            if(!$text) $text = "Pilih Poliklinik tujuan :";
+            $kliniks = $this->mod_reservasi->getklinik(false, 1);
+            foreach ($kliniks as $klinik) {
+                $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"klinik ".$klinik->id_klinik];
+            }
+            $inkeyboard = [$pilihan];
 
+        } else {
+            $text = "*Pilihan Salah!*\n\n"
+                    . "Pilih jenis jaminan berikut:";    
+            list($text, $inkeyboard)=$this->casettl($chatid, $this->dataResTele->ttl, $text);
+        }
+        return array($text, $inkeyboard);
+    }
+    
+    private function caselayanan($chatid, $pesan, $text=null) {
+        $pesan = explode(' ', $pesan);
+        if ($pesan[0]=='layanan' && $pesan[1] == '1' && $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'klinik'))){
+            $text = "Pilih Poliklinik tujuan :";
+            $kliniks = $this->mod_reservasi->getklinik(false, 1);
+            foreach ($kliniks as $klinik) {
+                $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"klinik ".$klinik->id_klinik];
+            }
+            $inkeyboard = [$pilihan];
+        } else if ($pesan[0]=='layanan' && $pesan[1] == '2' && $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'dokter'))){
+            $text = "Pilih dokter :";
+            $dokters = $this->mod_reservasi->getdokter(2);
+            foreach ($dokters as $dokter) {
+                $pilihan[]= ['text'=>"$dokter->nama_dokter", 'callback_data'=>"dokter ".$dokter->id_dokter];
+            }
+            $inkeyboard = [$pilihan];
+        } else {
+            $text = "*Pilihan Salah!*\n\n"
+                    ."Pilih jenis layanan :";
+            list($text, $inkeyboard)= $this->casejaminan($chatid, 'jaminan '.$this->dataResTele->jaminan_id, $text);
+            
+        }
+        return array($text, $inkeyboard);
+    }
 
     private function prosesPesanTeks($message)
     {
@@ -204,95 +289,24 @@ class Telebot extends CI_Controller
                 break;
 
             default:
-                $dataResTele= $this->mod_telebot->getrowteleres("fromid=$chatid");
-                if ($dataResTele) {
-                    $status = $dataResTele->status;
+                $this->dataResTele= $this->mod_telebot->getrowteleres("fromid=$chatid");
+                if ($this->dataResTele) {
+                    $status = $this->dataResTele->status;
                     switch ($status) {
                         case 'norm':
-                            if($this->mod_reservasi->cekdatpas("norm='".$pesan."'") && 
-                            $this->mod_telebot->updteleres($chatid,array('status'=>'ttl','norm'=>$pesan))){
-                                $text = "Mohon masukkan Tgl. lahir Anda dd/mm/yyyy\n(ct. 21/06/1978) :";                        
-                            } else {
-                                $text = "Nomor Rekam Medis (No.RM) tidak ditemukan(salah)!\n"
-                                        . "Mohon masukkan No.RM yang benar :";
-                            }
+                            $text=$this->casenorm($chatid,$pesan);
                             break;
                             
                         case 'ttl':
-                            if ($tgl=date('Y/m/d', strtotime($pesan))){
-                                $datPas = $this->mod_reservasi->cekdatpas("norm='".$dataResTele->norm."' and tgl_lahir='".$tgl."'");
-                            }
-                            if($datPas && $this->mod_telebot->updteleres($chatid,array('status'=>'jaminan'))){
-                                $text = "Selamat datang *{$datPas->nama}* \n\n"
-                                        . "Pilih jenis jaminan :";    
-                                $inkeyboard = [
-                                    [
-                                        ['text' => 'Umum', 'callback_data' => 'jaminan 2'],
-                                        ['text' => 'JKN', 'callback_data' => 'jaminan 5'],
-                                        ['text' => 'IKS', 'callback_data' => 'jaminan 7'],
-                                    ],                                    
-                                ];
-                            } else {
-                                $text = "Tanggal lahir tidak sesuai (salah)!\n"
-                                        . "Mohon masukkan tanggal yang benar :";
-                            }
+                            list($text, $inkeyboard)= $this->casettl($chatid, $pesan);
                             break;
                             
                         case 'jaminan':
-                            $pesan = explode(' ', $pesan);
-                            if ($pesan[0]=='jaminan' && ($pesan[1] == '2' || $pesan[1] == '7') && $this->mod_telebot->updteleres($chatid,array('status'=>'layanan','jaminan_id'=>$pesan[1]))){                            
-                                $text = "Pilih jenis layanan :";
-                                $inkeyboard = [
-                                    [
-                                        ['text' => 'Reguler', 'callback_data' => 'layanan 1'],
-                                        ['text' => 'Eksekutif', 'callback_data' => 'layanan 2'],
-                                    ],                                    
-                                ];
-                            } else if ($pesan[0] == 'jaminan' && $pesan[1] == '5' && $this->mod_telebot->updteleres($chatid,array('status'=>'klinik','jnslayan_id'=>1,'jaminan_id'=>(int)$pesan[1]))) {
-                                $text = "Pilih Poliklinik tujuan :";
-                                $kliniks = $this->mod_reservasi->getklinik(false, 1);
-                                foreach ($kliniks as $klinik) {
-                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"klinik ".$klinik->id_klinik];
-                                }
-                                $inkeyboard = [$pilihan];
-                                
-                            } else {
-                                $text = "Pilih jenis jaminan :";    
-                                $inkeyboard = [
-                                    [
-                                        ['text' => 'Umum', 'callback_data' => 'jaminan 2'],
-                                        ['text' => 'JKN', 'callback_data' => 'jaminan 5'],
-                                        ['text' => 'IKS', 'callback_data' => 'jaminan 7'],
-                                    ],                                    
-                                ];
-                            }
+                            list($text, $inkeyboard)= $this->casejaminan($chatid, $pesan);
                             break;
                             
                         case 'layanan':
-                            $pesan = explode(' ', $pesan);
-                            if ($pesan[0]=='layanan' && $pesan[1] == '1' && $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'klinik'))){
-                                $text = "Pilih Poliklinik tujuan :";
-                                $kliniks = $this->mod_reservasi->getklinik(false, 1);
-                                foreach ($kliniks as $klinik) {
-                                    $pilihan[]= ['text'=>"$klinik->nama_klinik", 'callback_data'=>"klinik ".$klinik->id_klinik];
-                                }
-                                $inkeyboard = [$pilihan];
-                            } else if ($pesan[0]=='layanan' && $pesan[1] == '2' && $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'dokter'))){
-                                $text = "Pilih dokter :";
-                                $dokters = $this->mod_reservasi->getdokter(2);
-                                foreach ($dokters as $dokter) {
-                                    $pilihan[]= ['text'=>"$dokter->nama_dokter", 'callback_data'=>"dokter ".$dokter->id_dokter];
-                                }
-                                $inkeyboard = [$pilihan];
-                            } else {
-                                $text = "Pilih jenis layanan :";
-                                $inkeyboard = [
-                                    [
-                                        ['text' => 'Reguler', 'callback_data' => 'layanan 1'],
-                                        ['text' => 'Eksekutif', 'callback_data' => 'layanan 2'],
-                                    ],                                    
-                                ];
-                            }
+                            list($text, $inkeyboard)= $this->caselayanan($chatid, $pesan);
                             break;
                             
                         case 'dokter':
@@ -315,11 +329,11 @@ class Telebot extends CI_Controller
                             
                         case 'klinik':
                             $pesan = explode(' ', $pesan);
-                            $jnslayan=$dataResTele->jnslayan_id;
+                            $jnslayan=$this->dataResTele->jnslayan_id;
                             if ($jnslayan == 1){
                                 $iddokter = 0;
                             } else {
-                                $iddokter = $dataResTele->dokter_id;
+                                $iddokter = $this->dataResTele->dokter_id;
                             }
                             $jadwal=$this->mod_reservasi->getjadwal($pesan[1],$iddokter,$jnslayan);
                             if ($pesan[0]=='klinik' && $jadwal){
@@ -327,14 +341,21 @@ class Telebot extends CI_Controller
                                     $tgls=$this->mod_reservasi->cekjadawal($pesan[1], $iddokter, $jnslayan);
                                     $i=$x=0;
                                     foreach ($tgls as $tgl) {
-                                        $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"tgl".$tgl['jadwaltgl']];
+                                        $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"tgl ".$tgl['jadwaltgl']];
                                         if($x%2==0)$i++;
                                         $x++;
                                     }
                                     $text="Siliahkan pilih tanggal Reservasi :";
                                     $inkeyboard = $pilihan;
                                 }
+                            } else {
+                                
                             }
+                            break;
+                            
+                        case 'tgl':
+                            $pesan = explode(' ', $pesan);
+                            if ($pesan[0]=='tgl');
                             break;
                                                         
                         default:

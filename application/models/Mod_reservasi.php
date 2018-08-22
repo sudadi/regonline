@@ -52,11 +52,11 @@
     function cekjadawal($klinik=null, $iddokter=null, $jenis=null, $idjadwal=null) {
         $hari_ID = array (1=>'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu');
         if ($idjadwal){
-            $dtjadwal= $this->mod_reservasi->getjadwalbyid($idjadwal);
+            $dtjadwal= $this->getjadwalbyid($idjadwal);
         } else {
-            $dtjadwal = $this->mod_reservasi->getjadwal($klinik, $iddokter, $jenis);
+            $dtjadwal = $this->getjadwal($klinik, $iddokter, $jenis);
         }
-        $dtlibur = $this->mod_reservasi->getlibur();
+        $dtlibur = $this->getlibur();
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
             $startdate = strtotime($hari);
@@ -100,6 +100,20 @@
     }
     function getkuotajam($idjadwal) {
         return $this->db->get_where('res_kuota', 'id_jadwal='.$idjadwal)->result();
+    }
+    function getjamcekin($idjadwal,$tglcekin) {
+        $dtjadwal= $this->mod_reservasi->cekjadawal(null,null,null,$idjadwal);   
+        $idklinik=$dtjadwal[0]['idklinik'];
+        $iddokter=$dtjadwal[0]['iddokter'];   
+        $kuota=$this->mod_reservasi->getkuotajam($idjadwal);
+        foreach ($kuota as $value) {
+            $dipakai= $this->mod_reservasi->getdipakai($idjadwal,$tglcekin,$value->jam);
+            $sisa = $value->kuota - $dipakai;
+            if ( $sisa>0){
+                $kuotaperjam[]=array('idjadwal'=>$idjadwal,'idklinik'=>$idklinik,'iddokter'=>$iddokter,'jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);
+            }
+        }
+        return $kuotaperjam;
     }
     function getjadwalbyid($idjadwal) {
         $this->db->where('id_jadwal', $idjadwal);
