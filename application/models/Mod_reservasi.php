@@ -99,15 +99,15 @@
         return $this->db->count_all_results();
     }
     function getkuotajam($idjadwal) {
-        return $this->db->get_where('res_kuota', 'id_jadwal='.$idjadwal)->result();
+        return $this->db->get_where('res_kuota', "id_jadwal='".$idjadwal."'")->result();
     }
     function getjamcekin($idjadwal,$tglcekin) {
-        $dtjadwal= $this->mod_reservasi->cekjadawal(null,null,null,$idjadwal);   
+        $dtjadwal= $this->cekjadawal(null,null,null,$idjadwal);   
         $idklinik=$dtjadwal[0]['idklinik'];
         $iddokter=$dtjadwal[0]['iddokter'];   
-        $kuota=$this->mod_reservasi->getkuotajam($idjadwal);
+        $kuota=$this->getkuotajam($idjadwal);
         foreach ($kuota as $value) {
-            $dipakai= $this->mod_reservasi->getdipakai($idjadwal,$tglcekin,$value->jam);
+            $dipakai= $this->getdipakai($idjadwal,$tglcekin,$value->jam);
             $sisa = $value->kuota - $dipakai;
             if ( $sisa>0){
                 $kuotaperjam[]=array('idjadwal'=>$idjadwal,'idklinik'=>$idklinik,'iddokter'=>$iddokter,'jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);

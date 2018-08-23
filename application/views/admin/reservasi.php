@@ -286,7 +286,7 @@
     });
     $('#shownorm').click(function(){
         var norm=$('#norm').val();
-        console.log(norm);
+        //console.log(norm);
         if (norm.length < 6){
             alert('No. RM SALAH, minimal 6 digit angka.');
         } else {
@@ -366,7 +366,7 @@
         var jamcekin=$("#jamcekin");
         $('#dokter').val(cekin[1]);
         var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[2];
-        console.log(url);
+        //console.log(url);
         $.ajax({
             url : url,
             type: "GET",
@@ -428,5 +428,5 @@
 //            });
 //        };
 //    });
-console.log("<?=$filtglres;?>");
+//console.log("<?=$filtglres;?>");
 </script>

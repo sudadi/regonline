@@ -217,7 +217,7 @@ class Telebot extends CI_Controller
                 $tgls=$this->mod_reservasi->cekjadawal($pesan[1], $iddokter, $jnslayan);
                 $i=$x=0;
                 foreach ($tgls as $tgl) {
-                    $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"Tanggal|".$tgl['jadwaltgl']."|".$tgl['hari']." ".$tgl['jadwaltgl']];
+                    $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"Tanggal|".$tgl['jadwaltgl']."|".$tgl['hari']." ".$tgl['jadwaltgl']."|".$tgl['idjadwal']];
                     if($x%2==0)$i++;
                     $x++;
                 }
@@ -238,9 +238,21 @@ class Telebot extends CI_Controller
         return array($text, $inkeyboard);
     }
     
-    private function casetgl($chatid, $pesan, $text=null) {
+    private function casetglres($chatid, $pesan, $text=null) {
         $pesan = explode('|', $pesan);
-        
+        if ($pesan[0] || $pesan[1] || $pesan[2] || $pesan[3]){
+            $jams=$this->mod_reservasi->getjamcekin($pesan[3], $pesan[1]);
+            if ($jams && $this->mod_telebot->updteleres($chatid,array('tgl_res'=>$pesan[1],'status'=>'jam'))){
+                $i=0;
+                foreach ($jams as $key=>$jam) {
+                    $pilihan[$i][]=['text'=>$jam['jam']." (".$jam['sisa'].")", 'callback_data'=>"Jam|".$jam['jam']."|".$jam['idjadwal']];
+                    if ($key%2==0)$i++;
+                }
+                if (!$text)$text = "Silahkan pilih Jam kunjungan :";
+                $inkeyboard = $pilihan;
+            }
+        } 
+        return array($text, $inkeyboard);
     }
 
     private function prosesPesanTeks($message)
@@ -368,10 +380,8 @@ class Telebot extends CI_Controller
                             list($text, $inkeyboard)= $this->caseklinik($chatid, $pesan);
                             break;
                             
-                        case 'tgl':
-                            
-                            $pesan = explode(' ', $pesan);
-                            if ($pesan[0]=='Tanggal');
+                        case 'tglres':
+                            list($text, $inkeyboard)= $this->casetglres($chatid, $pesan);
                             break;
                                                         
                         default:
