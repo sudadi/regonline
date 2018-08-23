@@ -130,22 +130,23 @@ class Telebot_lib
     public function editMessageText($chatid, $message_id, $text, $keyboard = [], $inline = false)
     {
         $method = 'editMessageText';
-        $replyMarkup = [
-            'keyboard'        => $keyboard,
-            'resize_keyboard' => true,
-        ];
-
+        if ($keyboard){
+            $replyMarkup = [
+                'keyboard'        => $keyboard,
+                'resize_keyboard' => true,
+            ];
+            $inline
+            ? $data['reply_markup'] = json_encode(['inline_keyboard' => $keyboard])
+            : $data['reply_markup'] = json_encode($replyMarkup);
+        }
+        
         $data = [
             'chat_id'    => $chatid,
             'message_id' => $message_id,
             'text'       => $text,
             'parse_mode' => 'Markdown',
 
-        ];
-
-        $inline
-        ? $data['reply_markup'] = json_encode(['inline_keyboard' => $keyboard])
-        : $data['reply_markup'] = json_encode($replyMarkup);
+        ];        
 
         $result = $this->apiRequest($method, $data);
     }
