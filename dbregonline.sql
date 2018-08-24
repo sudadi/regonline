@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 20 Agu 2018 pada 22.28
--- Versi server: 10.1.31-MariaDB
--- Versi PHP: 5.6.35
+-- Host: localhost
+-- Generation Time: Aug 24, 2018 at 10:05 PM
+-- Server version: 5.7.23-0ubuntu0.18.04.1
+-- PHP Version: 7.2.7-0ubuntu0.18.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Fungsi
+-- Functions
 --
 CREATE DEFINER=`admin`@`localhost` FUNCTION `SPLIT_STR` (`X` VARCHAR(255), `delim` VARCHAR(12), `pos` INT) RETURNS VARCHAR(255) CHARSET latin1 BEGIN
     RETURN
@@ -46,7 +46,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_groups`
+-- Table structure for table `auth_groups`
 --
 
 CREATE TABLE `auth_groups` (
@@ -56,7 +56,7 @@ CREATE TABLE `auth_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_groups`
+-- Dumping data for table `auth_groups`
 --
 
 INSERT INTO `auth_groups` (`id`, `name`, `description`) VALUES
@@ -66,7 +66,7 @@ INSERT INTO `auth_groups` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_login_attempts`
+-- Table structure for table `auth_login_attempts`
 --
 
 CREATE TABLE `auth_login_attempts` (
@@ -79,7 +79,7 @@ CREATE TABLE `auth_login_attempts` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_users`
+-- Table structure for table `auth_users`
 --
 
 CREATE TABLE `auth_users` (
@@ -103,7 +103,7 @@ CREATE TABLE `auth_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_users`
+-- Dumping data for table `auth_users`
 --
 
 INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
@@ -113,7 +113,7 @@ INSERT INTO `auth_users` (`id`, `ip_address`, `username`, `password`, `salt`, `e
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `auth_users_groups`
+-- Table structure for table `auth_users_groups`
 --
 
 CREATE TABLE `auth_users_groups` (
@@ -123,7 +123,7 @@ CREATE TABLE `auth_users_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `auth_users_groups`
+-- Dumping data for table `auth_users_groups`
 --
 
 INSERT INTO `auth_users_groups` (`id`, `user_id`, `group_id`) VALUES
@@ -133,7 +133,7 @@ INSERT INTO `auth_users_groups` (`id`, `user_id`, `group_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_jadwal`
+-- Table structure for table `res_jadwal`
 --
 
 CREATE TABLE `res_jadwal` (
@@ -149,7 +149,7 @@ CREATE TABLE `res_jadwal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_jadwal`
+-- Dumping data for table `res_jadwal`
 --
 
 INSERT INTO `res_jadwal` (`id_jadwal`, `dokter_id`, `klinik_id`, `jns_layan_id`, `id_hari`, `jam_mulai`, `jam_selesai`, `kuota_perjam`, `status`) VALUES
@@ -163,7 +163,7 @@ INSERT INTO `res_jadwal` (`id_jadwal`, `dokter_id`, `klinik_id`, `jns_layan_id`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_jns_jaminan`
+-- Table structure for table `res_jns_jaminan`
 --
 
 CREATE TABLE `res_jns_jaminan` (
@@ -173,7 +173,7 @@ CREATE TABLE `res_jns_jaminan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_jns_jaminan`
+-- Dumping data for table `res_jns_jaminan`
 --
 
 INSERT INTO `res_jns_jaminan` (`id_jaminan`, `nama_jaminan`, `flag_jaminan`) VALUES
@@ -197,7 +197,7 @@ INSERT INTO `res_jns_jaminan` (`id_jaminan`, `nama_jaminan`, `flag_jaminan`) VAL
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_kuota`
+-- Table structure for table `res_kuota`
 --
 
 CREATE TABLE `res_kuota` (
@@ -208,7 +208,7 @@ CREATE TABLE `res_kuota` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_kuota`
+-- Dumping data for table `res_kuota`
 --
 
 INSERT INTO `res_kuota` (`id_kuota`, `id_jadwal`, `jam`, `kuota`) VALUES
@@ -217,12 +217,13 @@ INSERT INTO `res_kuota` (`id_kuota`, `id_jadwal`, `jam`, `kuota`) VALUES
 (3, 7, '07:30:00', 30),
 (4, 8, '07:30:00', 30),
 (5, 9, '07:30:00', 30),
-(6, 10, '09:00:00', 5);
+(6, 10, '09:00:00', 5),
+(7, 10, '10:00:00', 5);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refdokter`
+-- Table structure for table `res_refdokter`
 --
 
 CREATE TABLE `res_refdokter` (
@@ -233,7 +234,7 @@ CREATE TABLE `res_refdokter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refdokter`
+-- Dumping data for table `res_refdokter`
 --
 
 INSERT INTO `res_refdokter` (`id_dokter`, `nama_dokter`, `telp_dokter`, `status`) VALUES
@@ -290,7 +291,7 @@ INSERT INTO `res_refdokter` (`id_dokter`, `nama_dokter`, `telp_dokter`, `status`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refjns_layan`
+-- Table structure for table `res_refjns_layan`
 --
 
 CREATE TABLE `res_refjns_layan` (
@@ -299,7 +300,7 @@ CREATE TABLE `res_refjns_layan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refjns_layan`
+-- Dumping data for table `res_refjns_layan`
 --
 
 INSERT INTO `res_refjns_layan` (`id_jns_layan`, `jns_layan`) VALUES
@@ -309,7 +310,7 @@ INSERT INTO `res_refjns_layan` (`id_jns_layan`, `jns_layan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_refklinik`
+-- Table structure for table `res_refklinik`
 --
 
 CREATE TABLE `res_refklinik` (
@@ -322,7 +323,7 @@ CREATE TABLE `res_refklinik` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_refklinik`
+-- Dumping data for table `res_refklinik`
 --
 
 INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_layan`, `kuota`, `status`) VALUES
@@ -347,7 +348,7 @@ INSERT INTO `res_refklinik` (`id_klinik`, `nama_klinik`, `kode_poli`, `tipe_laya
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_sebab_sakit`
+-- Table structure for table `res_sebab_sakit`
 --
 
 CREATE TABLE `res_sebab_sakit` (
@@ -356,7 +357,7 @@ CREATE TABLE `res_sebab_sakit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_sebab_sakit`
+-- Dumping data for table `res_sebab_sakit`
 --
 
 INSERT INTO `res_sebab_sakit` (`id_sebab`, `sebab`) VALUES
@@ -373,33 +374,36 @@ INSERT INTO `res_sebab_sakit` (`id_sebab`, `sebab`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_telebot`
+-- Table structure for table `res_telebot`
 --
 
 CREATE TABLE `res_telebot` (
   `id_telebot` int(11) NOT NULL,
   `fromid` varchar(20) NOT NULL,
   `norm` varchar(7) DEFAULT NULL,
+  `ttl` date DEFAULT NULL,
   `jaminan_id` int(3) DEFAULT NULL,
   `jnslayan_id` int(4) DEFAULT NULL,
   `dokter_id` int(4) DEFAULT NULL,
   `klinik_id` int(4) DEFAULT NULL,
   `tgl_res` date DEFAULT NULL,
-  `jam` time DEFAULT NULL,
+  `jam_id` int(6) DEFAULT NULL,
+  `jadwal_id` int(6) DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_telebot`
+-- Dumping data for table `res_telebot`
 --
 
-INSERT INTO `res_telebot` (`id_telebot`, `fromid`, `norm`, `jaminan_id`, `jnslayan_id`, `dokter_id`, `klinik_id`, `tgl_res`, `jam`, `status`) VALUES
-(11, '535459157', '133469', 2, 2, NULL, NULL, NULL, NULL, 'dokter');
+INSERT INTO `res_telebot` (`id_telebot`, `fromid`, `norm`, `ttl`, `jaminan_id`, `jnslayan_id`, `dokter_id`, `klinik_id`, `tgl_res`, `jam_id`, `jadwal_id`, `status`) VALUES
+(80, '651671191', '133469', '1978-06-21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jaminan'),
+(81, '535459157', '133469', '1978-06-21', 2, 1, NULL, 1, '2018-08-27', 1, 5, 'Sukses');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_tgl_libur`
+-- Table structure for table `res_tgl_libur`
 --
 
 CREATE TABLE `res_tgl_libur` (
@@ -410,7 +414,7 @@ CREATE TABLE `res_tgl_libur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_tgl_libur`
+-- Dumping data for table `res_tgl_libur`
 --
 
 INSERT INTO `res_tgl_libur` (`id_libur`, `tanggal`, `ket`, `status`) VALUES
@@ -420,7 +424,7 @@ INSERT INTO `res_tgl_libur` (`id_libur`, `tanggal`, `ket`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_tpasien`
+-- Table structure for table `res_tpasien`
 --
 
 CREATE TABLE `res_tpasien` (
@@ -437,7 +441,7 @@ CREATE TABLE `res_tpasien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_tpasien`
+-- Dumping data for table `res_tpasien`
 --
 
 INSERT INTO `res_tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `alamat`, `propinsi`, `kota`, `kec`, `kel`) VALUES
@@ -447,7 +451,7 @@ INSERT INTO `res_tpasien` (`norm`, `nama`, `gender`, `tgl_lahir`, `notelp`, `ala
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `res_treservasi`
+-- Table structure for table `res_treservasi`
 --
 
 CREATE TABLE `res_treservasi` (
@@ -469,7 +473,7 @@ CREATE TABLE `res_treservasi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `res_treservasi`
+-- Dumping data for table `res_treservasi`
 --
 
 INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `nores`, `waktu_rsv`, `jadwal_id`, `nourut`, `kode_cekin`, `jns_jaminan_id`, `sebab_id`, `status`, `first_update`, `last_update`, `user_id`, `sync`, `jenis_rsv`) VALUES
@@ -478,7 +482,7 @@ INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `nores`, `waktu_rsv`, `jadwal_id
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_full_inbox`
+-- Table structure for table `sms_full_inbox`
 --
 
 CREATE TABLE `sms_full_inbox` (
@@ -497,7 +501,7 @@ CREATE TABLE `sms_full_inbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_full_inbox`
+-- Dumping data for table `sms_full_inbox`
 --
 
 INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`) VALUES
@@ -546,12 +550,22 @@ INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `Sende
 ('2018-08-13 08:50:41', '2018-08-08 07:52:48', '004D0065006D0061006E006700670069006C002000730065006D00750061002000700065006D00610069006E002D00700065006D00610069006E00200074006F007000210020004E006F006D006F0072006D0075002000740065007200700069006C006900680020006800610072006900200069006E0069002000750074006B0020006200650072007300610069006E00670020006D0065006E00640061007000610074006B0061006E002000530061006D00730075006E0067002000530039002B002000540041004E0050004100200042004900410059004100200064006100720069002000410058004900530021002000540065006B0061006E0020002A003100320033002A00340034', '92340', 'Default_No_Compression', '050003030201', '+628184422876', -1, 'Memanggil semua pemain-pemain top! Nomormu terpilih hari ini utk bersaing mendapatkan Samsung S9+ TANPA BIAYA dari AXIS! Tekan *123*444*1# skrg!', 49, '', 'true'),
 ('2018-08-13 08:50:44', '2018-08-09 09:22:54', '00530075006400610068002000730065006D0069006E0067006700750020006C00650062006900680020006B0061006D007500200062006C006D0020006B0075006E006A0075006E006700690020002A00310032003300230020006C006100670069002E002000430065006B002000700065006E00610077006100720061006E0020007400650072006200610069006B002000640069002000330020006D0065006E0075002000740065007200610074006100730020006B006100720065006E0061002000730065006B006100720061006E0067002000700072006F006D006F0020007300700065007300690061006C002000740065006C006100680020006D0065006E0061006E00740069006D0075002100200049006E0066006F0020003800330038002000410046004F003300320044', 'AXIS', 'Default_No_Compression', '', '+62818445009', -1, 'Sudah seminggu lebih kamu blm kunjungi *123# lagi. Cek penawaran terbaik di 3 menu teratas karena sekarang promo spesial telah menantimu! Info 838 AFO32D', 50, '', 'true'),
 ('2018-08-13 08:50:50', '2018-08-10 03:10:20', '0045004B00530049005300200069006E007400650072006E006500740061006E002000640061006E00200061006D0061006E00200076006900640065006F002000730074007200650061006D0069006E0067002000640067006E002000420052004F004E004500540020004400410059005A00200038004700420020003300300068007200200052007000340039002E0030003000300020005300700065007300690061006C002000680061006E007900610020006400690020004A0055004D004100540020004200410049004B0020002A003100320033002A00380038003800230020002F00200041005800490053004E00450054002E00200049006E0066006F0038003300380020004100500030003000380044', 'JUMAT-BAIK', 'Default_No_Compression', '', '+62818445009', -1, 'EKSIS internetan dan aman video streaming dgn BRONET DAYZ 8GB 30hr Rp49.000 Spesial hanya di JUMAT BAIK *123*888# / AXISNET. Info838 AP008D', 51, '', 'true'),
-('2018-08-13 09:10:17', '2018-08-13 09:09:21', '00500075006C007300610020003800340038003400200061006B00740069006600200073002E006400200031003600410075006700310038002E000A003100200046004200200053006500680061007200690061006E002000480041004E00590041002000520070003500300030000A00320020003200200047004200200044006900730063002000320030002500200032003400720062000A0033002000380047004200200033003000680072002000380032002C003900720062000A003400200049006E007400650072006E00650074002600420042000A00350020004E0065006C007000260053004D0053000A003600200041004E', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Pulsa 8484 aktif s.d 16Aug18.\n1 FB Seharian HANYA Rp500\n2 2 GB Disc 20% 24rb\n3 8GB 30hr 82,9rb\n4 Internet&BB\n5 Nelp&SMS\n6 AN', 54, '', 'true');
+('2018-08-13 09:10:17', '2018-08-13 09:09:21', '00500075006C007300610020003800340038003400200061006B00740069006600200073002E006400200031003600410075006700310038002E000A003100200046004200200053006500680061007200690061006E002000480041004E00590041002000520070003500300030000A00320020003200200047004200200044006900730063002000320030002500200032003400720062000A0033002000380047004200200033003000680072002000380032002C003900720062000A003400200049006E007400650072006E00650074002600420042000A00350020004E0065006C007000260053004D0053000A003600200041004E', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Pulsa 8484 aktif s.d 16Aug18.\n1 FB Seharian HANYA Rp500\n2 2 GB Disc 20% 24rb\n3 8GB 30hr 82,9rb\n4 Internet&BB\n5 Nelp&SMS\n6 AN', 54, '', 'true'),
+('2018-08-21 02:28:06', '2018-08-21 02:28:06', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 55, '', 'false'),
+('2018-08-21 02:28:40', '2018-08-21 02:28:40', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 56, '', 'false'),
+('2018-08-21 02:51:10', '2018-08-21 02:51:06', '004B0061006D00750020006D0065006E006400700074006B0061006E00200042004F004E0055005300200049006E007400650072006E006500740020003500300030004D0042002000750074006B00200037006800720021002000530065006700650072006100200061006B007400690066006B0061006E002000640067006E002000690073006900200075006C0061006E0067002000700075006C007300610020006D0069006E002E00200035007200620020004800410052004900200049004E0049002E002000430065006B0020002A0031003200330023002000750074006B002000700072006F006D006F0020007400650072006200610069006B002000620075006100740020006B0061006D0075002E00200049006E0066006F0020003800330038002E0020004100410053003500310041', 'AXIS', 'Default_No_Compression', '', '+62818445009', -1, 'Kamu mendptkan BONUS Internet 500MB utk 7hr! Segera aktifkan dgn isi ulang pulsa min. 5rb HARI INI. Cek *123# utk promo terbaik buat kamu. Info 838. AAS51A', 57, '', 'false'),
+('2018-08-21 03:10:40', '2018-08-21 03:10:36', '0054006F006B006F007000650064006900610020002D00200041006E006400610020006D0065006E00640061007000610074006B0061006E00200063006100730068006200610063006B00200052007000200032002E003500300030002000640061007200690020007400720061006E00730061006B00730069002000700065006D00620065006C00690061006E00200064006900200054006F006B006F00700065006400690061002E00200055006E00740075006B00200069006E0066006F0020006C0065006E0067006B00610070002C0020006B006C0069006B002000680074007400700073003A002F002F007700770077002E0074006F006B006F0063006100730068002E0063006F006D', 'TOKOPEDIA', 'Default_No_Compression', '', '+628184422876', -1, 'Tokopedia - Anda mendapatkan cashback Rp 2.500 dari transaksi pembelian di Tokopedia. Untuk info lengkap, klik https://www.tokocash.com', 58, '', 'false'),
+('2018-08-21 11:10:43', '2018-08-21 11:10:34', '0058004C002000610064007500200048004F004B004900210021002000540045004B0041004E0020002A003100320033002A003700380039002A0031002300200020004800610064006900610068002000540041004E005000410020004400490055004E00440049002000750061006E0067002000740075006E00610069002000320030006A0074002F0047005200410054004900530020006B00650020004A004500500041004E0047002000330068006100720069002E0020004B004500540049004B0020002A003100320033002A003700380039002A003100230020002800520070003200720062002F00330078002F006D0067006700290020006B006C0069006B00200078006C0066006C00790061007700610079002E0063006F006D', 'HiburanAsik', 'Default_No_Compression', '', '+628184422876', -1, 'XL adu HOKI!! TEKAN *123*789*1#  Hadiah TANPA DIUNDI uang tunai 20jt/GRATIS ke JEPANG 3hari. KETIK *123*789*1# (Rp2rb/3x/mgg) klik xlflyaway.com', 59, '', 'false'),
+('2018-08-23 02:00:05', '2018-08-23 01:59:49', '0050006C0067006E0020005900740068002C00500069006C00690068002000480061006400690061006800200041006E006400610021002000550041004E0047002000740075006E00610069002000320030006A0074002F0047005200410054004900530020006B0020004A006500700061006E006700200033006800720021002000520041004900480020004B006500730065006D0070006100740061006E002000540065007200620061007400610073006D00750020006400690020002A003100320033002A003700380039002A00310023002000730065006B006100720061006E006700210020002800520070003200720062002F00330078002F006D0067006700290020006B006C0069006B00200078006C0066006C00790061007700610079002E0063006F006D', 'HiburanAsik', 'Default_No_Compression', '', '+628184422876', -1, 'Plgn Yth,Pilih Hadiah Anda! UANG tunai 20jt/GRATIS k Jepang 3hr! RAIH Kesempatan Terbatasmu di *123*789*1# sekarang! (Rp2rb/3x/mgg) klik xlflyaway.com', 60, '', 'false'),
+('2018-08-23 02:28:05', '2018-08-23 02:28:05', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 61, '', 'false'),
+('2018-08-23 02:28:28', '2018-08-23 02:28:28', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 62, '', 'false'),
+('2018-08-24 01:07:29', '2018-08-24 01:07:29', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 63, '', 'false'),
+('2018-08-24 01:07:59', '2018-08-24 01:07:59', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 64, '', 'false');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_full_outbox`
+-- Table structure for table `sms_full_outbox`
 --
 
 CREATE TABLE `sms_full_outbox` (
@@ -577,7 +591,7 @@ CREATE TABLE `sms_full_outbox` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `sms_full_outbox`
+-- Dumping data for table `sms_full_outbox`
 --
 
 INSERT INTO `sms_full_outbox` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `SendBefore`, `SendAfter`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `Class`, `TextDecoded`, `ID`, `MultiPart`, `RelativeValidity`, `SenderID`, `SendingTimeOut`, `DeliveryReport`, `CreatorID`, `Status`) VALUES
@@ -610,7 +624,7 @@ INSERT INTO `sms_full_outbox` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`,
 ('2018-08-13 09:09:08', '2018-08-13 09:08:42', '2018-08-13 09:09:08', '23:59:59', '00:00:00', NULL, '*123#', '8bit', NULL, 127, '', 28, 'false', -1, NULL, '2018-08-13 09:08:42', 'default', 'Admin', 1);
 
 --
--- Trigger `sms_full_outbox`
+-- Triggers `sms_full_outbox`
 --
 DELIMITER $$
 CREATE TRIGGER `copy_to_inbox_aft_ins` AFTER INSERT ON `sms_full_outbox` FOR EACH ROW BEGIN
@@ -634,7 +648,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_gammu`
+-- Table structure for table `sms_gammu`
 --
 
 CREATE TABLE `sms_gammu` (
@@ -642,7 +656,7 @@ CREATE TABLE `sms_gammu` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_gammu`
+-- Dumping data for table `sms_gammu`
 --
 
 INSERT INTO `sms_gammu` (`Version`) VALUES
@@ -651,7 +665,7 @@ INSERT INTO `sms_gammu` (`Version`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_inbox`
+-- Table structure for table `sms_inbox`
 --
 
 CREATE TABLE `sms_inbox` (
@@ -671,7 +685,7 @@ CREATE TABLE `sms_inbox` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_inbox`
+-- Dumping data for table `sms_inbox`
 --
 
 INSERT INTO `sms_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `RecipientID`, `Processed`, `Status`) VALUES
@@ -733,10 +747,20 @@ INSERT INTO `sms_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `SenderNumb
 ('2018-08-10 03:10:35', '2018-08-10 03:10:20', '0045004B00530049005300200069006E007400650072006E006500740061006E002000640061006E00200061006D0061006E00200076006900640065006F002000730074007200650061006D0069006E0067002000640067006E002000420052004F004E004500540020004400410059005A00200038004700420020003300300068007200200052007000340039002E0030003000300020005300700065007300690061006C002000680061006E007900610020006400690020004A0055004D004100540020004200410049004B0020002A003100320033002A00380038003800230020002F00200041005800490053004E00450054002E00200049006E0066006F0038003300380020004100500030003000380044', 'JUMAT-BAIK', 'Default_No_Compression', '', '+62818445009', -1, 'EKSIS internetan dan aman video streaming dgn BRONET DAYZ 8GB 30hr Rp49.000 Spesial hanya di JUMAT BAIK *123*888# / AXISNET. Info838 AP008D', 56, '', 'false', 0),
 ('2018-08-13 09:01:36', '2018-08-13 09:01:36', '', 'INFO', 'Unicode_No_Compression', '', '', 127, '', 57, '', 'false', 4),
 ('2018-08-13 09:06:06', '2018-08-13 09:05:54', '004B006500730065006D0070006100740061006E0020007200610069006800200048004100440049004100480020004D0045005200440045004B00410020006400610072006900200058004C00210020004A0061006C0061006E00320020006B00650054006F006B0079006F0020003300680072002F0043006100730068002000320030006A0074002000540041004E005000410020004400490055004E0044004900210020004B004500540049004B0020002A003100320033002A003700380039002A003100230020002800520070003200720062002F00330078002F006D0069006E00670067007500290020006B006C0069006B00200078006C0066006C00790061007700610079002E0063006F006D', 'HiburanAsik', 'Default_No_Compression', '', '+628184422876', -1, 'Kesempatan raih HADIAH MERDEKA dari XL! Jalan2 keTokyo 3hr/Cash 20jt TANPA DIUNDI! KETIK *123*789*1# (Rp2rb/3x/minggu) klik xlflyaway.com', 58, '', 'false', 0),
-('2018-08-13 09:09:21', '2018-08-13 09:09:21', '00500075006C007300610020003800340038003400200061006B00740069006600200073002E006400200031003600410075006700310038002E000A003100200046004200200053006500680061007200690061006E002000480041004E00590041002000520070003500300030000A00320020003200200047004200200044006900730063002000320030002500200032003400720062000A0033002000380047004200200033003000680072002000380032002C003900720062000A003400200049006E007400650072006E00650074002600420042000A00350020004E0065006C007000260053004D0053000A003600200041004E', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Pulsa 8484 aktif s.d 16Aug18.\n1 FB Seharian HANYA Rp500\n2 2 GB Disc 20% 24rb\n3 8GB 30hr 82,9rb\n4 Internet&BB\n5 Nelp&SMS\n6 AN', 59, '', 'false', 3);
+('2018-08-13 09:09:21', '2018-08-13 09:09:21', '00500075006C007300610020003800340038003400200061006B00740069006600200073002E006400200031003600410075006700310038002E000A003100200046004200200053006500680061007200690061006E002000480041004E00590041002000520070003500300030000A00320020003200200047004200200044006900730063002000320030002500200032003400720062000A0033002000380047004200200033003000680072002000380032002C003900720062000A003400200049006E007400650072006E00650074002600420042000A00350020004E0065006C007000260053004D0053000A003600200041004E', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Pulsa 8484 aktif s.d 16Aug18.\n1 FB Seharian HANYA Rp500\n2 2 GB Disc 20% 24rb\n3 8GB 30hr 82,9rb\n4 Internet&BB\n5 Nelp&SMS\n6 AN', 59, '', 'false', 3),
+('2018-08-21 02:28:06', '2018-08-21 02:28:06', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 60, '', 'false', 3),
+('2018-08-21 02:28:40', '2018-08-21 02:28:40', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 61, '', 'false', 4),
+('2018-08-21 02:51:10', '2018-08-21 02:51:06', '004B0061006D00750020006D0065006E006400700074006B0061006E00200042004F004E0055005300200049006E007400650072006E006500740020003500300030004D0042002000750074006B00200037006800720021002000530065006700650072006100200061006B007400690066006B0061006E002000640067006E002000690073006900200075006C0061006E0067002000700075006C007300610020006D0069006E002E00200035007200620020004800410052004900200049004E0049002E002000430065006B0020002A0031003200330023002000750074006B002000700072006F006D006F0020007400650072006200610069006B002000620075006100740020006B0061006D0075002E00200049006E0066006F0020003800330038002E0020004100410053003500310041', 'AXIS', 'Default_No_Compression', '', '+62818445009', -1, 'Kamu mendptkan BONUS Internet 500MB utk 7hr! Segera aktifkan dgn isi ulang pulsa min. 5rb HARI INI. Cek *123# utk promo terbaik buat kamu. Info 838. AAS51A', 62, '', 'false', 0),
+('2018-08-21 03:10:40', '2018-08-21 03:10:36', '0054006F006B006F007000650064006900610020002D00200041006E006400610020006D0065006E00640061007000610074006B0061006E00200063006100730068006200610063006B00200052007000200032002E003500300030002000640061007200690020007400720061006E00730061006B00730069002000700065006D00620065006C00690061006E00200064006900200054006F006B006F00700065006400690061002E00200055006E00740075006B00200069006E0066006F0020006C0065006E0067006B00610070002C0020006B006C0069006B002000680074007400700073003A002F002F007700770077002E0074006F006B006F0063006100730068002E0063006F006D', 'TOKOPEDIA', 'Default_No_Compression', '', '+628184422876', -1, 'Tokopedia - Anda mendapatkan cashback Rp 2.500 dari transaksi pembelian di Tokopedia. Untuk info lengkap, klik https://www.tokocash.com', 63, '', 'false', 0),
+('2018-08-21 11:10:43', '2018-08-21 11:10:34', '0058004C002000610064007500200048004F004B004900210021002000540045004B0041004E0020002A003100320033002A003700380039002A0031002300200020004800610064006900610068002000540041004E005000410020004400490055004E00440049002000750061006E0067002000740075006E00610069002000320030006A0074002F0047005200410054004900530020006B00650020004A004500500041004E0047002000330068006100720069002E0020004B004500540049004B0020002A003100320033002A003700380039002A003100230020002800520070003200720062002F00330078002F006D0067006700290020006B006C0069006B00200078006C0066006C00790061007700610079002E0063006F006D', 'HiburanAsik', 'Default_No_Compression', '', '+628184422876', -1, 'XL adu HOKI!! TEKAN *123*789*1#  Hadiah TANPA DIUNDI uang tunai 20jt/GRATIS ke JEPANG 3hari. KETIK *123*789*1# (Rp2rb/3x/mgg) klik xlflyaway.com', 64, '', 'false', 0),
+('2018-08-23 02:00:05', '2018-08-23 01:59:49', '0050006C0067006E0020005900740068002C00500069006C00690068002000480061006400690061006800200041006E006400610021002000550041004E0047002000740075006E00610069002000320030006A0074002F0047005200410054004900530020006B0020004A006500700061006E006700200033006800720021002000520041004900480020004B006500730065006D0070006100740061006E002000540065007200620061007400610073006D00750020006400690020002A003100320033002A003700380039002A00310023002000730065006B006100720061006E006700210020002800520070003200720062002F00330078002F006D0067006700290020006B006C0069006B00200078006C0066006C00790061007700610079002E0063006F006D', 'HiburanAsik', 'Default_No_Compression', '', '+628184422876', -1, 'Plgn Yth,Pilih Hadiah Anda! UANG tunai 20jt/GRATIS k Jepang 3hr! RAIH Kesempatan Terbatasmu di *123*789*1# sekarang! (Rp2rb/3x/mgg) klik xlflyaway.com', 65, '', 'false', 0),
+('2018-08-23 02:28:05', '2018-08-23 02:28:05', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 66, '', 'false', 3),
+('2018-08-23 02:28:28', '2018-08-23 02:28:28', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 67, '', 'false', 4),
+('2018-08-24 01:07:29', '2018-08-24 01:07:29', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 68, '', 'false', 3),
+('2018-08-24 01:07:59', '2018-08-24 01:07:59', '004D00610069006E006B0061006E0020004B0075006900730020004B00450050004F0069006E002C0020004D0065006E0061006E0067006B0061006E0020006800610064006900610068002000550041004E0047002000540055004E0041004900200074006F00740061006C00200031003600380020004A007500740061002C00200033003300300030002F0033', 'INFO', 'Unicode_No_Compression', '', '', 127, 'Mainkan Kuis KEPOin, Menangkan hadiah UANG TUNAI total 168 Juta, 3300/3', 69, '', 'false', 4);
 
 --
--- Trigger `sms_inbox`
+-- Triggers `sms_inbox`
 --
 DELIMITER $$
 CREATE TRIGGER `insert_full_inbox` BEFORE INSERT ON `sms_inbox` FOR EACH ROW BEGIN
@@ -764,7 +788,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_konfirm`
+-- Table structure for table `sms_konfirm`
 --
 
 CREATE TABLE `sms_konfirm` (
@@ -773,7 +797,7 @@ CREATE TABLE `sms_konfirm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `sms_konfirm`
+-- Dumping data for table `sms_konfirm`
 --
 
 INSERT INTO `sms_konfirm` (`id`, `format`) VALUES
@@ -782,7 +806,7 @@ INSERT INTO `sms_konfirm` (`id`, `format`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_outbox`
+-- Table structure for table `sms_outbox`
 --
 
 CREATE TABLE `sms_outbox` (
@@ -811,7 +835,7 @@ CREATE TABLE `sms_outbox` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Trigger `sms_outbox`
+-- Triggers `sms_outbox`
 --
 DELIMITER $$
 CREATE TRIGGER `outbox_after_ins_tr` AFTER INSERT ON `sms_outbox` FOR EACH ROW BEGIN
@@ -841,7 +865,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_outbox_multipart`
+-- Table structure for table `sms_outbox_multipart`
 --
 
 CREATE TABLE `sms_outbox_multipart` (
@@ -859,7 +883,7 @@ CREATE TABLE `sms_outbox_multipart` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_phones`
+-- Table structure for table `sms_phones`
 --
 
 CREATE TABLE `sms_phones` (
@@ -881,16 +905,16 @@ CREATE TABLE `sms_phones` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_phones`
+-- Dumping data for table `sms_phones`
 --
 
 INSERT INTO `sms_phones` (`ID`, `UpdatedInDB`, `InsertIntoDB`, `TimeOut`, `Send`, `Receive`, `IMEI`, `IMSI`, `NetCode`, `NetName`, `Client`, `Battery`, `Signal`, `Sent`, `Received`) VALUES
-('', '2018-08-13 09:11:36', '2018-08-13 08:55:36', '2018-08-13 09:11:46', 'yes', 'yes', '351589046379118', '510113221145322', '510 11', '', 'Gammu 1.39.0, Linux, kernel 4.15.0-24-generic (#26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018), GCC 7.2', 100, 36, 2, 3);
+('', '2018-08-24 15:04:59', '2018-08-13 08:55:36', '2018-08-24 15:05:09', 'yes', 'yes', '351589046379118', '510113221145322', '510 11', '', 'Gammu 1.39.0, Linux, kernel 4.15.0-24-generic (#26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018), GCC 7.2', 100, 30, 2, 13);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_routing`
+-- Table structure for table `sms_routing`
 --
 
 CREATE TABLE `sms_routing` (
@@ -901,7 +925,7 @@ CREATE TABLE `sms_routing` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `sms_routing`
+-- Dumping data for table `sms_routing`
 --
 
 INSERT INTO `sms_routing` (`id`, `prefix`, `modem`, `status`) VALUES
@@ -914,7 +938,7 @@ INSERT INTO `sms_routing` (`id`, `prefix`, `modem`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sms_sentitems`
+-- Table structure for table `sms_sentitems`
 --
 
 CREATE TABLE `sms_sentitems` (
@@ -941,7 +965,7 @@ CREATE TABLE `sms_sentitems` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `sms_sentitems`
+-- Dumping data for table `sms_sentitems`
 --
 
 INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `DeliveryDateTime`, `Text`, `DestinationNumber`, `Coding`, `UDH`, `SMSCNumber`, `Class`, `TextDecoded`, `ID`, `SenderID`, `SequencePosition`, `Status`, `StatusError`, `TPMR`, `RelativeValidity`, `CreatorID`, `StatusCode`) VALUES
@@ -975,7 +999,7 @@ INSERT INTO `sms_sentitems` (`UpdatedInDB`, `InsertIntoDB`, `SendingDateTime`, `
 ('2018-08-13 09:09:08', '2018-08-13 09:08:42', '2018-08-13 09:09:08', NULL, '', '*123#', '8bit', '', '+62818445009', 127, '', 28, '', 1, 'SendingOK', -1, -1, 255, 'Admin', -1);
 
 --
--- Trigger `sms_sentitems`
+-- Triggers `sms_sentitems`
 --
 DELIMITER $$
 CREATE TRIGGER `update_stat_out` AFTER INSERT ON `sms_sentitems` FOR EACH ROW BEGIN
@@ -994,8 +1018,8 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `vreservasi`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `vreservasi`
+-- (See below for the actual view)
 --
 CREATE TABLE `vreservasi` (
 `id_rsv` bigint(20)
@@ -1037,8 +1061,8 @@ CREATE TABLE `vreservasi` (
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `vsms`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `vsms`
+-- (See below for the actual view)
 --
 CREATE TABLE `vsms` (
 `ID` int(11) unsigned
@@ -1055,7 +1079,7 @@ CREATE TABLE `vsms` (
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `vreservasi`
+-- Structure for view `vreservasi`
 --
 DROP TABLE IF EXISTS `vreservasi`;
 
@@ -1064,7 +1088,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `vsms`
+-- Structure for view `vsms`
 --
 DROP TABLE IF EXISTS `vsms`;
 
@@ -1075,25 +1099,25 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` SQL SECURITY DEFINER VIEW
 --
 
 --
--- Indeks untuk tabel `auth_groups`
+-- Indexes for table `auth_groups`
 --
 ALTER TABLE `auth_groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_login_attempts`
+-- Indexes for table `auth_login_attempts`
 --
 ALTER TABLE `auth_login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_users`
+-- Indexes for table `auth_users`
 --
 ALTER TABLE `auth_users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `auth_users_groups`
+-- Indexes for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   ADD PRIMARY KEY (`id`),
@@ -1102,7 +1126,7 @@ ALTER TABLE `auth_users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- Indeks untuk tabel `res_jadwal`
+-- Indexes for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
@@ -1111,44 +1135,44 @@ ALTER TABLE `res_jadwal`
   ADD KEY `res_jadwal_ibfk_2` (`klinik_id`);
 
 --
--- Indeks untuk tabel `res_jns_jaminan`
+-- Indexes for table `res_jns_jaminan`
 --
 ALTER TABLE `res_jns_jaminan`
   ADD PRIMARY KEY (`id_jaminan`);
 
 --
--- Indeks untuk tabel `res_kuota`
+-- Indexes for table `res_kuota`
 --
 ALTER TABLE `res_kuota`
   ADD PRIMARY KEY (`id_kuota`),
   ADD KEY `id_jadwal` (`id_jadwal`);
 
 --
--- Indeks untuk tabel `res_refdokter`
+-- Indexes for table `res_refdokter`
 --
 ALTER TABLE `res_refdokter`
   ADD PRIMARY KEY (`id_dokter`);
 
 --
--- Indeks untuk tabel `res_refjns_layan`
+-- Indexes for table `res_refjns_layan`
 --
 ALTER TABLE `res_refjns_layan`
   ADD PRIMARY KEY (`id_jns_layan`);
 
 --
--- Indeks untuk tabel `res_refklinik`
+-- Indexes for table `res_refklinik`
 --
 ALTER TABLE `res_refklinik`
   ADD PRIMARY KEY (`id_klinik`);
 
 --
--- Indeks untuk tabel `res_sebab_sakit`
+-- Indexes for table `res_sebab_sakit`
 --
 ALTER TABLE `res_sebab_sakit`
   ADD PRIMARY KEY (`id_sebab`);
 
 --
--- Indeks untuk tabel `res_telebot`
+-- Indexes for table `res_telebot`
 --
 ALTER TABLE `res_telebot`
   ADD PRIMARY KEY (`id_telebot`),
@@ -1156,22 +1180,24 @@ ALTER TABLE `res_telebot`
   ADD KEY `klinik_id` (`klinik_id`),
   ADD KEY `norm` (`norm`),
   ADD KEY `jaminan_id` (`jaminan_id`),
-  ADD KEY `jnslayan_id` (`jnslayan_id`);
+  ADD KEY `jnslayan_id` (`jnslayan_id`),
+  ADD KEY `jadwal_id` (`jadwal_id`),
+  ADD KEY `jam_id` (`jam_id`);
 
 --
--- Indeks untuk tabel `res_tgl_libur`
+-- Indexes for table `res_tgl_libur`
 --
 ALTER TABLE `res_tgl_libur`
   ADD PRIMARY KEY (`id_libur`);
 
 --
--- Indeks untuk tabel `res_tpasien`
+-- Indexes for table `res_tpasien`
 --
 ALTER TABLE `res_tpasien`
   ADD PRIMARY KEY (`norm`);
 
 --
--- Indeks untuk tabel `res_treservasi`
+-- Indexes for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   ADD PRIMARY KEY (`id_rsv`),
@@ -1181,13 +1207,13 @@ ALTER TABLE `res_treservasi`
   ADD KEY `sebab` (`sebab_id`);
 
 --
--- Indeks untuk tabel `sms_full_inbox`
+-- Indexes for table `sms_full_inbox`
 --
 ALTER TABLE `sms_full_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_full_outbox`
+-- Indexes for table `sms_full_outbox`
 --
 ALTER TABLE `sms_full_outbox`
   ADD PRIMARY KEY (`ID`),
@@ -1195,25 +1221,25 @@ ALTER TABLE `sms_full_outbox`
   ADD KEY `outbox_sender` (`SenderID`);
 
 --
--- Indeks untuk tabel `sms_gammu`
+-- Indexes for table `sms_gammu`
 --
 ALTER TABLE `sms_gammu`
   ADD PRIMARY KEY (`Version`);
 
 --
--- Indeks untuk tabel `sms_inbox`
+-- Indexes for table `sms_inbox`
 --
 ALTER TABLE `sms_inbox`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indeks untuk tabel `sms_konfirm`
+-- Indexes for table `sms_konfirm`
 --
 ALTER TABLE `sms_konfirm`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `sms_outbox`
+-- Indexes for table `sms_outbox`
 --
 ALTER TABLE `sms_outbox`
   ADD PRIMARY KEY (`ID`),
@@ -1221,26 +1247,26 @@ ALTER TABLE `sms_outbox`
   ADD KEY `outbox_sender` (`SenderID`(250));
 
 --
--- Indeks untuk tabel `sms_outbox_multipart`
+-- Indexes for table `sms_outbox_multipart`
 --
 ALTER TABLE `sms_outbox_multipart`
   ADD PRIMARY KEY (`ID`,`SequencePosition`);
 
 --
--- Indeks untuk tabel `sms_phones`
+-- Indexes for table `sms_phones`
 --
 ALTER TABLE `sms_phones`
   ADD PRIMARY KEY (`IMEI`);
 
 --
--- Indeks untuk tabel `sms_routing`
+-- Indexes for table `sms_routing`
 --
 ALTER TABLE `sms_routing`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `modem` (`modem`);
 
 --
--- Indeks untuk tabel `sms_sentitems`
+-- Indexes for table `sms_sentitems`
 --
 ALTER TABLE `sms_sentitems`
   ADD PRIMARY KEY (`ID`,`SequencePosition`),
@@ -1250,130 +1276,130 @@ ALTER TABLE `sms_sentitems`
   ADD KEY `sentitems_sender` (`SenderID`(250));
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `auth_groups`
+-- AUTO_INCREMENT for table `auth_groups`
 --
 ALTER TABLE `auth_groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_login_attempts`
+-- AUTO_INCREMENT for table `auth_login_attempts`
 --
 ALTER TABLE `auth_login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_users`
+-- AUTO_INCREMENT for table `auth_users`
 --
 ALTER TABLE `auth_users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `auth_users_groups`
+-- AUTO_INCREMENT for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_jadwal`
+-- AUTO_INCREMENT for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   MODIFY `id_jadwal` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT untuk tabel `res_kuota`
+-- AUTO_INCREMENT for table `res_kuota`
 --
 ALTER TABLE `res_kuota`
-  MODIFY `id_kuota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_kuota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refdokter`
+-- AUTO_INCREMENT for table `res_refdokter`
 --
 ALTER TABLE `res_refdokter`
   MODIFY `id_dokter` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refjns_layan`
+-- AUTO_INCREMENT for table `res_refjns_layan`
 --
 ALTER TABLE `res_refjns_layan`
   MODIFY `id_jns_layan` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_refklinik`
+-- AUTO_INCREMENT for table `res_refklinik`
 --
 ALTER TABLE `res_refklinik`
   MODIFY `id_klinik` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=570;
 
 --
--- AUTO_INCREMENT untuk tabel `res_telebot`
+-- AUTO_INCREMENT for table `res_telebot`
 --
 ALTER TABLE `res_telebot`
-  MODIFY `id_telebot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_telebot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
--- AUTO_INCREMENT untuk tabel `res_tgl_libur`
+-- AUTO_INCREMENT for table `res_tgl_libur`
 --
 ALTER TABLE `res_tgl_libur`
   MODIFY `id_libur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `res_treservasi`
+-- AUTO_INCREMENT for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   MODIFY `id_rsv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_full_inbox`
+-- AUTO_INCREMENT for table `sms_full_inbox`
 --
 ALTER TABLE `sms_full_inbox`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_full_outbox`
+-- AUTO_INCREMENT for table `sms_full_outbox`
 --
 ALTER TABLE `sms_full_outbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_inbox`
+-- AUTO_INCREMENT for table `sms_inbox`
 --
 ALTER TABLE `sms_inbox`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_konfirm`
+-- AUTO_INCREMENT for table `sms_konfirm`
 --
 ALTER TABLE `sms_konfirm`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_outbox`
+-- AUTO_INCREMENT for table `sms_outbox`
 --
 ALTER TABLE `sms_outbox`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
--- AUTO_INCREMENT untuk tabel `sms_routing`
+-- AUTO_INCREMENT for table `sms_routing`
 --
 ALTER TABLE `sms_routing`
   MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `auth_users_groups`
+-- Constraints for table `auth_users_groups`
 --
 ALTER TABLE `auth_users_groups`
   ADD CONSTRAINT `auth_users_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `auth_groups` (`id`),
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `auth_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `res_jadwal`
+-- Constraints for table `res_jadwal`
 --
 ALTER TABLE `res_jadwal`
   ADD CONSTRAINT `res_jadwal_ibfk_1` FOREIGN KEY (`dokter_id`) REFERENCES `res_refdokter` (`id_dokter`),
@@ -1381,23 +1407,25 @@ ALTER TABLE `res_jadwal`
   ADD CONSTRAINT `res_jadwal_ibfk_3` FOREIGN KEY (`jns_layan_id`) REFERENCES `res_refjns_layan` (`id_jns_layan`);
 
 --
--- Ketidakleluasaan untuk tabel `res_kuota`
+-- Constraints for table `res_kuota`
 --
 ALTER TABLE `res_kuota`
   ADD CONSTRAINT `res_kuota_ibfk_1` FOREIGN KEY (`id_jadwal`) REFERENCES `res_jadwal` (`id_jadwal`);
 
 --
--- Ketidakleluasaan untuk tabel `res_telebot`
+-- Constraints for table `res_telebot`
 --
 ALTER TABLE `res_telebot`
   ADD CONSTRAINT `res_telebot_ibfk_1` FOREIGN KEY (`dokter_id`) REFERENCES `res_refdokter` (`id_dokter`),
   ADD CONSTRAINT `res_telebot_ibfk_2` FOREIGN KEY (`klinik_id`) REFERENCES `res_refklinik` (`id_klinik`),
   ADD CONSTRAINT `res_telebot_ibfk_3` FOREIGN KEY (`norm`) REFERENCES `res_tpasien` (`norm`),
   ADD CONSTRAINT `res_telebot_ibfk_4` FOREIGN KEY (`jaminan_id`) REFERENCES `res_jns_jaminan` (`id_jaminan`),
-  ADD CONSTRAINT `res_telebot_ibfk_5` FOREIGN KEY (`jnslayan_id`) REFERENCES `res_refjns_layan` (`id_jns_layan`);
+  ADD CONSTRAINT `res_telebot_ibfk_5` FOREIGN KEY (`jnslayan_id`) REFERENCES `res_refjns_layan` (`id_jns_layan`),
+  ADD CONSTRAINT `res_telebot_ibfk_6` FOREIGN KEY (`jadwal_id`) REFERENCES `res_jadwal` (`id_jadwal`),
+  ADD CONSTRAINT `res_telebot_ibfk_7` FOREIGN KEY (`jam_id`) REFERENCES `res_kuota` (`id_kuota`);
 
 --
--- Ketidakleluasaan untuk tabel `res_treservasi`
+-- Constraints for table `res_treservasi`
 --
 ALTER TABLE `res_treservasi`
   ADD CONSTRAINT `res_treservasi_ibfk_1` FOREIGN KEY (`norm`) REFERENCES `res_tpasien` (`norm`),
@@ -1408,7 +1436,7 @@ ALTER TABLE `res_treservasi`
 
 DELIMITER $$
 --
--- Event
+-- Events
 --
 CREATE DEFINER=`admin`@`localhost` EVENT `update_statres` ON SCHEDULE EVERY 1 DAY STARTS '2018-08-11 14:15:00' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'update status reservasi jika tidak cekin / waktu res < now' DO UPDATE res_treservasi
 SET res_treservasi.status = 3

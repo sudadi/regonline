@@ -110,7 +110,7 @@
             $dipakai= $this->getdipakai($idjadwal,$tglcekin,$value->jam);
             $sisa = $value->kuota - $dipakai;
             if ( $sisa>0){
-                $kuotaperjam[]=array('idjadwal'=>$idjadwal,'idklinik'=>$idklinik,'iddokter'=>$iddokter,'jam'=>$value->jam,'kuota'=>$value->kuota,'sisa'=>$sisa);
+                $kuotaperjam[]=array('idjadwal'=>$idjadwal,'idklinik'=>$idklinik,'iddokter'=>$iddokter,'jam'=>$value->jam,'idjam'=>$value->id_kuota,'kuota'=>$value->kuota,'sisa'=>$sisa);
             }
         }
         return $kuotaperjam;
