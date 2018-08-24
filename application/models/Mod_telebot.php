@@ -32,5 +32,21 @@ class Mod_telebot extends CI_Model {
         $this->db->delete('res_telebot', "fromid={$fromid}");
         return $this->db->affected_rows();
     }
+    
+    function saveres($chatid) {
+        $dataTele= $this->getrowteleres("fromid=$chatid");
+        $waktu=date('Y/m/d H:i:s', strtotime($dataTele->tgl_res.$dataTele->jam));
+        $datares= array('norm'=>$dataTele->norm,
+                'waktu_rsv'=>$waktu,'jadwal_id'=>$dataTele->jadwal_id,
+                'jns_jaminan_id'=>$dataTele->jaminan_id,
+                'sebab_id'=>9,
+                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'TELE');
+        if ($this->db->insert('res_treservasi', $datares)){
+            $idres=$this->db->insert_id();
+            $nores=$kodeklinik.'-'.$idres;
+            $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+            return TRUE;
+        }
+    }
 
 }
