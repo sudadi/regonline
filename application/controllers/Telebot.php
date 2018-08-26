@@ -8,10 +8,21 @@
 
 class Telebot extends CI_Controller
 {
+    private $hari_ID = array (1=>'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu');
     private $dataResTele;
     private $erropt = array("*Maaf Anda tidak memilih dari opsi yang disediakan!*\n\n",
         "*Pilihan Salah!*\n\n", "*Oops Salah!* Cukup klik dari opsi yang ada.\n\n",
         "*Salah!* Mohon lakukan sesuai instruksi.\n\n", "*Maaf Anda tidak melakukan sesuai instruksi!* \n\n");
+    
+    private function greeting()
+    {
+        $jam = date("G",time());
+        if ($jam < 10 ) {$text = "Pagi";}
+        elseif($jam < 15 ) {$text = "Siang";}
+        elseif($jam < 18 ) {$text = "Sore";}
+        else {$text = "Malam";}
+        return $text;
+    }
 
     public function __construct()
     {
@@ -121,12 +132,16 @@ class Telebot extends CI_Controller
     private function casettl($chatid, $pesan, $text=null) {
         if ($tgl=date('Y/m/d', strtotime($pesan))){
             $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."' and tgl_lahir='".$tgl."'");
+            $this->mod_telebot->updteleres($chatid, ['ttl'=>"$tgl",'status'=>'jaminan']);
         }
         if ($datPas && $this->mod_reservasi->cekreserv($datPas->norm, 1)){
+            $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
+                . "Maaf, Anda sudah melakukan reservasi.";
+            $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
             $text = $this->showres();        
-        } else if($text || ($datPas && $this->mod_telebot->updteleres($chatid,array('ttl'=>"$tgl",'status'=>'jaminan')))){
+        } else if($text || $datPas){
             if (!$text){
-                $text = "Selamat datang *{$datPas->nama}* \n\n";
+                $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 
                 $text="Pilih jenis jaminan :";
@@ -282,13 +297,17 @@ class Telebot extends CI_Controller
     private function showres() {
         $norm= $this->dataResTele->norm;
         $result = $this->mod_reservasi->getresfull("status=1 and norm=$norm");
-        $text = "*Berikut Data Reservasi Anda*\n\n "
+        $hari = $this->hari_ID[date("N", strtotime($result[0]->waktu_rsv))];
+        $text = "*Berikut Data Reservasi Anda*\n\n"
                 . "Nama  : \n*{$result[0]->nama}*\n"
                 . "Jaminan : \n*{$result[0]->nama_jaminan}*\n"
                 . "Layanan : \n*{$result[0]->jns_layan}*\n"
+                . "Dokter  : \n*".$result[0]->nama_dokter."*\n"
                 . "Klinik  : \n*{$result[0]->nama_klinik}*\n"
-                . "Tanggal : \n*".date('l d-m-Y', strtotime($result[0]->waktu_rsv))."*\n"
-                . "Jam     : \n*".date('H:i:s', strtotime($result[0]->waktu_rsv))."*";
+                . "Tanggal : \n*".$hari." ".date('d-m-Y', strtotime($result[0]->waktu_rsv))."*\n"
+                . "Jam     : \n*".date('H:i:s', strtotime($result[0]->waktu_rsv))."*\n\n"
+                . "*Mohon datang tepat waktu sesuai jadwal yang sudah ditentukan.*\n"
+                . "Terima Kasih";
         return $text;
     }
 
@@ -308,64 +327,65 @@ class Telebot extends CI_Controller
             case $pesan == '/start' :
                 $text = "Selamat Datang di bot RESERVASI Layanan Pasien\n"
                 ."*RS Ortopedi Prof.DR.R. Soeharso Surakarta*\n";
-                $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 $keyboard = [
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
-                    ['/batal'],
+                    ['/pembatalan']
                 ];
                 $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan Klik tombol /reservasi untuk mulai reservasi', $keyboard);
                 break;
 
             case $pesan=='/reservasi' : 
-                if ($this->dataResTele && ($this->dataResTele->status!=='ttl' || $this->dataResTele->status!=='norm')){
+                if ($this->dataResTele && $this->dataResTele->status=='sukses' && $this->dataResTele->tgl_res > date('Y-m-d')){
+                    $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
+                        . "Maaf, Anda sudah melakukan reservasi.";
+                    $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
+                    $this->showres();
+                }else if ($this->dataResTele && ($this->dataResTele->status!=='ttl' && $this->dataResTele->status!=='norm')){
                     $this->mod_telebot->updteleres($chatid,array('status'=>'ttl','jadwal_id'=>null,'jam_id'=>null,'tgl_res'=>null,
                         'klinik_id'=>null,'dokter_id'=>null,'jnslayan_id'=>null,'jaminan_id'=>null));
                     list($text, $inkeyboard)=$this->casettl($chatid, $this->dataResTele->ttl);
                 }else {
+                    if($this->dataResTele) $this->mod_telebot->delteleres($chatid);
                     $this->mod_telebot->newteleres($chatid);
                     $text = "Silahkan masukkan No. Rekam Medis (NoRM) Anda :";
                 }
-                $inkeyboard 
-                        ? $this->telebot_lib->sendApiKeyboard($chatid, $text, $inkeyboard, true)
-                        : $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 break;
                 
-            case $pesan=='/Ketentuan':
-                
+            case $pesan=='/ketentuan':
+                $text ="*Berikut Syarat & Ketentuan RESERVASI Online*\n"
+                    . "1. Satu id Telegram hanya untuk reservasi satu Pasien.\n"
+                    . "2. Reservasi tidak bisa dilakukan lebih dari sekali.\n"
+                    . "3. Reservasi minimal 2 hari dan maksmal 2 minggu sebelum kunjungan.\n"
+                    . "4. Kuota hanya berlaku di Reservasi Online.\n"
+                    . "5. Jika kuota sudah tidak tersedia silahkan datang langsung (Registrasi On Site).";
                 break;
             
             case $pesan=='/bantuan':
                 
                 break;
                 
-            case $pesan == '/batal':
-                $text ="Yakin akan membatalkan proses reservasi ini.? \n"
-                    . "Ketik 'Ya yakin batal' jika Anda yakin.\n";
-                $this->telebot_lib->sendApiAction($chatid);
-                $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
+            case $pesan == '/pembatalan':
+                $text ="Yakin akan membatalkan proses reservasi ini ? \n";
+                $inkeyboard = [
+                    [
+                        ['text'=>"Ya Yakin", 'callback_data'=>"Batal|Ya yakin Batal|Ya"],
+                        ['text'=>"Tidak", 'callback_data'=>"Batal|Tidak jadi Batal|Tidak"],
+                    ]
+                ];
                 break;
             
-            case $pesan=='Ya yakin batal' :
-                if ($this->mod_telebot->delteleres($chatid)){
-                    $text="Proses reservasi sudah di batalkan.\n\n"
-                            . "Silahkan Klik tombol /reservasi untuk mulai reservasi";
-                }
-                $this->telebot_lib->sendApiMsg($chatid, $text);
-                break;
-
             case $pesan == '/id':
-                $text = 'ID Kamu adalah: '.$fromid;
-                $this->telebot_lib->sendApiMsg($chatid, $text);
+                $text = 'ID Anda adalah: '.$fromid;
                 break;
 
-            case $pesan == '!keyboard':
+            case $pesan == '/menu':
                 $keyboard = [
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
-                    ['/batal'],
+                    ['/pembatalan']
                 ];
-                $this->telebot_lib->sendApiKeyboard($chatid, 'tombol pilihan', $keyboard);
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Menu Utama', $keyboard);
                 break;
             
             case $pesan == '!hide':
@@ -373,9 +393,7 @@ class Telebot extends CI_Controller
                 break;
 
             case preg_match("/\/echo (.*)/", $pesan, $hasil):
-
                 $text = '*Echo:* '.$hasil[1];
-                $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 break;
 
             default:
@@ -415,18 +433,24 @@ class Telebot extends CI_Controller
                             break;
                                                         
                         default:
-                            $text = "Maaf, kami tidak mengerti perintah yang Anda maksud.";
+                            if (explode('|',$pesan)[1]=='Ya yakin Batal') {
+                                $this->mod_telebot->delteleres($chatid);
+                                $text="Proses reservasi sudah di batalkan.\n\n"
+                                    . "Silahkan Klik tombol /reservasi untuk mulai reservasi";
+                            } else{
+                                $text = "Maaf, kami tidak mengerti perintah yang Anda maksud.";
+                            }
                             break;
                     }
                 } else {
                     $text = "Maaf, kami tidak mengerti perintah yang Anda maksud.";                    
                 }
-                if ($inkeyboard){
-                    $this->telebot_lib->sendApiKeyboard($chatid, $text, $inkeyboard, true);
-                } else {
-                    $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
-                }
                 break;
+        }
+        if ($inkeyboard){
+            $this->telebot_lib->sendApiKeyboard($chatid, $text, $inkeyboard, true);
+        } else {
+            $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
         }
     }
 
