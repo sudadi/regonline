@@ -72,8 +72,8 @@ class Telebot extends CI_Controller
                 $this->prosesPesanTeks($message);
             } elseif (isset($message['sticker'])) {
                 $this->prosesPesanSticker($message);
-            } else {
-                // gak di proses silakan dikembangkan sendiri
+            } elseif (isset ($message['photo'])){
+                $this->prosesFile($message);
             }
         }
 
@@ -132,7 +132,7 @@ class Telebot extends CI_Controller
     private function casettl($chatid, $pesan, $text=null) {
         if ($tgl=date('Y/m/d', strtotime($pesan))){
             $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."' and tgl_lahir='".$tgl."'");
-            $this->mod_telebot->updteleres($chatid, ['ttl'=>"$tgl",'status'=>'jaminan']);
+            if ($datPas) $this->mod_telebot->updteleres($chatid, ['ttl'=>"$tgl",'status'=>'jaminan']);
         }
         if ($datPas && $this->mod_reservasi->cekreserv($datPas->norm, 1)){
             $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
@@ -333,9 +333,8 @@ class Telebot extends CI_Controller
                 $keyboard = [
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
-                    ['/pembatalan']
                 ];
-                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan Klik tombol /reservasi untuk mulai reservasi', $keyboard);
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan ketik atau klik /reservasi untuk mulai proses reservasi', $keyboard);
                 break;
 
             case $pesan=='/reservasi' : 
@@ -374,8 +373,8 @@ class Telebot extends CI_Controller
                 $text ="Yakin akan membatalkan proses reservasi ini ? \n";
                 $inkeyboard = [
                     [
-                        ['text'=>"Ya Yakin", 'callback_data'=>"Batal|Ya yakin Batal|Ya"],
-                        ['text'=>"Tidak", 'callback_data'=>"Batal|Tidak jadi Batal|Tidak"],
+                        ['text'=>"Ya Yakin", 'callback_data'=>"Batal : *Ya*|Ya yakin Batal"],
+                        ['text'=>"Tidak", 'callback_data'=>"Batal : *Tidak*|Tidak jadi Batal"],
                     ]
                 ];
                 $this->mod_telebot->updteleres($chatid, ['statmenu'=>'pembatalan']);
@@ -385,7 +384,7 @@ class Telebot extends CI_Controller
                 if ($this->dataResTele->statmenu=='pembatalan'){
                     $this->mod_telebot->delteleres($chatid);
                     $text="Proses reservasi sudah di batalkan.\n\n"
-                        . "Silahkan Klik tombol /reservasi untuk mulai reservasi";
+                        . "Silahkan ketik atau klik /reservasi untuk mulai proses reservasi";
                     $this->mod_telebot->updteleres($chatid, ['statmenu'=>'']);
                 }
                 break;
@@ -399,14 +398,13 @@ class Telebot extends CI_Controller
                 $keyboard = [
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
-                    ['/pembatalan']
                 ];
                 $this->telebot_lib->sendApiKeyboard($chatid, 'Menu Utama', $keyboard);
                 $this->mod_telebot->updteleres($chatid, ['statmenu'=>'menu']);
                 break;
             
-            case $pesan == '!hide':
-                $this->telebot_lib->sendApiHideKeyboard($chatid, 'keyboard off');
+            case $pesan == '/hidemenu':
+                $this->telebot_lib->sendApiHideKeyboard($chatid, 'Menu off');
                 break;
 
             case preg_match("/\/echo (.*)/", $pesan, $hasil):
@@ -463,6 +461,10 @@ class Telebot extends CI_Controller
         } else {
             $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
         }
+    }
+    
+    private function prosesFile($message) {
+        
     }
 
 }
