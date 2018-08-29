@@ -72,8 +72,8 @@ class Telebot extends CI_Controller
                 $this->prosesPesanTeks($message);
             } elseif (isset($message['sticker'])) {
                 $this->prosesPesanSticker($message);
-            } else {
-                // gak di proses silakan dikembangkan sendiri
+            } elseif (isset ($message['photo'])){
+                $this->prosesFile($message);
             }
         }
 
@@ -335,7 +335,7 @@ class Telebot extends CI_Controller
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
                 ];
-                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan Klik tombol /reservasi untuk mulai reservasi', $keyboard);
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan ketik atau klik /reservasi untuk mulai proses reservasi', $keyboard);
                 break;
 
             case $pesan=='/reservasi' : 
@@ -460,6 +460,10 @@ class Telebot extends CI_Controller
         } else {
             $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
         }
+    }
+    
+    private function prosesFile($message) {
+        
     }
 
 }
