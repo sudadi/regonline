@@ -33,7 +33,7 @@ class Telebot extends CI_Controller
     public function bothook() {
         $entityBody = file_get_contents('php://input');
         $message = json_decode($entityBody, true);
-        prosesApiMessage($message);
+        $this->prosesApiMessage($message);
     }
     
     public function botloop() {
@@ -55,7 +55,7 @@ class Telebot extends CI_Controller
             }
             file_put_contents($idfile, $update_id + 1);
             
-            //sleep(1);
+            sleep(1);
         }
     }
     
@@ -132,7 +132,7 @@ class Telebot extends CI_Controller
     private function casettl($chatid, $pesan, $text=null) {
         if ($tgl=date('Y/m/d', strtotime($pesan))){
             $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."' and tgl_lahir='".$tgl."'");
-            
+            if($datPas) $this->mod_telebot->updteleres($chatid, ['ttl'=>"$tgl",'status'=>'jaminan']);            
         }
         if ($datPas && $this->mod_reservasi->cekreserv($datPas->norm, 1)){
             $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
@@ -150,10 +150,9 @@ class Telebot extends CI_Controller
                 [
                     ['text' => 'Umum', 'callback_data' => 'Jaminan : *Umum*|2'],
                     ['text' => 'JKN', 'callback_data' => 'Jaminan : *JKN*|5'],
-                    ['text' => 'IKS', 'callback_data' => 'Jaminan : *IKS* |7'],
+                    ['text' => 'IKS', 'callback_data' => 'Jaminan : *IKS*|7'],
                 ],                                    
             ];
-            $this->mod_telebot->updteleres($chatid, ['ttl'=>"$tgl",'status'=>'jaminan']);
         } else {
             $text = "*Tanggal lahir tidak sesuai (salah)!*\n\n"
                     . "Mohon masukkan tanggal yang benar :";
@@ -402,12 +401,12 @@ class Telebot extends CI_Controller
                     ['/ketentuan', '/bantuan'],
                     
                 ];
-                $this->telebot_lib->sendApiKeyboard($chatid, 'Menu Utama', $keyboard);
+                $this->telebot_lib->sendApiKeyboard($chatid, 'Menu on', $keyboard);
                 $this->mod_telebot->updteleres($chatid, ['statmenu'=>'menu']);
                 break;
             
             case $pesan == '/hidemenu':
-                $this->telebot_lib->sendApiHideKeyboard($chatid, 'keyboard off');
+                $this->telebot_lib->sendApiHideKeyboard($chatid, 'Menu off');
                 break;
                 
             default:

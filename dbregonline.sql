@@ -487,7 +487,7 @@ INSERT INTO `res_treservasi` (`id_rsv`, `norm`, `nores`, `waktu_rsv`, `jadwal_id
 
 CREATE TABLE `sms_full_inbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ReceivingDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ReceivingDateTime` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
   `Text` text NOT NULL,
   `SenderNumber` varchar(20) NOT NULL DEFAULT '',
   `Coding` enum('Default_No_Compression','Unicode_No_Compression','8bit','Default_Compression','Unicode_Compression') NOT NULL DEFAULT 'Default_No_Compression',
@@ -579,8 +579,8 @@ INSERT INTO `sms_full_inbox` (`UpdatedInDB`, `ReceivingDateTime`, `Text`, `Sende
 
 CREATE TABLE `sms_full_outbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `InsertIntoDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SendingDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `InsertIntoDB` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
+  `SendingDateTime` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
   `SendBefore` time NOT NULL DEFAULT '23:59:59',
   `SendAfter` time NOT NULL DEFAULT '00:00:00',
   `Text` text,
@@ -593,7 +593,7 @@ CREATE TABLE `sms_full_outbox` (
   `MultiPart` enum('false','true') DEFAULT 'false',
   `RelativeValidity` int(11) DEFAULT '-1',
   `SenderID` varchar(255) DEFAULT NULL,
-  `SendingTimeOut` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `SendingTimeOut` timestamp NULL DEFAULT '1970-01-02 00:00:00',
   `DeliveryReport` enum('default','yes','no') DEFAULT 'default',
   `CreatorID` text NOT NULL,
   `Status` tinyint(1) DEFAULT '0'
@@ -679,7 +679,7 @@ INSERT INTO `sms_gammu` (`Version`) VALUES
 
 CREATE TABLE `sms_inbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ReceivingDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ReceivingDateTime` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
   `Text` text NOT NULL,
   `SenderNumber` varchar(20) NOT NULL DEFAULT '',
   `Coding` enum('Default_No_Compression','Unicode_No_Compression','8bit','Default_Compression','Unicode_Compression') NOT NULL DEFAULT 'Default_No_Compression',
@@ -830,8 +830,8 @@ INSERT INTO `sms_konfirm` (`id`, `format`) VALUES
 
 CREATE TABLE `sms_outbox` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `InsertIntoDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SendingDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `InsertIntoDB` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
+  `SendingDateTime` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
   `SendBefore` time NOT NULL DEFAULT '23:59:59',
   `SendAfter` time NOT NULL DEFAULT '00:00:00',
   `Text` text,
@@ -844,7 +844,7 @@ CREATE TABLE `sms_outbox` (
   `multipart` varchar(6) DEFAULT '0',
   `RelativeValidity` int(11) DEFAULT '-1',
   `SenderID` varchar(255) DEFAULT NULL,
-  `SendingTimeOut` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `SendingTimeOut` timestamp NULL DEFAULT '1970-01-02 00:00:00',
   `DeliveryReport` enum('default','yes','no') DEFAULT 'default',
   `CreatorID` text NOT NULL,
   `Retries` int(3) DEFAULT '0',
@@ -908,8 +908,8 @@ CREATE TABLE `sms_outbox_multipart` (
 CREATE TABLE `sms_phones` (
   `ID` text NOT NULL,
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `InsertIntoDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `TimeOut` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `InsertIntoDB` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
+  `TimeOut` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
   `Send` enum('yes','no') NOT NULL DEFAULT 'no',
   `Receive` enum('yes','no') NOT NULL DEFAULT 'no',
   `IMEI` varchar(35) NOT NULL,
@@ -962,8 +962,8 @@ INSERT INTO `sms_routing` (`id`, `prefix`, `modem`, `status`) VALUES
 
 CREATE TABLE `sms_sentitems` (
   `UpdatedInDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `InsertIntoDB` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `SendingDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `InsertIntoDB` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
+  `SendingDateTime` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00',
   `DeliveryDateTime` timestamp NULL DEFAULT NULL,
   `Text` text NOT NULL,
   `DestinationNumber` varchar(20) NOT NULL DEFAULT '',
