@@ -60,11 +60,13 @@
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
             $startdate = strtotime($hari);
-            $enddate = strtotime("+2 weeks", $startdate);
+            $enddate = strtotime("+8 day", $startdate);
             while ($startdate < $enddate) {
                 $newdate = date("Y-m-d", $startdate); 
                 $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
-                if ($tglcek || $tglcek ===0 || (date('Y-m-d', $startdate) == date('Y-m-d'))) {
+                $inihari = new DateTime();
+                $newdate = new DateTime($newdate);
+                if ($tglcek || $tglcek ===0 || ($newdate->diff($inihari)->format("%a") < 2))  {
                       //nothing  or skip        
                 } else {
                     $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>$hari_ID[date("N", $startdate)], 
