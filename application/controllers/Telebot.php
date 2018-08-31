@@ -189,10 +189,13 @@ class Telebot extends CI_Controller
         } else if ($pesan[1] == '2' && ($text || $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'dokter')))){
             if (!$text) $text = "Pilih dokter :";
             $dokters = $this->mod_reservasi->getdokter(2);
-            foreach ($dokters as $dokter) {
-                $pilihan[]= ['text'=>"$dokter->nama_dokter", 'callback_data'=>"Dokter : *".$dokter->nama_dokter."*|".$dokter->id_dokter];
+            $i=0;
+            foreach ($dokters as $key=>$dokter) {
+                if ($key && $key%2==0)$i++;
+                $pilihan[$i][]= ['text'=>"$dokter->nama_dokter", 'callback_data'=>"Dokter : *".$dokter->nama_dokter."*|".$dokter->id_dokter];
+                
             }
-            $inkeyboard = [$pilihan];
+            $inkeyboard = $pilihan;
         } else {
             $text = $this->erropt[rand(0,5)]."Pilih jenis layanan berikut :";
             list($text, $inkeyboard)= $this->casejaminan($chatid, 'Jaminan :|'.$this->dataResTele->jaminan_id, $text);
@@ -231,11 +234,10 @@ class Telebot extends CI_Controller
         if ($jadwal){
             if ($text || $this->mod_telebot->updteleres($chatid,array('klinik_id'=>(int)$pesan[1],'status'=>'tglres'))){
                 $tgls=$this->mod_reservasi->cekjadawal($pesan[1], $iddokter, $jnslayan);
-                $i=$x=0;
-                foreach ($tgls as $tgl) {
+                $i=0;
+                foreach ($tgls as $key=>$tgl) {
                     $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"Tanggal : *".$tgl['hari']." ".$tgl['jadwaltgl']."*|".$tgl['jadwaltgl']."|".$tgl['idjadwal']];
-                    if($x%2==0)$i++;
-                    $x++;
+                    if($key%2==0) $i++;
                 }
                 if(!$text) $text="Siliahkan pilih tanggal Reservasi :";
                 $inkeyboard = $pilihan;

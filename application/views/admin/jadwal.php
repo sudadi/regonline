@@ -195,7 +195,8 @@
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error : Masukkan data secara urut..!');
+                alert('Error : Data tidak ditemukan..!');
+                window.location.href = "{{base_url('admin/jadwal')}}";
             }
         }); 
     };

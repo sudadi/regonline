@@ -379,7 +379,7 @@ class Admin extends CI_Controller
             }                
             redirect('admin/jadwal');
         }
-        if($this->input->post()){
+        if($this->input->post() && (strtotime($this->input->post('mulai')) < strtotime($this->input->post('selesai')))){
             $dokter= $this->input->post('dokter');
             $klinik= $this->input->post('klinik');
             $jnslayan= $this->input->post('jnslayan');
@@ -388,22 +388,28 @@ class Admin extends CI_Controller
             $selesai = $this->input->post('selesai');
             $status = $this->input->post('status');
             $kuota = $this->input->post('kuota');
-            if ($this->input->post('edit')){
-                $idjadwal= $this->input->post('edit');
-                $status= $this->input->post('status');
+            $idjadwal= $this->input->post('edit');
+            
+            if ($idjadwal){
                 $this->db->update('res_jadwal', array('dokter_id'=>$dokter,'klinik_id'=>$klinik,'jns_layan_id'=>$jnslayan,'kuota_perjam'=>$kuota,
                     'id_hari'=>$hari,'jam_mulai'=>$mulai,'jam_selesai'=>$selesai,'status'=>$status), 'id_jadwal='.$idjadwal);
             }else{
                 $this->db->insert('res_jadwal', array('dokter_id'=>$dokter,'klinik_id'=>$klinik,'jns_layan_id'=>$jnslayan,
                     'kuota_perjam'=>$kuota,'id_hari'=>$hari,'jam_mulai'=>$mulai,'jam_selesai'=>$selesai,'status'=>$status));
+            
+                $idjadwal = $this->db->insert_id();
             }
             if ($this->db->affected_rows()>0){
-               $this->session->set_flashdata('success', 'Data sudah tersimpan');
+                $this->mod_setting->savekuota($idjadwal, $mulai, $selesai, $kuota);
+                $this->session->set_flashdata('success', 'Data sudah tersimpan');
             } else {
                 $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
             }
             redirect('admin/jadwal');
+        } else if($this->input->post()) {
+            $this->session->set_flashdata('error', 'Data TIDAK tidak tersimpan. \n Cek kembali data yang anda masukkan');
         }
+        
         $this->load->library('pagination');
         $jmldata= $this->mod_setting->getjmljadwal();
         $this->pageconf['base_url'] = base_url().'admin/jadwal/';

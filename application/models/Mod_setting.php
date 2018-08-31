@@ -43,4 +43,14 @@
     function getkonfirm() {
         return $this->db->get_where('sms_konfirm', 'id=1')->row();
     }
+    function savekuota($idjadwal, $jammulai, $jamselesai, $kuota) {
+        $this->db->delete('res_kuota', "id_jadwal={$idjadwal}");
+        $jammulai = strtotime($jammulai);
+        $jamselesai = strtotime($jamselesai);
+        while ($jammulai <= $jamselesai) {
+            $this->db->insert('res_kuota', ['id_jadwal'=>$idjadwal, 'jam'=>date('H:i:s',$jammulai), 'kuota'=>$kuota]);
+            $jammulai = strtotime('+1 hours', $jammulai);
+        }
+        return TRUE;
+    }
  }
