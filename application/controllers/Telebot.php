@@ -144,7 +144,7 @@ class Telebot extends CI_Controller
                 $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 
-                $text="Pilih jenis jaminan :";
+                $text="Pilih jenis jaminan / cara bayar :";
             }    
             $inkeyboard = [
                 [
@@ -175,7 +175,7 @@ class Telebot extends CI_Controller
             $inkeyboard = $this->keyklinik(FALSE, 1);
 
         } else {
-            $text = $this->erropt[rand(0,5)]. "Pilih jenis jaminan berikut:";    
+            $text = $this->erropt[rand(0,5)]. "Pilih jenis jaminan/cara bayar berikut:";    
             list($text, $inkeyboard)=$this->casettl($chatid, $this->dataResTele->ttl, $text);
         }
         return array($text, $inkeyboard);
@@ -262,8 +262,8 @@ class Telebot extends CI_Controller
             $i=0;
             foreach ($jams as $key=>$jam) {
                 if ($jam['sisa']>0){
+                    if ($key && $key%2==0)$i++;
                     $pilihan[$i][]=['text'=>$jam['jam']." (".$jam['sisa'].")", 'callback_data'=>"Jam : *".$jam['jam']."*|".$jam['idjam']];
-                    if ($key%2==0)$i++;
                 }
             }
             if (!$text)$text = "Silahkan pilih Jam kunjungan :";
@@ -336,7 +336,16 @@ class Telebot extends CI_Controller
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
                 ];
-                $this->telebot_lib->sendApiKeyboard($chatid, 'Silahkan ketik atau klik /reservasi untuk mulai proses reservasi', $keyboard);
+                $msg = "Silahkan ketik atau klik\n"
+                        . "/reservasi - mulai/mengulang proses reservasi.\n"
+                        . "/ketentuan - melihat syarat & ketentuan.\n"
+                        . "/bantuan - petunjuk melakukan reservasi.\n"
+                        . "/id - untuk mengetahui id telegram Anda.\n"
+                        . "/menu - menampilkan tombol menu(keyboard).\n"
+                        . "/hidemenu - menutup tombol menu(keyboard).\n"
+                        . "/hapusdata - menghapus id & data yg terdaftar di Bot Reservasi RSO.\n"
+                        . "/start - menampilkan menu ini.";
+                $this->telebot_lib->sendApiKeyboard($chatid, $msg, $keyboard);
                 break;
 
             case $pesan=='/reservasi' : 
@@ -371,21 +380,22 @@ class Telebot extends CI_Controller
                 
                 break;
                 
-            case $pesan == '/pembatalan':
-                $text ="Yakin akan membatalkan proses reservasi ini ? \n";
+            case $pesan == '/hapusdata':
+                $text ="Yakin akan menghapus data dan membatalkan proses reservasi ? \n";
                 $inkeyboard = [
                     [
                         ['text'=>"Ya Yakin", 'callback_data'=>"Batal : *Ya*|Ya yakin Batal"],
                         ['text'=>"Tidak", 'callback_data'=>"Batal : *Tidak*|Tidak jadi Batal"],
                     ]
                 ];
-                $this->mod_telebot->updteleres($chatid, ['statmenu'=>'pembatalan']);
+                $this->mod_telebot->updteleres($chatid, ['statmenu'=>'hapusdata']);
                 break;
             
             case explode('|',$pesan)[1]=='Ya yakin Batal':
-                if ($this->dataResTele->statmenu=='pembatalan' &&  $this->mod_telebot->delteleres($chatid)){              
+                if ($this->dataResTele->statmenu=='hapusdata' &&  $this->mod_telebot->delteleres($chatid)){              
                     $text="Proses reservasi sudah di batalkan.\n\n"
-                        . "Silahkan Klik tombol /reservasi untuk mulai reservasi";               
+                        . "Silahkan Klik atau Ketik\n"
+                        . "/reservasi untuk mulai reservasi";               
                 } else {
                 	$text= "Maaf data reservasi tidak ditemukan.";
                 }
@@ -448,11 +458,11 @@ class Telebot extends CI_Controller
                             break;
                                                         
                         default:
-                            $text = "Maaf, kami tidak mengerti perintah yang Anda maksud.";
+                            $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";
                             break;
                     }
                 } else {
-                    $text = "Maaf, kami tidak mengerti perintah yang Anda maksud.";                    
+                    $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";                    
                 }
                 break;
         }
