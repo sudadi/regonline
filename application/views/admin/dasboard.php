@@ -14,10 +14,10 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-light-blue"><i class="fa fa-firefox"></i></span>
+                    <span class="info-box-icon bg-light-blue"><i class="fa fa-send-o"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Web</span>
-                        <span class="info-box-number"><?=$jmlweb;?><small> Pasien</small></span>
+                        <span class="info-box-text">Telegram</span>
+                        <span class="info-box-number"><?=$jmltele;?><small> Pasien</small></span>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
             <div class="clearfix visible-sm-block"></div>
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-red"><i class="fa fa-envelope-o"></i></span>
+                    <span class="info-box-icon bg-yellow"><i class="fa fa-envelope-o"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">SMS</span>
                         <span class="info-box-number"><?=$jmlsms;?><small> Pasien</small></span>
@@ -42,10 +42,10 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+                    <span class="info-box-icon bg-red"><i class="fa fa-firefox"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">ALL</span>
-                        <span class="info-box-number"><?=$jmlwa+$jmlsms+$jmlweb;?><small> Pasien</small></span>
+                        <span class="info-box-text">WEB</span>
+                        <span class="info-box-number"><?=$jmlweb;?><small> Pasien</small></span>
                     </div>
                 </div>
             </div>
@@ -81,9 +81,9 @@
                         <div class="row">
                             <div class="col-sm-3 col-xs-6">
                               <div class="description-block border-right">
-                                <span id="spanweb" class="description-percentage"></span>
-                                <h5 class="description-header"><?=$percentweb;?> %</h5>
-                                <span class="description-text text-blue">Reservasi WEB</span>
+                                <span id="spantele" class="description-percentage"></span>
+                                <h5 class="description-header"><?=$percenttele;?> %</h5>
+                                <span class="description-text text-light-blue">Reservasi TG</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-6">
@@ -97,14 +97,14 @@
                               <div class="description-block border-right">
                                 <span id="spansms" class="description-percentage"></i></span>
                                 <h5 class="description-header"><?=$percentsms;?> %</h5>
-                                <span class="description-text text-red">Reservasi SMS</span>
+                                <span class="description-text text-yellow">Reservasi SMS</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block">
-                                  <span id="spanall" class="description-percentage"></span>
-                                  <h5 class="description-header"><?=$percentall;?> %</h5>
-                                  <span class="description-text text-orange">Reservasi Total</span>
+                                  <span id="spanweb" class="description-percentage"></span>
+                                  <h5 class="description-header"><?=$percentweb;?> %</h5>
+                                  <span class="description-text text-red">Reservasi WEB</span>
                                 </div>
                             </div>
                         </div>
@@ -128,25 +128,27 @@ $(document).ready(function(){
             var SMS = [];
             var WA = [];
             var WEB = [];
+            var TELE = [];
             for(var i in data) {
                 tgl.push(data[i].tgl);
                 SMS.push(data[i].SMS);
                 WA.push(data[i].WA);
                 WEB.push(data[i].WEB);
+                TELE.push(data[i].TELE);
             }
             var chartdata = {
                 type: 'line',
                 data:{
                     labels: tgl,
                     datasets: [ {
-                        label: "SMS",
+                        label: "TG",
                         fill: false,
                         lineTension: 0.3,
-                        backgroundColor: "rgba(204, 0, 0, 0.75)",
-                        borderColor: "rgba(204, 0, 0, 0.6)",
-                        pointHoverBackgroundColor: "rgba(204, 0, 0, 1)",
-                        pointHoverBorderColor: "rgba(204, 0, 0, 1)",
-                        data: SMS
+                        backgroundColor: "rgb(60, 141, 188, 0.75)",
+                        borderColor: "rgba(60, 141, 188, 0.6)",
+                        pointHoverBackgroundColor: "rgba(60, 141, 188, 0.75)",
+                        pointHoverBorderColor: "rgba(60, 141, 188, 0.75)",
+                        data: TELE
                       }, {
                         label: "WA",
                         fill: false,
@@ -157,13 +159,22 @@ $(document).ready(function(){
                         pointHoverBorderColor: "rgba(0, 153, 51, 0.5)",
                         data: WA
                       }, {
+                        label: "SMS",
+                        fill: false,
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(255, 133, 27, 0.75)",
+                        borderColor: "rgba(255, 133, 27, 0.6)",
+                        pointHoverBackgroundColor: "rgba(255, 133, 27, 1)",
+                        pointHoverBorderColor: "rgba(255, 133, 27, 1)",
+                        data: SMS
+                      }, {
                         label: "WEB",
                         fill: false,
                         lineTension: 0.3,
-                        backgroundColor: "rgb(0, 85, 128, 0.75)",
-                        borderColor: "rgba(0, 85, 128, 0.6)",
-                        pointHoverBackgroundColor: "rgba(0, 85, 128, 0.75)",
-                        pointHoverBorderColor: "rgba(0, 85, 128, 0.75)",
+                        backgroundColor: "rgb(204, 0, 0, 0.75)",
+                        borderColor: "rgba(204, 0, 0, 0.6)",
+                        pointHoverBackgroundColor: "rgba(204, 0, 0, 0.75)",
+                        pointHoverBorderColor: "rgba(204, 0, 0, 0.75)",
                         data: WEB
                       }
                     ]
@@ -187,7 +198,7 @@ $(document).ready(function(){
     var wa = <?=$percentwa;?>;
     var web = <?=$percentweb;?>;
     var sms = <?=$percentsms;?>;
-    var all = <?=$percentall;?>;
+    var tele = <?=$percenttele;?>;
     function getClass(value){
         if (value > 0) {
             var cls='text-green fa fa-caret-up';
@@ -201,6 +212,6 @@ $(document).ready(function(){
     $("#spanwa").addClass(getClass(wa));
     $("#spanweb").addClass(getClass(web));
     $("#spansms").addClass(getClass(sms));
-    $("#spanall").addClass(getClass(all));
+    $("#spantele").addClass(getClass(tele));
 });		
 </script>

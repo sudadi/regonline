@@ -147,7 +147,7 @@
         return $this->db->get_where('res_treservasi', $where)->result();
     }
     function getgraphres($where) {
-        $this->db->select("sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(first_update, '%m/%d') as tgl");
+        $this->db->select("sum(jenis_rsv='TELE')as'TELE',sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(first_update, '%m/%d') as tgl");
         $this->db->group_by('tgl');
         $this->db->order_by('tgl');
         return $this->db->get_where('res_treservasi',$where)->result_array();

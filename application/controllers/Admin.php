@@ -63,25 +63,27 @@ class Admin extends CI_Controller
         $currentres=$this->mod_reservasi->getgraphres("DATE_FORMAT(first_update, '%Y/%m/%d') = CURRENT_DATE()");
         $lastweekday=$this->mod_reservasi->getgraphres("DATE_FORMAT(first_update, '%Y/%m/%d') = DATE_FORMAT(NOW() - INTERVAL 7 DAY, '%Y/%m/%d')");
         if (empty($lastweekday)){
-            $lastwa=$lastsms=$lastweb=0;
+            $lastwa=$lastsms=$lastweb=$lasttele=0;
         } else {
             $lastwa=$lastweekday[0]['WA'];
             $lastsms=$lastweekday[0]['SMS'];
             $lastweb=$lastweekday[0]['WEB'];
+            $lasttele=$lastweekday[0]['TELE'];
         }
         if (empty($currentres)) {
-            $currwa=$currsms=$currweb=0;
+            $currwa=$currsms=$currweb=$currtele=0;
         } else {
             $currwa=$currentres[0]['WA'];
             $currsms=$currentres[0]['SMS'];
             $currweb=$currentres[0]['WEB'];
+            $currtele=$currentres[0]['TELE'];
         }
-        $currall=$currsms+$currwa+$currweb;
-        $lastall=$lastsms+$lastwa+$lastweb;
-        if ($lastall == 0){
-            $percentall=$currall*100;
+        $currtele=$currsms+$currwa+$currweb;
+        $lasttele=$lastsms+$lastwa+$lastweb;
+        if ($lasttele == 0){
+            $percenttele=$currtele*100;
         } else {
-            $percentall=round((($currall-$lastall)/$lastall)*100,2);
+            $percenttele=round((($currtele-$lasttele)/$lasttele)*100,2);
         }
         if ($lastwa == 0){
             $percentwa=$currwa*100;
@@ -101,10 +103,11 @@ class Admin extends CI_Controller
         $data['content']['jmlwa']=$currwa;
         $data['content']['jmlsms']=$currsms;
         $data['content']['jmlweb']=$currweb;
+        $data['content']['jmltele']=$currtele;
         $data['content']['percentsms']=$percentsms;
         $data['content']['percentwa']=$percentwa;
         $data['content']['percentweb']=$percentweb;
-        $data['content']['percentall']=$percentall;
+        $data['content']['percenttele']=$percenttele;
         $data['page']='admin/dasboard';
         $data['content']['action']='';
         $this->load->view('admin/main', $data);
