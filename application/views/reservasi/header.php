@@ -31,6 +31,8 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   
+  <link rel="manifest" href="<?=base_url('assets/dist/js/manifest.json');?>">
+  
   <!-- jQuery 3 -->
 <script src="<?=base_url('assets/bower_components/jquery/dist/jquery.min.js');?>"></script>
 <!-- jQuery UI 1.11.4 -->
