@@ -1,2 +1,5 @@
 telebot
-- cek data pasien sebelum reservasi, pastikan 1 id telegram 1 reservasi
+v cek data pasien sebelum reservasi, pastikan 1 id telegram 1 reservasi
+-
+-
+-

@@ -141,7 +141,9 @@ class Telebot extends CI_Controller
             $text = $this->showres();        
         } else if($text || $datPas){
             if (!$text){
-                $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n";
+                $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
+                . "ID Telegram anda sudah terdaftar di Bot Reservasi RSOS, "
+                . "lanjutkan langkah berikutnya!";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 
                 $text="Pilih jenis jaminan / cara bayar :";
