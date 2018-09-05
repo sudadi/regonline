@@ -69,10 +69,6 @@
             </div>
         </div>
       </div>
-      <?php 
-        echo form_hidden('norm', $norm);
-        echo form_hidden('tgllahir', $tgllahir);
-      ?>
       <!-- /.box-body -->
       <div class="box-footer">
           <div class="col-sm-12 col-md-6">

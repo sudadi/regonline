@@ -13,15 +13,13 @@ class Reservasi extends CI_Controller {
             $norm = $this->input->post('norm');
             $tgllahir = $this->input->post('tgllahir');
             $this->cekvalpas($norm,$tgllahir);
-            if ($this->session->userdata('status')=='0'){
+            if ($this->session->userdata('status')=='1'){
                 redirect('reservasi/step2');
-            }else if ($this->session->userdata('status')=='1'){
-                
             }
         }
         $this->session->sess_destroy();
         $data['page'] = 'reservasi/step1';
-        $data['action'] = site_url('reservasi');
+        $data['action'] = site_url('reservasi/index');
         $data['content']='';
         $this->load->view('reservasi/main', $data);
     }
@@ -33,27 +31,53 @@ class Reservasi extends CI_Controller {
             $this->session->set_userdata('namapas', $datapas->nama);
             $this->session->set_userdata('alamat', $datapas->alamat);
             $this->session->set_userdata('notelp', $datapas->notelp);
-            $dataresv = $this->mod_reservasi->cekreserv($norm, '1');
+            $dataresv = $this->mod_reservasi->cekreserv($norm, '1'); //cek data reservasi yg aktif
             if ($dataresv) {
                 $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
-                $this->session->set_userdata('status', '1');
-                $dataklinik=$this->mod_reservasi->getklinikbyid($dataresv->id_klinik);
-                $this->session->set_userdata('nmklinik',$dataklinik->nama_klinik);
+                $this->session->set_userdata('status', '3');
+                $dataklinik=$this->mod_reservasi->getklinik("id_klinik={$dataresv->id_klinik}");
+                $this->session->set_userdata('nmklinik',$dataklinik[0]->nama_klinik);
                 redirect ('reservasi/finish/'.$dataresv->id_rsv);
             } else {
                 $this->session->set_flashdata('success', 'Data valid');
-                $this->session->set_userdata('status', '0');
+                $this->session->set_userdata('status', '1');
             }
         } else {
             $this->session->set_flashdata('error', 'Data pasien tidak ditemukan');
-            //$this->session->set_userdata('status', '0');
+            redirect('reservasi');
         }
     }
     public function step2 () {
-        if ($this->session->userdata('status')=='0') {
-            //$this->mod_reservasi->
+        if ($this->session->userdata('status')=='1' || $this->session->userdata('status')=='2') {
+            if ($this->input->post() && $this->session->userdata('status')=='1'){
+                $jnsjaminan= $this->mod_reservasi->getjnspasien($this->input->post('jnsjaminan'));
+                $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
+                $klinik= $this->mod_reservasi->getklinik("id_klinik={$this->input->post('poliklinik')}");
+                $datatgl= explode("|",$this->input->post('tglcekin'));
+                $this->session->set_userdata('idjadwal', $datatgl[0]);
+                $this->session->set_userdata('tglcekin', $datatgl[1]);
+                $this->session->set_userdata('waktursv', date('Y/m/d H:i:s', strtotime($datatgl[1].' '.$this->input->post('jamcekin'))));
+                $this->session->set_userdata('jamcekin', $this->input->post('jamcekin'));
+                $this->session->set_userdata('iddokter', $dokter->id_dokter);
+                $this->session->set_userdata('nmdokter', $dokter->nama_dokter);
+                $this->session->set_userdata('idklinik', $klinik[0]->id_klinik);
+                $this->session->set_userdata('nmklinik', $klinik[0]->nama_klinik);
+                $this->session->set_userdata('kdpoli', $klinik[0]->kode_poli);
+                $this->session->set_userdata('idjaminan', $jnsjaminan->id_jaminan);
+                $this->session->set_userdata('jnsjaminan', $jnsjaminan->nama_jaminan);
+                $this->session->set_userdata('jnslayan', $this->input->post('jnslayan'));
+                $this->session->set_userdata('layanan', [1=>'Reguler','Eksekutif'][$this->input->post('jnslayan')]);
+//                if($this->input->post('jnslayan')==1) {
+//                    $this->session->set_userdata('layanan', "Reguler");
+//                } else {
+//                    $this->session->set_userdata('layanan', "Eksekutif");
+//                }
+                $this->session->set_userdata('status','2');
+                redirect('reservasi/step3', 'refresh');
+            }
+            $this->session->set_userdata('status','1');
             $data['page'] = 'reservasi/step2';
-            $data['action'] = site_url('reservasi/step3');
+            $data['action'] = site_url('reservasi/step2');
             $data['content']['norm']=$this->session->userdata('norm');
             $data['content']['tgllahir']=$this->session->userdata('tgllahir');
             $data['content']['namapas']=$this->session->userdata('namapas');
@@ -72,7 +96,7 @@ class Reservasi extends CI_Controller {
         echo json_encode($data); 
     }    
     public function ajax_klinik($iddokter, $jenis) {
-        $data = $this->mod_reservasi->getklinik($iddokter, $jenis);
+        $data = $this->mod_reservasi->getklinik("jns_layan_id ={$jenis}");
         echo json_encode($data); 
     }
     
@@ -142,79 +166,54 @@ class Reservasi extends CI_Controller {
 //         echo json_encode($kuotaperjam);
 //    }
     public function step3() {
-        if ($this->input->post()){   
-            $norm = $this->input->post('norm');
-            $tgllahir = $this->input->post('tgllahir');
-            $this->cekvalpas($norm, $tgllahir);
-            if ($this->session->userdata('status')=='0') {
-                $jnsjaminan= $this->mod_reservasi->getjnspasien($this->input->post('jnsjaminan'));
-                $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
-                $klinik= $this->mod_reservasi->getklinikbyid($this->input->post('poliklinik'));
-                $datatgl= explode("|",$this->input->post('tglcekin'));
-                $data['content']['idjadwal']= $datatgl[0];
-                $data['content']['tglcekin']= $datatgl[1];
-                $data['content']['jamcekin']= $this->input->post('jamcekin');
-                $data['content']['iddokter']= $this->input->post('dokter');
-                $data['content']['nmdokter']= $dokter->nama_dokter;
-                $data['content']['idklinik']= $this->input->post('poliklinik');
-                $data['content']['nmklinik']= $klinik->nama_klinik;
-                $data['content']['idjaminan']= $this->input->post('jnsjaminan');
-                $data['content']['jnsjaminan']= $jnsjaminan->nama_jaminan;
-                $data['content']['jnslayan']= $this->input->post('jnslayan');
-                if($this->input->post('jnslayan')==1) {
-                    $data['content']['layanan']= "Reguler";
-                } else {
-                    $data['content']['layanan']= "Eksekutif";
-                }
-                $data['content']['waktureserv']= date('Y/m/d H:i:s', strtotime($datatgl[1].' '.$this->input->post('jamcekin')));
-                $data['content']['norm']= $this->session->userdata('norm');
-                $data['content']['namapas']=$this->session->userdata('namapas');
-                $data['content']['tgllahir']=$this->session->userdata('tgllahir');
-                $data['content']['alamat']=$this->session->userdata('alamat');
-                $data['content']['notelp']=$this->session->userdata('notelp');
-                $data['page'] = 'reservasi/step3';
-                $data['action'] = site_url('reservasi/simpan');
-                $this->load->view('reservasi/main', $data);
-            }else {
-                redirect('reservasi');
-            }
-        } else {
-            redirect('reservasi');
-        }
-    }
-    public function simpan() {
-        if ($this->input->post() && $this->session->userdata('status')=='0'){
-            $waktursv=date('Y/m/d H:i:s', strtotime($this->input->post('tglcekin').$this->input->post('jamcekin')));
-            $idklinik=$this->input->post('idklinik');
-            $nmklinik=$this->input->post('nmklinik');
-            $dataklinik= $this->mod_reservasi->getklinikbyid($idklinik);
-            $kodeklinik=$dataklinik->kode_poli;
-            $norm= $this->input->post('norm');
-            $datares= array('norm'=>$norm,
-                'waktu_rsv'=>$waktursv,'jadwal_id'=>$this->input->post('idjadwal'),
-                'jns_jaminan_id'=>$this->input->post('idjaminan'),
+        if ($this->session->userdata('status')=='2') {
+            if ($this->input->post()){
+                $waktursv=$this->session->userdata('waktursv');
+                $idklinik=$this->session->userdata('idklinik');
+                $kdpoli=$this->session->userdata('kdpoli');
+                $norm= $this->session->userdata('norm');
+                $datares= array('norm'=>$norm,
+                'waktu_rsv'=>$waktursv,'jadwal_id'=>$this->session->userdata('idjadwal'),
+                'jns_jaminan_id'=>$this->session->userdata('idjaminan'),
                 'sebab_id'=>$this->input->post('sebab'),
                 'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'WEB');
-            $this->db->insert('res_treservasi', $datares);
-            if ($this->db->affected_rows()>0){
-                $idres=$this->db->insert_id();
-                $nores=$kodeklinik.'-'.$idres;
-                $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
-                $this->db->update('res_tpasien', array('notelp'=>$this->input->post('notelp')), 'norm='.$norm);
-                $this->session->set_userdata('nmklinik',$nmklinik);
-                $this->load->model('mod_sms');
-                $this->mod_sms->sendkonfirm($idres);
-                $this->session->set_userdata('status', '1');
-                $this->session->set_flashdata('success', 'Reservasi berhasil, data sudah tersimpan');
+                $idres=$this->mod_reservasi->saveres($datares,$kdpoli);
+                if ($idres) {
+                    $this->load->model('mod_sms');
+                    $this->mod_sms->sendkonfirm($idres);
+                    $this->session->set_userdata('status', '3');
+                    $this->session->set_flashdata('success', 'Reservasi berhasil, data sudah tersimpan');
                 redirect('reservasi/finish/'.$idres);
-            } else {
-                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
-            }                
+                } else {
+                    $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+                }             
+            }
+            $data['content']['idjadwal']= $this->session->userdata('idjadwal');
+            $data['content']['tglcekin']= $this->session->userdata('tglcekin');
+            $data['content']['jamcekin']= $this->session->userdata('jamcekin');
+            $data['content']['iddokter']= $this->session->userdata('iddokter');
+            $data['content']['nmdokter']= $this->session->userdata('nmdokter');
+            $data['content']['idklinik']= $this->session->userdata('idklinik');
+            $data['content']['nmklinik']= $this->session->userdata('nmklinik');
+            $data['content']['idjaminan']= $this->session->userdata('idjaminan');
+            $data['content']['jnsjaminan']= $this->session->userdata('jnsjaminan');
+            $data['content']['jnslayan']= $this->session->userdata('jnslayan');
+            $data['content']['layanan']= $this->session->userdata('layanan');
+            $data['content']['waktursv']= $this->session->userdata('waktursv');
+            $data['content']['norm']= $this->session->userdata('norm');
+            $data['content']['namapas']=$this->session->userdata('namapas');
+            $data['content']['tgllahir']=$this->session->userdata('tgllahir');
+            $data['content']['alamat']=$this->session->userdata('alamat');
+            $data['content']['notelp']=$this->session->userdata('notelp');
+            $data['page'] = 'reservasi/step3';
+            $data['action'] = site_url('reservasi/step3');
+            $this->load->view('reservasi/main', $data);
+        }else {
             redirect('reservasi');
         }
     }
     public function finish($idres) {
-        if ($this->session->userdata('status')=='1'){
+        if ($this->session->userdata('status')=='3'){
             $datares= $this->mod_reservasi->getreserv($idres);
             $data['page'] = 'reservasi/finish';
             $data['action'] = site_url('reservasi');

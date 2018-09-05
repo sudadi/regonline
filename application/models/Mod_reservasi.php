@@ -29,21 +29,14 @@
         $qry= $this->db->get_where('res_refdokter',"id_dokter = $iddokter");
         return $qry->row();
     }
-    function getklinik($iddokter,$jenis) {
-        $this->db->select('res_refklinik.id_klinik, res_refklinik.nama_klinik');
+    function getklinik($where) {
+        $this->db->select('res_refklinik.id_klinik, res_refklinik.nama_klinik, res_refklinik.kode_poli');
         $this->db->from('res_refklinik');
         $this->db->join('res_jadwal', 'res_refklinik.id_klinik=res_jadwal.klinik_id');
-        if ($iddokter){
-            $this->db->where('dokter_id', $iddokter);
-        }
-        $this->db->where("(jns_layan_id =$jenis)");
+        $this->db->where("{$where}");
         $this->db->group_by('res_refklinik.id_klinik');
         $res = $this->db->get();
         return $res->result();
-    }  
-    function getklinikbyid($idklinik) {
-        $this->db->where('id_klinik',$idklinik);
-        return $this->db->get('res_refklinik')->row();
     }
     function getkuotaklinik($klinik) {
         $this->db->select('kuota');
@@ -136,6 +129,20 @@
     }
     function getantrian($idklinik, $tglres) {
         $this->db->select();
+    }
+    function saveres($datares, $kdpoli) {
+        $this->db->insert('res_treservasi', $datares);
+        if ($this->db->affected_rows()>0){
+            $idres=$this->db->insert_id();
+            $nores=$kdpoli.'-'.$idres;
+            $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+            if ($datares['jenis_rsv'] !== 'TG'){
+                $this->db->update('res_tpasien', array('notelp'=>$datares['identity']), 'norm='.$datares['norm']);
+            }
+            return $idres;
+        } else {
+            return false;
+        }
     }
     function getresfull($where) {
         return $this->db->get_where('vreservasi', $where)->result();

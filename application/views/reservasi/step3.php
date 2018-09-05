@@ -49,9 +49,13 @@
         </div>
         <!-- /.box-body -->
       <div class="box-footer">
-          <div class="col-sm-12 col-md-6">
-              <button type="button" name="back" id="back" class="btn btn-warning">Kembali</button>
-                &nbsp;&nbsp;<button type="submit" name="reserv" id="reserv" class="btn btn-info pull-right">Reservasi</button>
+          <div class="form-group">
+              <div class="col-md-2 col-md-offset-2">
+                  <button type="button" name="back" id="back" class="btn btn-warning"><i class="fa fa-reply"></i> Kembali</button>
+              </div>
+              <div class="col-md-2">
+                  <button type="submit" name="reserv" id="reserv" class="btn btn-info pull-right"><i class="fa fa-send-o"></i> Reservasi</button>
+              </div>
           </div>
       </div>
       <!-- /.box-footer -->
@@ -104,8 +108,9 @@ echo form_close();
 ?>
 <script type="text/javascript">
     $('#back').click(function(){
-        $('form[name=formstep3]').attr('action','<?php echo site_url("reservasi/step2");?>');
-        //$('form[name=formstep3]').submit();
+        window.location = "<?=base_url('reservasi/step2');?>";
+//        $('form[name=formstep3]').attr('action','<?php echo site_url("reservasi/step2");?>');
+//        $('form[name=formstep3]').submit();
     });
 
     function Validasi(){
