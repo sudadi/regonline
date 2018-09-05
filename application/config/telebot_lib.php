@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-$config['token'] = '576276030:AAHIAYznyZnqj3QMj8l3c0nYcYCqlkj0h1o';
+$config['token'] = '683372455:AAHDR3ycHS2rEUZrpd_NwYa56lBoWyY3d9c';
 $config['debug'] = true;
 
-$config['chatid'] = '576276030';
+$config['chatid'] = '683372455';

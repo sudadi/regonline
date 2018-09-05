@@ -157,7 +157,28 @@
                 {
                     alert('Error : Masukkan data secara urut..!');
                 }
-            }); 
+            });
+            if(jenis==1){
+                var tglcekin=$('#tglcekin'); 
+                $.ajax({
+                    url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data)
+                    {
+                        tglcekin.empty();
+                        tglcekin.append('<option value="">-Pilih Tanggal-</option>');
+                        for (var i = 0; i < data.length; i++) {
+                            tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+')</option>');
+                        console.log(data[i].idjadwal);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert('Error : Masukkan data secara urut..!');
+                    }    
+                });
+            }
         }
     });
     

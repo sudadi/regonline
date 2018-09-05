@@ -187,7 +187,7 @@ class Telebot extends CI_Controller
         $pesan = explode('|', $pesan);
         if ($pesan && ($text || $this->mod_telebot->updteleres($chatid,array('jnslayan_id'=>(int)$pesan[1],'status'=>'klinik')))){
             if (!$text) $text = "Pilih Poliklinik tujuan :";
-            $inkeyboard = $this->keyklinik(FALSE, 1);        
+            $inkeyboard = $this->keyklinik(FALSE, (int)$pesan[1]);        
         } else {
             $text = $this->erropt[rand(0,5)]."Pilih jenis layanan berikut :";
             list($text, $inkeyboard)= $this->casejaminan($chatid, 'Jaminan :|'.$this->dataResTele->jaminan_id, $text);
@@ -223,10 +223,11 @@ class Telebot extends CI_Controller
     private function casedokter($chatid, $pesan, $text=null) {
         $pesan = explode('|', $pesan);
         $klinik=$this->dataResTele->klinik_id;
-        if ($pesan) $jadwal=$this->mod_reservasi->getjadwal($klinik,$pesan[1],$jnslayan);
+        $jnslayan = $this->dataResTele->jnslayan_id;
+        if ($pesan) {$jadwal=$this->mod_reservasi->getjadwal($klinik,$pesan[1],$jnslayan);}
         if ($jadwal && ($text || $this->mod_telebot->updteleres($chatid,array('dokter_id'=>(int)$pesan[1],'status'=>'tglres')))){
-            if ($text || $this->mod_telebot->updteleres($chatid,array('klinik_id'=>(int)$pesan[1],'status'=>'tglres'))){
-                $tgls=$this->mod_reservasi->cekjadawal($pesan[1], $iddokter, $jnslayan);
+            
+                $tgls=$this->mod_reservasi->cekjadawal($klinik, $pesan[1], $jnslayan);
                 $i=0;
                 foreach ($tgls as $key=>$tgl) {
                     $pilihan[$i][]=['text'=>$tgl['hari']." ".$tgl['jadwaltgl'],'callback_data'=>"Tanggal : *".$tgl['hari']." ".$tgl['jadwaltgl']."*|".$tgl['jadwaltgl']."|".$tgl['idjadwal']];
@@ -234,7 +235,7 @@ class Telebot extends CI_Controller
                 }
                 if(!$text) $text="Siliahkan pilih tanggal Reservasi :";
                 $inkeyboard = $pilihan;
-            }
+            
         } else {
             $text = $this->erropt[rand(0,5)]."Pilih Dokter berikut :";
             list($text, $inkeyboard)= $this->caseklinik($chatid, "Klinik|".$this->dataResTele->klinik_id, $text);
