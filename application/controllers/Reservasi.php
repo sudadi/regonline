@@ -87,14 +87,10 @@ class Reservasi extends CI_Controller {
         }
     }
 
-    public function ajax_getdokter($jenis) {
-        $data = $this->mod_reservasi->getdokter($jenis);
+    public function ajax_getdokter($jenis, $klinik) {
+        $data = $this->mod_reservasi->getdokter("jns_layan_id={$jenis} and klinik_id={$klinik}");
         echo json_encode($data);
-    }
-    public function ajax_dokterbytgl($klinik,$jenis,$dow) {
-        $data = $this->mod_reservasi->getdokterbytgl($klinik,$jenis,$dow);
-        echo json_encode($data); 
-    }    
+    }   
     public function ajax_klinik($iddokter, $jenis) {
         $data = $this->mod_reservasi->getklinik("jns_layan_id ={$jenis}");
         echo json_encode($data); 

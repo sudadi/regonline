@@ -12,19 +12,15 @@
         $qry = $this->db->get_where("res_treservasi", "res_treservasi.norm ={$norm} and res_treservasi.status={$status}");
         if ($qry->num_rows() > 0) return $qry->row(); 
     }	
-    function getdokter($jenis) {
-        $this->db->select('res_refdokter.id_dokter, res_refdokter.nama_dokter');
+    function getdokter($where) {
+        $this->db->select('res_refdokter.id_dokter, res_refdokter.nama_dokter, res_jadwal.klinik_id');
         $this->db->from('res_refdokter');
         $this->db->join('res_jadwal','res_refdokter.id_dokter=res_jadwal.dokter_id');
         $this->db->group_by('res_jadwal.dokter_id');
-        $this->db->where('jns_layan_id', $jenis);
+        $this->db->where("{$where}");
         $qry = $this->db->get();
         return $qry->result();
-    }    
-    function getdokterbytgl($klinik,$jenis,$dow){
-        $res = $this->db->get_where('res_jadwal',"klinik_id=$klinik and jns_layan_id=$jenis and id_hari=$dow");
-        return $res->row(); 
-    }
+    } 
     function getdokterbyid($iddokter) {
         $qry= $this->db->get_where('res_refdokter',"id_dokter = $iddokter");
         return $qry->row();
