@@ -467,7 +467,7 @@ class Telebot extends CI_Controller
                             break;
                     }
                 } else if (explode ('|', $pesan)[1]=='!video'){
-                    $video = "BAADBQADkAADuhiIVJwC6GXSEphdAg";
+                    $video = "BAADBQADPwADJcKQVIEW4NdIZ-kkAg";
                     $this->telebot_lib->sendApiVideo($chatid, $video);
                 } else { 
                     $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";                    
