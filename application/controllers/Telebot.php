@@ -270,7 +270,7 @@ class Telebot extends CI_Controller
         $cekinjam = array_search($pesan[1], array_column($jams, 'idjam'));
         //var_dump($jams);
         if (($cekinjam || $cekinjam===0) && ($this->mod_telebot->updteleres($chatid,array('jam_id'=>$pesan[1],'status'=>'Sukses')))){
-            if ($this->mod_telebot->saveres($chatid)){
+            if ($this->mod_telebot->saveresbot($chatid)){
                 $text="*Selamat Reservasi Anda Berhasil!*";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 $text = $this->showres();

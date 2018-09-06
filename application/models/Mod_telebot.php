@@ -33,19 +33,18 @@ class Mod_telebot extends CI_Model {
         return $this->db->affected_rows();
     }
     
-    function saveres($chatid) {
+    function saveresbot($chatid) {
         $dataTele= $this->getrowteleres("fromid=$chatid");
+        $kdpoli= $this->db->get_where('res_refklinik', "id_klinik={$dataTele->kode_poli}")->row()->kode_poli;
         $datajam=$this->db->get_where('res_kuota', "id_kuota=$dataTele->jam_id")->row();
         $waktu=date('Y/m/d H:i:s', strtotime($dataTele->tgl_res.$datajam->jam));
         $datares= array('norm'=>$dataTele->norm,
                 'waktu_rsv'=>$waktu,'jadwal_id'=>$dataTele->jadwal_id,
                 'jns_jaminan_id'=>$dataTele->jaminan_id,
                 'sebab_id'=>9,
-                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'TELE');
-        if ($this->db->insert('res_treservasi', $datares)){
-            $idres=$this->db->insert_id();
-            $nores=$kodeklinik.'-'.$idres;
-            $this->db->update('res_treservasi', array('nores'=>$nores), "id_rsv = {$idres}");
+                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'TG');
+        if ($this->mod_reservasi->saveres($datares,$kdpoli)){
+            
             return TRUE;
         }
     }

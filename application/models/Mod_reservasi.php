@@ -73,6 +73,7 @@
         }
         $this->db->where('klinik_id', $klinik);
         $this->db->where('jns_layan_id', $jenis);
+        $this->db->where('status', 1);
         return $this->db->get('res_jadwal')->result_array();
     }
     function getkuotatgl($jadwaltgl,$klinik,$dokter) {
@@ -108,6 +109,7 @@
     }
     function getjadwalbyid($idjadwal) {
         $this->db->where('id_jadwal', $idjadwal);
+        $this->db->where('status', 1);
         return $this->db->get('res_jadwal')->result_array();
     }
     function getjnspasien($idjenis) {
@@ -150,7 +152,7 @@
         return $this->db->get_where('res_treservasi', $where)->result();
     }
     function getgraphres($where) {
-        $this->db->select("sum(jenis_rsv='TELE')as'TELE',sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(first_update, '%m/%d') as tgl");
+        $this->db->select("sum(jenis_rsv='TG')as'TG',sum(jenis_rsv='WA')as'WA',sum(jenis_rsv='SMS')as'SMS',sum(jenis_rsv='WEB')as'WEB',DATE_FORMAT(first_update, '%m/%d') as tgl");
         $this->db->group_by('tgl');
         $this->db->order_by('tgl');
         return $this->db->get_where('res_treservasi',$where)->result_array();
