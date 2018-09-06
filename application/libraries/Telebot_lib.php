@@ -179,4 +179,13 @@ class Telebot_lib
 
         $result = $this->apiRequest($method, $data);
     }
+    
+    public function sendApiVideo($chatid, $video) {
+        $method = 'sendVideo';
+        $data = [
+            'chat_id'   => $chatid,
+            'video'     => $video,
+        ];
+        $result = $this->apiRequest($method, $data);
+    }
 }

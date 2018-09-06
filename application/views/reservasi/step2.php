@@ -86,34 +86,33 @@
             $(".jnslayan").fadeOut(800, function(){ 
                 $(".jnslayan").hide();
             });
-            $(".dokter").fadeOut(800, function(){ 
-                $(".dokter").hide();
-            });
-            
+//            $(".dokter").fadeOut(800, function(){ 
+//                $(".dokter").hide();
+//            });            
         } else {
             $(".jnslayan").fadeIn(800, function(){ 
                 $(".jnslayan").show();
             });
-            $('#jnslayan').val('');
-            $(".dokter").fadeIn(800, function(){ 
-                $(".dokter").show();
-            });
+//            $('#jnslayan').val('');
+//            $(".dokter").fadeIn(800, function(){ 
+//                $(".dokter").show();
+//            });
         }
     });
     $("#jnslayan").change(function(){
         var val=$(this).val();
         var dokter = $('#dokter');
         if (val != ''){            
-            if (val == 2) {  
-                $(".dokter").fadeIn(800, function(){ 
-                    $(".dokter").show();
-                });  
-            } else {
-                $('#dokter').val('');
-                $(".dokter").fadeOut(800, function(){ 
-                    $(".dokter").hide();
-                });
-            }
+//            if (val == 2) {  
+//                $(".dokter").fadeIn(800, function(){ 
+//                    $(".dokter").show();
+//                });  
+//            } else {
+//                $('#dokter').val('');
+//                $(".dokter").fadeOut(800, function(){ 
+//                    $(".dokter").hide();
+//                });
+//            }
             var klinik=$('#poliklinik');
             $.ajax({
                 url : "<?php echo site_url('reservasi/ajax_klinik/')?>0/" + val,
@@ -158,27 +157,27 @@
                     alert('Error : Masukkan data secara urut..!');
                 }
             });
-            if(jenis==1){
-                var tglcekin=$('#tglcekin'); 
-                $.ajax({
-                    url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
-                    type: "GET",
-                    dataType: "JSON",
-                    success: function(data)
-                    {
-                        tglcekin.empty();
-                        tglcekin.append('<option value="">-Pilih Tanggal-</option>');
-                        for (var i = 0; i < data.length; i++) {
-                            tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+')</option>');
-                        console.log(data[i].idjadwal);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
-                        alert('Error : Masukkan data secara urut..!');
-                    }    
-                });
-            }
+//            if(jenis==1){
+//                var tglcekin=$('#tglcekin'); 
+//                $.ajax({
+//                    url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
+//                    type: "GET",
+//                    dataType: "JSON",
+//                    success: function(data)
+//                    {
+//                        tglcekin.empty();
+//                        tglcekin.append('<option value="">-Pilih Tanggal-</option>');
+//                        for (var i = 0; i < data.length; i++) {
+//                            tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+')</option>');
+//                        console.log(data[i].idjadwal);
+//                        }
+//                    },
+//                    error: function (jqXHR, textStatus, errorThrown)
+//                    {
+//                        alert('Error : Masukkan data secara urut..!');
+//                    }    
+//                });
+//            }
         }
     });
     
@@ -187,11 +186,11 @@
         var jenis=$('#jnslayan').val();
         var tglcekin=$('#tglcekin'); 
         var klinik=$('#poliklinik').val();
-        if (jenis===1){
-            var url = "<?php echo site_url('reservasi/ajax_klinik/')?>0/"+jenis;
-        } else {
+//        if (jenis===1){
+//            var url = "<?php echo site_url('reservasi/ajax_klinik/')?>0/"+jenis;
+//        } else {
             var url ="<?php echo site_url('reservasi/ajax_klinik/')?>"+iddokter+"/"+jenis;
-        }
+//        }
         if (iddokter !== ''){
             $.ajax({
                 url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis,

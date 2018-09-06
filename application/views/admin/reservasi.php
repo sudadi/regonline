@@ -339,7 +339,7 @@
         var iddokter=$('#dokter').val();
         if (klinik !==''){
             $.ajax({
-                url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/0/"+jenis,
+                url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data)

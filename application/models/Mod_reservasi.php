@@ -18,6 +18,7 @@
         $this->db->join('res_jadwal','res_refdokter.id_dokter=res_jadwal.dokter_id');
         $this->db->group_by('res_jadwal.dokter_id');
         $this->db->where("{$where}");
+        $this->db->where("res_jadwal.status=1");
         $qry = $this->db->get();
         return $qry->result();
     } 

@@ -201,7 +201,7 @@ class Telebot extends CI_Controller
         $jnslayan=$this->dataResTele->jnslayan_id;
         if ($text || $this->mod_telebot->updteleres($chatid,array('klinik_id'=>(int)$pesan[1],'status'=>'dokter'))){
             if (!$text) $text = "Pilih dokter :";
-            $dokters = $this->mod_reservasi->getdokter("jns_layan_id={$jnslayan} and klinik_id={$pesan[1]}");
+            $dokters = $this->mod_reservasi->getdokter("jns_layan_id={$jnslayan} and klinik_id={$pesan[1]} and ");
             $i=0;
             foreach ($dokters as $key=>$dokter) {
                 if ($key && $key%2==0)$i++;
@@ -365,6 +365,23 @@ class Telebot extends CI_Controller
                 break;
             
             case $pesan=='/bantuan':
+                $text = "Bantuan tersedia :";
+                $inkeyboard = [
+                    [
+                        ['text' => 'Video Tutorial', 'callback_data' => 'Bantuan : Video turorial|videotutor'],                        
+                    ],
+                    [
+                        ['text' => 'Jadwal Dokter', 'callback_data' => 'Bantuan : Jadwal dokter|jadwal'],
+                    ]
+                ];    
+                break;
+            
+            case $pesan=='!video' :
+                $video = "BAADBQADkAADuhiIVJwC6GXSEphdAg";
+                $this->telebot_lib->sendApiVideo($chatid, $video);
+                break;
+            
+            case $pesan=='!jadwal' :
                 
                 break;
                 
@@ -449,7 +466,10 @@ class Telebot extends CI_Controller
                             $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";
                             break;
                     }
-                } else {
+                } else if (explode ('|', $pesan)[1]=='!video'){
+                    $video = "BAADBQADkAADuhiIVJwC6GXSEphdAg";
+                    $this->telebot_lib->sendApiVideo($chatid, $video);
+                } else { 
                     $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";                    
                 }
                 break;

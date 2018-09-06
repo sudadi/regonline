@@ -128,13 +128,13 @@ $(document).ready(function(){
             var SMS = [];
             var WA = [];
             var WEB = [];
-            var TELE = [];
+            var TG = [];
             for(var i in data) {
                 tgl.push(data[i].tgl);
                 SMS.push(data[i].SMS);
                 WA.push(data[i].WA);
                 WEB.push(data[i].WEB);
-                TELE.push(data[i].TELE);
+                TG.push(data[i].TG);
             }
             var chartdata = {
                 type: 'line',
@@ -148,7 +148,7 @@ $(document).ready(function(){
                         borderColor: "rgba(60, 141, 188, 0.6)",
                         pointHoverBackgroundColor: "rgba(60, 141, 188, 0.75)",
                         pointHoverBorderColor: "rgba(60, 141, 188, 0.75)",
-                        data: TELE
+                        data: TG
                       }, {
                         label: "WA",
                         fill: false,

@@ -68,7 +68,7 @@ class Admin extends CI_Controller
             $lastwa=$lastweekday[0]['WA'];
             $lastsms=$lastweekday[0]['SMS'];
             $lastweb=$lastweekday[0]['WEB'];
-            $lasttele=$lastweekday[0]['TELE'];
+            $lasttele=$lastweekday[0]['TG'];
         }
         if (empty($currentres)) {
             $currwa=$currsms=$currweb=$currtele=0;
@@ -76,10 +76,10 @@ class Admin extends CI_Controller
             $currwa=$currentres[0]['WA'];
             $currsms=$currentres[0]['SMS'];
             $currweb=$currentres[0]['WEB'];
-            $currtele=$currentres[0]['TELE'];
+            $currtele=$currentres[0]['TG'];
         }
-        $currtele=$currsms+$currwa+$currweb;
-        $lasttele=$lastsms+$lastwa+$lastweb;
+//        $currtele=$currsms+$currwa+$currweb;
+//        $lasttele=$lastsms+$lastwa+$lastweb;
         if ($lasttele == 0){
             $percenttele=$currtele*100;
         } else {
