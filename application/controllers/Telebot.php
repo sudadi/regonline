@@ -201,7 +201,7 @@ class Telebot extends CI_Controller
         $jnslayan=$this->dataResTele->jnslayan_id;
         if ($text || $this->mod_telebot->updteleres($chatid,array('klinik_id'=>(int)$pesan[1],'status'=>'dokter'))){
             if (!$text) $text = "Pilih dokter :";
-            $dokters = $this->mod_reservasi->getdokter("jns_layan_id={$jnslayan} and klinik_id={$pesan[1]} and ");
+            $dokters = $this->mod_reservasi->getdokter("jns_layan_id={$jnslayan} and klinik_id={$pesan[1]}");
             $i=0;
             foreach ($dokters as $key=>$dokter) {
                 if ($key && $key%2==0)$i++;
@@ -368,12 +368,13 @@ class Telebot extends CI_Controller
                 $text = "Bantuan tersedia :";
                 $inkeyboard = [
                     [
-                        ['text' => 'Video Tutorial', 'callback_data' => 'Bantuan : Video turorial|videotutor'],                        
+                        ['text' => 'Video Tutorial', 'callback_data' => 'Bantuan : Video turorial|!video'],                        
                     ],
                     [
                         ['text' => 'Jadwal Dokter', 'callback_data' => 'Bantuan : Jadwal dokter|jadwal'],
                     ]
                 ];    
+                $this->mod_telebot->updteleres($chatid, ['statmenu'=>'bantuan']);
                 break;
             
             case $pesan=='!video' :
