@@ -29,38 +29,40 @@
 <body class="hold-transition skin-yellow fixed sidebar-mini">
 <div class="wrapper">
 <?php 
-	$this->load->view('reservasi/navbar',$content); 
-	$this->load->view('reservasi/sidebar');
+    $this->load->view('reservasi/navbar',$content); 
+    $this->load->view('reservasi/sidebar');
 ?>  
-	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper">
-		<!-- Content Header (Page header) -->
-		<section class="content-header">
-			<h1>Reservasi<small>Pasien Rawat Jalan</small>			</h1>
-			<ol class="breadcrumb">
-				<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-				<li class="active">Reservasi</li>
-			</ol>
-		</section>
-		<!-- Main content -->
-		<section class="content">
-			<!-- Main row -->
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<?php $this->load->view($page, $content); ?>
-				</div>
-			</div>
-		<!-- /.row (main row) -->
-		</section>
-    <!-- /.content -->
-	</div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <?php if($contenthead){ ?>
+        <section class="content-header">
+            <h1>Reservasi<small>Pasien Rawat Jalan</small>			</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Reservasi</li>
+            </ol>
+        </section>
+        <?php }?>
+        <!-- Main content -->
+        <section class="content">
+            <!-- Main row -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                        <?php $this->load->view($page, $content); ?>
+                </div>
+            </div>
+        <!-- /.row (main row) -->
+        </section>
+<!-- /.content -->
+    </div>
 	<!-- /.content-wrapper -->
     <footer class="main-footer">
-		<div class="pull-right hidden-xs">
-			<b>Version</b> 0.1
-		</div>
-		<strong>Copyright &copy; 2018 <a href="https://rso.go.id">SIRS - RSO</a>.</strong> All rights reserved.
-	</footer>
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 0.1
+        </div>
+        <strong>Copyright &copy; 2018 <a href="https://rso.go.id">SIRS - RSO</a>.</strong> All rights reserved.
+    </footer>
 </div>
 <!-- ./wrapper -->
 <?php $this->load->view('reservasi/footer');?>

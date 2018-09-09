@@ -6,8 +6,16 @@ class Reservasi extends CI_Controller {
         parent::__construct();
         $this->load->model('mod_reservasi');
     }
+    public function index() {
+        $data['page'] = 'reservasi/informasi';
+        $data['contenthead'] = false;
+        $data['linkbc'] = '';
+        $data['action'] = site_url('reservasi');
+        $data['content']='';
+        $this->load->view('reservasi/main', $data);
+    }
 
-    public function index()
+    public function respas()
     {
         if ($this->input->post()) {
             $norm = $this->input->post('norm');
@@ -19,7 +27,9 @@ class Reservasi extends CI_Controller {
         }
         $this->session->sess_destroy();
         $data['page'] = 'reservasi/step1';
-        $data['action'] = site_url('reservasi/index');
+        $data['contenthead'] = true;
+        $data['linkbc'] = 'reservasi';
+        $data['action'] = site_url('reservasi/respas');
         $data['content']='';
         $this->load->view('reservasi/main', $data);
     }
@@ -77,6 +87,8 @@ class Reservasi extends CI_Controller {
             }
             $this->session->set_userdata('status','1');
             $data['page'] = 'reservasi/step2';
+            $data['contenthead'] = true;
+            $data['linkbc'] = 'reservasi';
             $data['action'] = site_url('reservasi/step2');
             $data['content']['norm']=$this->session->userdata('norm');
             $data['content']['tgllahir']=$this->session->userdata('tgllahir');
@@ -202,6 +214,8 @@ class Reservasi extends CI_Controller {
             $data['content']['alamat']=$this->session->userdata('alamat');
             $data['content']['notelp']=$this->session->userdata('notelp');
             $data['page'] = 'reservasi/step3';
+            $data['contenthead'] = true;
+            $data['linkbc'] = 'reservasi';
             $data['action'] = site_url('reservasi/step3');
             $this->load->view('reservasi/main', $data);
         }else {
@@ -212,6 +226,8 @@ class Reservasi extends CI_Controller {
         if ($this->session->userdata('status')=='3'){
             $datares= $this->mod_reservasi->getreserv($idres);
             $data['page'] = 'reservasi/finish';
+            $data['contenthead'] = true;
+            $data['linkbc'] = 'reservasi';
             $data['action'] = site_url('reservasi');
             $data['content']['norm']= $this->session->userdata('norm');
             $data['content']['namapas']=$this->session->userdata('namapas');
@@ -223,20 +239,18 @@ class Reservasi extends CI_Controller {
             redirect('reservasi');
         }
     }
-    public function info() {
-        $data['page'] = 'reservasi/informasi';
-        $data['action'] = site_url('reservasi');
-        $data['content']='';
-        $this->load->view('reservasi/main', $data);
-    }
     public function help() {
         $data['page'] = 'reservasi/help';
+        $data['contenthead'] = true;
+        $data['linkbc'] = 'help';
         $data['action'] = site_url('reservasi');
         $data['content']='';
         $this->load->view('reservasi/main', $data);
     }
     public function ketentuan() {
         $data['page'] = 'reservasi/ketentuan';
+        $data['contenthead'] = true;
+        $data['linkbc'] = 'ketentuan';
         $data['action'] = site_url('reservasi');
         $data['content']='';
         $this->load->view('reservasi/main', $data);

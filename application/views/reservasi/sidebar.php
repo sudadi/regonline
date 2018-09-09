@@ -6,14 +6,14 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li>
-          <a href="<?=base_url('reservasi');?>">
-            <i class="fa fa-dashboard"></i> <span>Reservasi</span>
+          <a href="<?=base_url('reservasi/index');?>">
+            <i class="fa fa-dashboard"></i>
+            <span>Beranda</span>
           </a>
         </li>
         <li>
-          <a href="<?=base_url('reservasi/info');?>">
-            <i class="fa fa-info-circle"></i>
-            <span>Info Ortopedi</span>
+          <a href="<?=base_url('reservasi/respas');?>">
+            <i class="fa fa-calendar-times-o"></i> <span>Reservasi</span>
           </a>
         </li>
 		<li>

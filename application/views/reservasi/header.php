@@ -33,6 +33,11 @@
   
   <link rel="manifest" href="<?=base_url('assets/dist/js/manifest.json');?>">
   
+  <!-- favicon -->
+    <link rel="icon" type="image/png" sizes="192x192"  href="<?=base_url('assets/dist/img/android-icon-192x192.png');?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?=base_url('assets/dist/img/favicon-32x32.png');?>">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?=base_url('assets/dist/img/favicon-96x96.png');?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?=base_url('assets/dist/img/favicon-16x16.png');?>">
   <!-- jQuery 3 -->
 <script src="<?=base_url('assets/bower_components/jquery/dist/jquery.min.js');?>"></script>
 <!-- jQuery UI 1.11.4 -->
