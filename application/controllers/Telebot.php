@@ -378,7 +378,7 @@ class Telebot extends CI_Controller
                 break;
             
             case $pesan=='!video' :
-                $video = "BAADBQADkAADuhiIVJwC6GXSEphdAg";
+                $video = "BAADBQADUQADhG6wVJCVSqDEihL-Ag";
                 $this->telebot_lib->sendApiVideo($chatid, $video);
                 break;
             
@@ -468,7 +468,7 @@ class Telebot extends CI_Controller
                             break;
                     }
                 } else if (explode ('|', $pesan)[1]=='!video'){
-                    $video = "BAADBQADPwADJcKQVIEW4NdIZ-kkAg";
+                    $video = "BAADBQADUQADhG6wVJCVSqDEihL-Ag";
                     $this->telebot_lib->sendApiVideo($chatid, $video);
                 } else { 
                     $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";                    
