@@ -50,10 +50,10 @@
         <!-- /.box-body -->
       <div class="box-footer">
           <div class="form-group">
-              <div class="col-md-2 col-md-offset-2">
+              <div class="col-xs-6 col-sm-2 col-sm-offset-2">
                   <button type="button" name="back" id="back" class="btn btn-warning"><i class="fa fa-reply"></i> Kembali</button>
               </div>
-              <div class="col-md-2">
+              <div class="col-xs-6 col-sm-2">
                   <button type="submit" name="reserv" id="reserv" class="btn btn-info pull-right"><i class="fa fa-send-o"></i> Reservasi</button>
               </div>
           </div>
