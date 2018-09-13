@@ -39,7 +39,9 @@
     <link rel="icon" type="image/png" sizes="96x96" href="<?=base_url('assets/dist/img/favicon-96x96.png');?>">
     <link rel="icon" type="image/png" sizes="16x16" href="<?=base_url('assets/dist/img/favicon-16x16.png');?>">
   <!-- jQuery 3 -->
-<script src="<?=base_url('assets/bower_components/jquery/dist/jquery.min.js');?>"></script>
+<!--<script src="<?=base_url('assets/bower_components/jquery/dist/jquery.min.js');?>"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="<?=base_url('assets/bower_components/jquery-ui/jquery-ui.min.js');?>"></script>
+<!-- <script src="<?=base_url('assets/bower_components/jquery-ui/jquery-ui.min.js');?>"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>

@@ -77,8 +77,11 @@
       </div>
       <!-- /.box-footer -->
     </form>
+    <div id="spinner" class="overlay" style="display:none;">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
 </div>
-<script>
+<script>    
     $("#jnsjaminan").change(function() {
         var jnsjaminan=$(this).val();
         if (jnsjaminan==5){ //jika bpjs
@@ -114,6 +117,7 @@
 //                });
 //            }
             var klinik=$('#poliklinik');
+            $("#spinner").show();
             $.ajax({
                 url : "<?php echo site_url('reservasi/ajax_klinik/')?>0/" + val,
                 type: "GET",
@@ -125,9 +129,11 @@
                     for (var i = 0; i < data.length; i++) {
                         klinik.append('<option value='+data[i].id_klinik+'>'+data[i].nama_klinik+'</option>');
                     }
+                    $("#spinner").hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
+                    $("#spinner").hide();
                     alert('Error : Masukkan data secara urut..!');
                 }
             });
@@ -139,6 +145,7 @@
         var jenis=$('#jnslayan').val();
         var dokter = $('#dokter');
         if (klinik !==''){
+                $("#spinner").show();
             $.ajax({
                 url : "<?php echo site_url('reservasi/ajax_getdokter/')?>"+jenis+"/"+klinik,
                 type: "GET",
@@ -150,10 +157,12 @@
                     for (var i = 0; i < data.length; i++) {
                         dokter.append('<option value="' + data[i].id_dokter + '">' + data[i].nama_dokter + '</option>');
                     }
+                    $("#spinner").hide();
                     //dokter.change();
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
+                    $("#spinner").hide();
                     alert('Error : Masukkan data secara urut..!');
                 }
             });
@@ -192,6 +201,7 @@
             var url ="<?php echo site_url('reservasi/ajax_klinik/')?>"+iddokter+"/"+jenis;
 //        }
         if (iddokter !== ''){
+            $("#spinner").show();
             $.ajax({
                 url : url = "<?php echo site_url('reservasi/ajax_jadwal/')?>"+klinik+"/"+iddokter+"/"+jenis,
                 type: "GET",
@@ -204,9 +214,11 @@
                         tglcekin.append('<option value="'+data[i].idjadwal+'|'+data[i].jadwaltgl+'">'+data[i].hari+', &nbsp;&nbsp;'+data[i].jadwaltgl+'</option>');
                     console.log(data[i].idjadwal);
                     }
+                    $("#spinner").hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
+                    $("#spinner").hide();
                     alert('Error : Masukkan data secara urut..!');
                 }    
             });
@@ -220,6 +232,7 @@
         var jamcekin=$("#jamcekin");
         var url = "<?php echo site_url('reservasi/ajax_jamcekin/')?>"+cekin[0]+"/"+cekin[1];
         console.log(url);
+        $("#spinner").show();
         $.ajax({
             url : url,
             type: "GET",
@@ -231,9 +244,11 @@
                     $('#dokter').val(data[i].iddokter);
                     jamcekin.append('<option value="'+data[i].jam+'">'+data[i].jam+'&nbsp;&nbsp;&nbsp;&nbsp;(kuota :'+data[i].sisa+')</option>');
                 }
+                $("#spinner").hide();
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
+                $("#spinner").hide();
                 alert('Error : Masukkan data secara urut..!');
             } 
         });       
