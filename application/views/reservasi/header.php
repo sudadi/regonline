@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="<?=base_url('assets/dist/img/favicon-32x32.png');?>">
     <link rel="icon" type="image/png" sizes="96x96" href="<?=base_url('assets/dist/img/favicon-96x96.png');?>">
     <link rel="icon" type="image/png" sizes="16x16" href="<?=base_url('assets/dist/img/favicon-16x16.png');?>">
-    <!-- jQuery 3 -->
+    <!-- jQuery 2.2.4 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" />
