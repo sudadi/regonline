@@ -18,7 +18,7 @@
 	<ul class="nav navbar-nav">         
             <?php if (isset($namapas)) { ?>
             <li class="nav-item">
-            <a class="nav-link"><b>Welcome, <?=$namapas." ( ".$norm;?> )</b></a>
+                <a class="nav-link"><b><?=explode(' ', $namapas)[0]." (".$norm;?>)</b></a>
             </li>
             <?php }  ?>
 	  <!-- User Account: style can be found in dropdown.less -->
