@@ -11,7 +11,7 @@
         <h3 class="box-title">Informasi <small></small></h3>
     </div>
     <div class="box-body">
-    
+        
     </div>
     <div class="box-footer">
 <!--        <div class="col-sm-12 col-md-6">

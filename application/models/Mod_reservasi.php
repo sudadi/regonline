@@ -50,13 +50,13 @@
         for($i=0; $i < count($dtjadwal); $i++){
             $hari = date('l', strtotime("Sunday +{$dtjadwal[$i]['id_hari']} days"));
             $startdate = strtotime($hari);
-            $enddate = strtotime("+8 day", $startdate);
+            $enddate = strtotime("+8 days", time());
             while ($startdate < $enddate) {
                 $newdate = date("Y-m-d", $startdate); 
                 $tglcek = array_search($newdate, array_column($dtlibur, 'tanggal'));
                 $inihari = new DateTime();
                 $newdate = new DateTime($newdate);
-                if ($tglcek || $tglcek ===0 || ($newdate->diff($inihari)->format("%a") < 2))  {
+                if ($tglcek || $tglcek ===0 || ($newdate->diff($inihari)->format("%a") < 1))  {
                       //nothing  or skip        
                 } else {
                     $jadwal[]=array('jadwaltgl'=>date("Y-m-d", $startdate), 'hari'=>$hari_ID[date("N", $startdate)], 
@@ -157,5 +157,8 @@
         $this->db->group_by('tgl');
         $this->db->order_by('tgl');
         return $this->db->get_where('res_treservasi',$where)->result_array();
+    }
+    function getinfo($where) {
+        return $this->db->get_where('res_tinfo', $where)->result();
     }
  }

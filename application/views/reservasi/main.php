@@ -59,7 +59,7 @@
 	<!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 0.1
+            <b>Version</b> 0.1b
         </div>
         <strong>Copyright &copy; 2018 <a href="https://rso.go.id">SIRS - RSO</a>.</strong> All rights reserved.
     </footer>

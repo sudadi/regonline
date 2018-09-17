@@ -514,10 +514,11 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $data);
     }
     public function postinfo() {
-        $this->load->model('mod_setting');
+        $this->load->model('mod_reservasi');
+        $datainfo= $this->mod_reservasi->getinfo('1=1');
         $data['page']='admin/postinfo';
-        $data['content']['rtmodem']='';
-        $data['content']['smskonfirm']= '';
+        $data['content']['datainfo']=$datainfo;
+        $data['content']['action']='admin/postinfo';
         $this->load->view('admin/main', $data);
     }
 }
