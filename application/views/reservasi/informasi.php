@@ -10,8 +10,26 @@
     <div class="box-header with-border">
         <h3 class="box-title">Informasi <small></small></h3>
     </div>
-    <div class="box-body">
-        
+    <div class="box-body">        
+        <?php foreach($datainfo as $info) { ?>
+        <div class="post">
+            <div class="user-block">
+                <div class="col-xs-1">
+                <ion-icon size="large" name="paper"></ion-icon>
+            </div>                
+            <span class="username">
+                <?=$info->subject;?>
+            </span>
+            <span class="description">Publikasi <?=$info->start;?></span>                
+            </div>
+            <p>
+                <?=$info->content;?>
+            </p>
+            <ul class="list-inline">
+              <li class="pull-right text-sm"><i class="fa fa-commenting margin-r-5"></i> Admin</li>
+            </ul>
+        </div>
+        <?php } ?>
     </div>
     <div class="box-footer">
 <!--        <div class="col-sm-12 col-md-6">

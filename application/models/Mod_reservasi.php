@@ -158,7 +158,5 @@
         $this->db->order_by('tgl');
         return $this->db->get_where('res_treservasi',$where)->result_array();
     }
-    function getinfo($where) {
-        return $this->db->get_where('res_tinfo', $where)->result();
-    }
+    
  }

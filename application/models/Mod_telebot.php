@@ -35,7 +35,7 @@ class Mod_telebot extends CI_Model {
     
     function saveresbot($chatid) {
         $dataTele= $this->getrowteleres("fromid=$chatid");
-        $kdpoli= $this->db->get_where('res_refklinik', "id_klinik={$dataTele->kode_poli}")->row()->kode_poli;
+        $kdpoli= $this->db->get_where('res_refklinik', "id_klinik={$dataTele->klinik_id}")->row()->kode_poli;
         $datajam=$this->db->get_where('res_kuota', "id_kuota=$dataTele->jam_id")->row();
         $waktu=date('Y/m/d H:i:s', strtotime($dataTele->tgl_res.$datajam->jam));
         $datares= array('norm'=>$dataTele->norm,

@@ -514,11 +514,53 @@ class Admin extends CI_Controller
         $this->load->view('admin/main', $data);
     }
     public function postinfo() {
+        if($idinfo=$this->input->get('hapus')){
+            if($this->db->delete('res_tinfo',"id_info='{$idinfo}'")) {
+                $this->session->set_flashdata('success', 'Data berhasil di hapus.');
+                redirect('admin/postinfo', 'refresh');
+            } else {
+                $this->session->set_flashdata('error', 'Hapus data GAGAL!');
+                redirect('admin/postinfo', 'refresh');
+            }
+        } else if($this->input->post('saveinfo')){
+            $arrData=['subject'=>$this->input->post('subject'),
+                'content'=> $this->input->post('content'),
+                'start'=> $this->input->post('start'),
+                'status'=> $this->input->post('status')];
+            if($this->input->post('saveinfo')=='new'){
+                if ($this->mod_setting->saveinfo($arrData)) {
+                    $this->session->set_flashdata('success', 'Data berhasil di simpan.');
+                } else {
+                    $this->session->set_flashdata('error', 'Tambah data GAGAL.!');
+                }
+            }elseif ($this->input->post('saveinfo') == 'edit') {
+                $idinfo= $this->input->post('idinfo');
+                if ($this->mod_setting->updateinfo($arrData, $idinfo)){
+                    $this->session->set_flashdata('success', 'Data berhasil di simpan.');
+                } else {
+                    $this->session->set_flashdata('error', 'Edit data GAGAL.!');
+                }
+            }
+            redirect('admin/postinfo');
+        } 
+        $this->load->helper('text');
         $this->load->model('mod_reservasi');
-        $datainfo= $this->mod_reservasi->getinfo('1=1');
+        $datainfo= $this->mod_setting->getinfo('1=1');
         $data['page']='admin/postinfo';
         $data['content']['datainfo']=$datainfo;
         $data['content']['action']='admin/postinfo';
         $this->load->view('admin/main', $data);
+    }
+    public function ajaxStatInfo($stat,$idinfo) {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+        if($this->db->update('res_tinfo', ['status'=>$stat], "id_info=$idinfo")) {
+            //echo $this->db->last_query();
+            $data = ['status'=>$stat];
+        } else {
+            $data = ['status'=>!$stat];
+        }
+        echo json_encode($data);
     }
 }

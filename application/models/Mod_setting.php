@@ -51,4 +51,8 @@
         }
         return TRUE;
     }
+    function getinfo($where) {
+        $this->db->order_by('start', 'desc');
+        return $this->db->get_where('res_tinfo', $where)->result_object();
+    }
  }

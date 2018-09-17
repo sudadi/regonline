@@ -7,11 +7,13 @@ class Reservasi extends CI_Controller {
         $this->load->model('mod_reservasi');
     }
     public function index() {
+        $this->load->model('mod_setting');
+        $datainfo= $this->mod_setting->getinfo("status=1 and start <='".date('Y-m-d')."'");
         $data['page'] = 'reservasi/informasi';
         $data['contenthead'] = false;
         $data['linkbc'] = '';
-        $data['action'] = site_url('reservasi');
-        $data['content']='';
+        $data['action'] = site_url('reservasi/index');
+        $data['content']['datainfo']=$datainfo;
         $this->load->view('reservasi/main', $data);
     }
 
