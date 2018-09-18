@@ -534,14 +534,14 @@ class Admin extends CI_Controller
                     $this->session->set_flashdata('error', 'Tambah data GAGAL.!');
                 }
             }elseif ($this->input->post('saveinfo') == 'edit') {
-                $idinfo= $this->input->post('idinfo');
+                $idinfo= $this->input->post('edit');
                 if ($this->mod_setting->updateinfo($arrData, $idinfo)){
                     $this->session->set_flashdata('success', 'Data berhasil di simpan.');
                 } else {
                     $this->session->set_flashdata('error', 'Edit data GAGAL.!');
                 }
             }
-            redirect('admin/postinfo');
+            redirect('admin/postinfo', 'refresh');
         } 
         $this->load->helper('text');
         $this->load->model('mod_reservasi');
@@ -550,6 +550,13 @@ class Admin extends CI_Controller
         $data['content']['datainfo']=$datainfo;
         $data['content']['action']='admin/postinfo';
         $this->load->view('admin/main', $data);
+    }
+    public function ajaxDataInfo($idinfo) {
+//        if (!$this->input->is_ajax_request()) {
+//            exit('No direct script access allowed');
+//        }
+        $datainfo= $this->mod_setting->getinfo("id_info=$idinfo");
+        echo json_encode($datainfo);
     }
     public function ajaxStatInfo($stat,$idinfo) {
         if (!$this->input->is_ajax_request()) {

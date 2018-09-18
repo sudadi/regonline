@@ -60,7 +60,7 @@
                                                 <span id="status" onclick="updatestat(<?=$info->status;?>,<?=$info->id_info;?>);" class="btn btn-xs <?=($info->status==1) ? 'btn-success':'btn-default';?>" title="Update Status"><?=$status[$info->status];?></span>
                                             </td>
                                             <td class="text-nowrap">
-                                                <a href="#" onclick="editinfo(<?=$info->id_info?>)"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
+                                                <a href="#" onclick="editinfo(<?=$info->id_info;?>)"><span class="btn btn-xs btn-warning"><i class="fa fa-edit "></i> Edit</span></a>
                                                 <a href="<?=base_url('admin/postinfo/?hapus='.$info->id_info);?>" onclick="return confirm('Yakin menghapus data ini ?')">
                                                     <span class="btn btn-xs btn-danger"><i class="fa fa-trash "></i> Delete</span></a>
                                             </td>
@@ -112,7 +112,7 @@
                         ?>
                     </div>
                 </div>
-                <?=form_input(['name'=>'idinfo','type'=>'hidden','id'=>'idinfo']);?>
+                <?=form_input(['name'=>'edit','type'=>'hidden','id'=>'edit']);?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -127,7 +127,7 @@
         var stat = +!stat;
         var statval = ['Disable','Active'];
         $.ajax({
-            url : "<?php echo site_url('admin/ajaxStatInfo/')?>"+stat+"/"+id,
+            url : "<?php echo site_url('admin/ajaxStatInfo/');?>"+stat+"/"+id,
             type: "GET",
             dataType: "JSON",
             success: function(data){
@@ -137,21 +137,23 @@
     }
     function showmodal(elm){
         $('#forminfo')[0].reset();
+        $("#edit").val('');
+        $("button[name='saveinfo']").val('new');
         $('#modal-newpost').modal();
     }
     function editinfo(idinfo) {
     	$('#forminfo')[0].reset();
         $.ajax({
-            url : "<?php echo site_url('admin/ajaxdatainfo/')?>"+idinfo,
+            url : "<?php echo site_url('admin/ajaxDataInfo/');?>"+idinfo,
             type: "GET",
             dataType: "JSON",
-            success: function(data)
-            {
-                $('select[name=subject]').val(data.subject);
-                $('select[name=content]').val(data content);
-                $('select[name=start]').val(data.start);
-                $('select[name=status]').val(data.status);
-                $('#edit').val(data.id_info);
+            success: function(data){
+                $("input[name*='subject']").val(data[0].subject);
+                $("textarea[name*='content']").val(data[0].content);
+                $("input[name*='start']").val(data[0].start);
+                $("select[name=status]").val(data[0].status);
+                $("#edit").val(data[0].id_info);
+                $("button[name='saveinfo']").val('edit');
                 $("#modal-newpost").modal();
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -160,5 +162,5 @@
                 window.location.href = "{{base_url('admin/postinfo')}}";
             }
         }); 
-    };
+    }
 </script>

@@ -53,6 +53,12 @@
     }
     function getinfo($where) {
         $this->db->order_by('start', 'desc');
-        return $this->db->get_where('res_tinfo', $where)->result_object();
+        return $this->db->get_where('res_tinfo', $where)->result();
+    }
+    function saveinfo($data) {
+        return $this->db->insert('res_tinfo', $data);
+    }
+    function updateinfo($data, $idinfo) {
+        return $this->db->update('res_tinfo', $data, "id_info='".$idinfo."'");
     }
  }
