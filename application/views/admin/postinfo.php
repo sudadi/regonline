@@ -107,8 +107,8 @@
                     <div class="col-sm-3">
                         <?php
                         unset($option);
-                        $option= array(0=>'Disable',1=>'Active',4=>'Batal By User');
-                        echo form_dropdown(array('name'=>'dpstatus','id'=>'dpstatus'), $option, 1, 'class="form-control"');
+                        $option= [0=>'Disable','Active'];
+                        echo form_dropdown(array('name'=>'status','id'=>'status'), $option, 1, 'class="form-control"');
                         ?>
                     </div>
                 </div>
@@ -140,7 +140,25 @@
         $('#modal-newpost').modal();
     }
     function editinfo(idinfo) {
-        $('#forminfo')[0].reset();
-        
-    }
+    	$('#forminfo')[0].reset();
+        $.ajax({
+            url : "<?php echo site_url('admin/ajaxdatainfo/')?>"+idinfo,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data)
+            {
+                $('select[name=subject]').val(data.subject);
+                $('select[name=content]').val(data content);
+                $('select[name=start]').val(data.start);
+                $('select[name=status]').val(data.status);
+                $('#edit').val(data.id_info);
+                $("#modal-newpost").modal();
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error : Data tidak ditemukan..!');
+                window.location.href = "{{base_url('admin/postinfo')}}";
+            }
+        }); 
+    };
 </script>

@@ -152,8 +152,8 @@ class Admin extends CI_Controller
             } else if ($this->input->post('saveres')){
                 $datatgl= explode("|",$this->input->post('tglcekin'));
                 $waktursv=date('Y/m/d H:i:s', strtotime($datatgl[2].$this->input->post('jamcekin')));
-                $dataklinik= $this->mod_reservasi->getklinikbyid($this->input->post('klinik'));
-                $kodeklinik=$dataklinik->kode_poli;
+                $dataklinik= $this->mod_reservasi->getklinik("id_klinik=".$this->input->post('klinik'));
+                $kodeklinik=$dataklinik[0]->kode_poli;
                 $norm=$this->input->post('norm');
                 $notelp= $this->input->post('notelp');
                 $datares= array('norm'=>$this->input->post('norm'),
