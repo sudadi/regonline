@@ -86,18 +86,16 @@
                 <h4 class="modal-title">New Post</h4>
             </div>
             <div class="modal-body">
+                <div class="box">
+                <div class="box-body pad">
                 <div class="form-group">
                     <label for="alasan" class="control-label col-sm-2">Subject</label>
                     <div class="col-sm-8">
                         <?=form_input(array('name'=>'subject','type'=>'text','id'=>'subject','class'=>'form-control'));?>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="content" class="control-label col-sm-2">Content</label>
-                    <div class="col-sm-10">
-                        <?=form_textarea(array('name'=>'content','rows'=>'2','id'=>'content'),'','class="form-control"');?>
-                    </div>
-                </div>
+                    
+                <textarea name="content" id="content" class="textarea form-control" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;" value=""></textarea>
                 <div class="form-group">
                     <label for="start" class="control-label col-sm-2">Publish</label>
                     <div class="col-sm-3">
@@ -114,6 +112,8 @@
                 </div>
                 <?=form_input(['name'=>'edit','type'=>'hidden','id'=>'edit']);?>
             </div>
+            </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
                 <button type="submit" name="saveinfo" value="simpan" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
@@ -123,6 +123,10 @@
     <?=form_close(); ?>
 </div>
 <script>
+    $(function () {
+        //bootstrap WYSIHTML5 - text editor
+        $('.textarea').wysihtml5();
+    })
     function updatestat(stat, id) {
         var stat = +!stat;
         var statval = ['Disable','Active'];
@@ -149,7 +153,8 @@
             dataType: "JSON",
             success: function(data){
                 $("input[name*='subject']").val(data[0].subject);
-                $("textarea[name*='content']").val(data[0].content);
+                //$("textarea[name*='content']").val(data[0].content);
+                $('.wysihtml5-sandbox').contents().find('.wysihtml5-editor').html(data[0].content);
                 $("input[name*='start']").val(data[0].start);
                 $("select[name=status]").val(data[0].status);
                 $("#edit").val(data[0].id_info);
@@ -163,4 +168,5 @@
             }
         }); 
     }
+    
 </script>

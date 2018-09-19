@@ -288,7 +288,14 @@ class Admin extends CI_Controller
         }
         echo json_encode($res);        
     }
-    public function laporan() {
+    public function datatable() {
+        $this->load->model('mod_reservasi');
+        $where = "waktu_rsv>='".date('Y-m-d'."'");
+        $data['page']='admin/laporan';
+        $data['content']['datares']= $this->mod_reservasi->getresfull($where);
+        $this->load->view('admin/main', $data);
+    }
+    public function datagraph() {
         $this->load->model('mod_reservasi');
         $where = "waktu_rsv>='".date('Y-m-d'."'");
         $data['page']='admin/laporan';

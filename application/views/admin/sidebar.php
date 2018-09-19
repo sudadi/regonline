@@ -22,10 +22,15 @@
                     <i class="fa fa-envelope-o"></i> <span>SMS</span>
                 </a>
             </li>
-            <li>
-                <a href="<?=base_url('admin/laporan');?>">
+            <li class="treeview">
+            	<a href="#0">
                     <i class="fa fa-line-chart"></i> <span>Laporan</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?=base_url('admin/datatable');?>"><i class="fa fa-circle-o"></i><span>Data Tabel</span></a></li>
+                    <li><a href="<?=base_url('admin/datagraph');?>"><i class="fa fa-circle-o"></i><span>Data Grafik</span></a></li>
+                </ul>
             </li>
             <li>
                 <a href="<?=base_url('admin/postinfo');?>">
