@@ -197,7 +197,7 @@ class Admin extends CI_Controller
             exit('No direct script access allowed');
         }
         $this->load->model('mod_reservasi');
-        $data = $this->mod_reservasi->getreserv($idrsv);
+        $data = $this->mod_reservasi->getreserv("id_rsv=$idrsv");
         echo json_encode($data); 
     }
     public function ajaxpasien($norm) {

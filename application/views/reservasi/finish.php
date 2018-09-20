@@ -4,7 +4,7 @@
         <h3 class="box-title">Reservasi Berhasil <small>(finish)</small></h3>
     </div>
     <div class="box-body" id="printableArea">
-        <div class="col-sm-5 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3">
         <div class="box box-widget widget-user-2">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-green-gradient">
@@ -13,25 +13,37 @@
               </div>
               <!-- /.widget-user-image -->
               <h5 class="widget-user-desc"><?php echo $namapas;?></h5>
-              <h5 class="widget-user-desc"><?php echo "Klinik ".$nmklinik;?></h5>
+              <h5 class="widget-user-desc"><?php echo "No.RM ".$norm;?></h5>
             </div>
             <div class="box-body no-padding bg-gray">
                 <div class="form-group col-xs-12"></div>
-                <div class="form-group col-xs-12">
-                    <div class="col-xs-5 text-bold">No. RM </div>
-                    <div class="col-xs-7 text-bold"><?php echo "<img src='".base_url()."barcode/?&size=30&text=".$norm."&print=true'>";?></div>
+                <div class="form-group col-xs-12 text-center">
+                    <img style="width: 200px;" src="<?php echo base_url().'qrcode/'.$qrcode;?>">
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-5 text-bold">ID. REG</div>
-                    <div class="col-xs-7 text-bold"><?php echo "<img src='".base_url()."barcode/?&size=30&text=".$nores."&print=true'>";?></div>
+                    <div class="col-xs-4 text-bold no">Cara Bayar <span class="pull-right">:</span></div>
+                    <div class="col-xs-8 text-bold"><?=$jnsjaminan;?></div>                    
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-5 text-bold">JADWAL</div>
-                    <div class="col-xs-7 text-bold"><?php echo date('Y-m-d', strtotime($waktures));?></div>
+                    <div class="col-xs-4 text-bold">Layanan <span class="pull-right">:</span></div>
+                    <div class="col-xs-8 text-bold"><?=$layanan;?></div>                    
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-5 text-bold">JAM </div>
-                    <div class="col-xs-7 text-bold"><?php echo date('H:i:s', strtotime($waktures));?></div>
+                    <div class="col-xs-4 text-bold">Klinik <span class="pull-right">:</span></div>
+                    <div class="col-xs-8 text-bold"><?=$nmklinik;?></div>
+                   <!-- <div class="col-xs-7 text-bold"><?php echo "<img src='".base_url()."barcode/?&size=30&text=".$norm."&print=true'>";?></div> -->
+                </div>
+                <div class="form-group col-xs-12">
+                    <div class="col-xs-4 text-bold">Dokter <span class="pull-right">:</span></div>
+                    <div class="col-xs-8 text-bold"><?=$nmdokter;?></div>                    
+                </div>
+                <div class="form-group col-xs-12">
+                    <div class="col-xs-4 text-bold">Jadwal <span class="pull-right">:</span></div>
+                    <div class="col-xs-8 text-bold"><?php echo date('Y-m-d', strtotime($waktures));?></div>
+                </div>
+                <div class="form-group col-xs-12">
+                    <div class="col-xs-4 text-bold">Jam <span class="pull-right">:</span></div>
+                    <div class="col-xs-8 text-bold"><?php echo date('H:i:s', strtotime($waktures));?></div>
                     
                 </div>
 <!--                <div class="form-group col-xs-12">

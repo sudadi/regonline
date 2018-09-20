@@ -43,7 +43,7 @@ class Reservasi extends CI_Controller {
             $this->session->set_userdata('namapas', $datapas->nama);
             $this->session->set_userdata('alamat', $datapas->alamat);
             $this->session->set_userdata('notelp', $datapas->notelp);
-            $dataresv = $this->mod_reservasi->cekreserv($norm, '1'); //cek data reservasi yg aktif
+            $dataresv = $this->mod_reservasi->getreserv("norm=$norm and status='1'"); //cek data reservasi yg aktif
             if ($dataresv) {
                 $this->session->set_flashdata('error', 'Pasien sudah melakukan reservasi sebelumnya');
                 $this->session->set_userdata('status', '3');
@@ -226,7 +226,16 @@ class Reservasi extends CI_Controller {
     }
     public function finish($idres) {
         if ($this->session->userdata('status')=='3'){
-            $datares= $this->mod_reservasi->getreserv($idres);
+            $datares= $this->mod_reservasi->getreserv("id_rsv=$idres");
+            $this->load->library('ciqrcode');
+//            header("Content-Type: image/png");
+            $namafile=$this->session->userdata('norm').$datares->nores.".png";
+            $params['data'] = $this->session->userdata('norm').' '.$datares->nores;
+            $params['level'] = 'H';
+            $params['size'] = 15;
+            $params['savename'] = FCPATH."/qrcode/".$namafile;
+            $this->ciqrcode->generate($params);
+
             $data['page'] = 'reservasi/finish';
             $data['contenthead'] = true;
             $data['linkbc'] = 'reservasi';
@@ -234,6 +243,10 @@ class Reservasi extends CI_Controller {
             $data['content']['norm']= $this->session->userdata('norm');
             $data['content']['namapas']=$this->session->userdata('namapas');
             $data['content']['nmklinik']=$this->session->userdata('nmklinik');
+            $data['content']['nmdokter']= $datares->nama_dokter;
+            $data['content']['jnsjaminan']= $datares->nama_jaminan;
+            $data['content']['layanan']= $datares->jns_layan;
+            $data['content']['qrcode']= $namafile;
             $data['content']['nores']=$datares->nores;
             $data['content']['waktures']=$datares->waktu_rsv;
             $this->load->view('reservasi/main', $data);

@@ -122,9 +122,8 @@
     function getlibur() {
         return $this->db->get('res_tgl_libur')->result_array();
     }
-    function getreserv($idres) {
-        $this->db->where('id_rsv', $idres);
-        return $this->db->get('vreservasi')->row();
+    function getreserv($where) {
+        return $this->db->get_where('vreservasi', $where)->row();
     }
     function getantrian($idklinik, $tglres) {
         $this->db->select();
