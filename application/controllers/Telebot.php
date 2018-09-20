@@ -378,8 +378,7 @@ class Telebot extends CI_Controller
                 break;
             
             case $pesan=='!video' :
-                $video = "BAADBQADUQADhG6wVJCVSqDEihL-Ag";
-                $this->telebot_lib->sendApiVideo($chatid, $video);
+                $video = "BAADBQADgAAD8MAIVeNbOzh8Y15cAg";
                 break;
             
             case $pesan=='!jadwal' :
@@ -468,8 +467,7 @@ class Telebot extends CI_Controller
                             break;
                     }
                 } else if (explode ('|', $pesan)[1]=='!video'){
-                    $video = "BAADBQADUQADhG6wVJCVSqDEihL-Ag";
-                    $this->telebot_lib->sendApiVideo($chatid, $video);
+                    $video = "BAADBQADgAAD8MAIVeNbOzh8Y15cAg";
                 } else { 
                     $text = "Maaf, kami tidak mengerti maksud yang Anda sampaikan.";                    
                 }
@@ -477,6 +475,8 @@ class Telebot extends CI_Controller
         }
         if ($inkeyboard){
             $this->telebot_lib->sendApiKeyboard($chatid, $text, $inkeyboard, true);
+        } else if ($video) {            
+            $this->telebot_lib->sendApiVideo($chatid, $video);
         } else {
             $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
         }
