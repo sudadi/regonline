@@ -34,7 +34,7 @@
                     <div class="col-xs-8 text-bold">: <?=$layanan;?></div>                    
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold no">Cara Bayar</div>
+                    <div class="col-xs-4 text-bold no">Jaminan</div>
                     <div class="col-xs-8 text-bold">: <?=$jnsjaminan;?></div>                    
                 </div>
                 <div class="form-group col-xs-12">
