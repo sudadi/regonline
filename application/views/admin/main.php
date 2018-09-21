@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap.min.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.4.1/css/ionicons.min.css" />
     <!-- Toastr -->
@@ -72,7 +73,7 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown messages-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
+                            <i class="far fa-comments"></i>
                             <span class="label label-success"><?=$jmlmsg;?></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -87,7 +88,7 @@
                                             </div>
                                             <h4>
                                                 <?=$msg->Number;?>
-                                                <small><i class="fa fa-clock-o"></i><?=$msg->TransTime;?></small>
+                                                <small><i class="far fa-clock"></i><?=$msg->TransTime;?></small>
                                             </h4>
                                         </a>
                                     </li>
@@ -99,7 +100,7 @@
                     </li>
                     <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
+                            <i class="far fa-bell"></i>
 <!--                            <span class="label label-warning">0</span>-->
                         </a>
                         <ul class="dropdown-menu">

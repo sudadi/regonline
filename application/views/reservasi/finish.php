@@ -21,29 +21,29 @@
                     <img style="width: 200px;" src="<?php echo base_url().'qrcode/'.$qrcode;?>">
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold no">Cara Bayar <span class="pull-right">:</span></div>
-                    <div class="col-xs-8 text-bold"><?=$jnsjaminan;?></div>                    
-                </div>
-                <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold">Layanan <span class="pull-right">:</span></div>
-                    <div class="col-xs-8 text-bold"><?=$layanan;?></div>                    
-                </div>
-                <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold">Klinik <span class="pull-right">:</span></div>
-                    <div class="col-xs-8 text-bold"><?=$nmklinik;?></div>
+                    <div class="col-xs-4 text-bold">Klinik</div>
+                    <div class="col-xs-8 text-bold">: <?=$nmklinik;?></div>
                    <!-- <div class="col-xs-7 text-bold"><?php echo "<img src='".base_url()."barcode/?&size=30&text=".$norm."&print=true'>";?></div> -->
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold">Dokter <span class="pull-right">:</span></div>
-                    <div class="col-xs-8 text-bold"><?=$nmdokter;?></div>                    
+                    <div class="col-xs-4 text-bold">Dokter</div>
+                    <div class="col-xs-8 text-bold">: <?=$nmdokter;?></div>                    
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold">Jadwal <span class="pull-right">:</span></div>
-                    <div class="col-xs-8 text-bold"><?php echo date('Y-m-d', strtotime($waktures));?></div>
+                    <div class="col-xs-4 text-bold">Layanan</div>
+                    <div class="col-xs-8 text-bold">: <?=$layanan;?></div>                    
                 </div>
                 <div class="form-group col-xs-12">
-                    <div class="col-xs-4 text-bold">Jam <span class="pull-right">:</span></div>
-                    <div class="col-xs-8 text-bold"><?php echo date('H:i:s', strtotime($waktures));?></div>
+                    <div class="col-xs-4 text-bold no">Cara Bayar</div>
+                    <div class="col-xs-8 text-bold">: <?=$jnsjaminan;?></div>                    
+                </div>
+                <div class="form-group col-xs-12">
+                    <div class="col-xs-4 text-bold">Jadwal</div>
+                    <div class="col-xs-8 text-bold">: <?php echo date('Y-m-d', strtotime($waktures));?></div>
+                </div>
+                <div class="form-group col-xs-12">
+                    <div class="col-xs-4 text-bold">Jam</div>
+                    <div class="col-xs-8 text-bold">: <?php echo date('H:i:s', strtotime($waktures));?></div>
                     
                 </div>
 <!--                <div class="form-group col-xs-12">

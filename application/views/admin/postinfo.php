@@ -8,7 +8,7 @@
             <small>Posting Info</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Home</a></li>
             <li class="active">Postinfo</li>
         </ol>
     </section>
@@ -83,7 +83,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">New Post</h4>
+                <h4 class="modal-title">Posting Info</h4>
             </div>
             <div class="modal-body">
                 <div class="box">
@@ -94,8 +94,9 @@
                         <?=form_input(array('name'=>'subject','type'=>'text','id'=>'subject','class'=>'form-control'));?>
                     </div>
                 </div>
-                    
-                <textarea name="content" id="content" class="textarea form-control" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;" value=""></textarea>
+                <div class="form-group">    
+                    <textarea name="content" id="content" class="textarea form-control" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;" value=""></textarea>
+                </div>
                 <div class="form-group">
                     <label for="start" class="control-label col-sm-2">Publish</label>
                     <div class="col-sm-3">

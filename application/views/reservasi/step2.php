@@ -6,8 +6,21 @@
     <?=form_open($action, 'id="formreserv" class="form-horizontal form-label-left"'); ?>
     <div class="box-body">
         <div class="form-group">
-            <label for="jnsjaminan" class="col-sm-2 control-label">Jenis Jaminan</label>
+            <label for="norm" class="col-sm-3 control-label">Pasien</label>
+            <div class="col-sm-2 col-md-2 col-lg-1">
+                <?php
+                echo form_input('norm', $norm, 'class="form-control" id="norm" readonly');
+                ?>
+            </div>
             <div class="col-sm-6 col-md-4">
+                <?php
+                echo form_input('namapas', $namapas, 'class="form-control" id="namapas" readonly');
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="jnsjaminan" class="col-sm-3 control-label">Jenis Jaminan</label>
+            <div class="col-sm-8 col-md-5">
                 <?php 
                     $option[''] = '-Pilih Jenis Pasien-';
                     $option[2] = 'Pasien Umum';
@@ -17,8 +30,8 @@
             </div>
         </div>
         <div class="form-group jnslayan">
-            <label for="jnslayan" class="col-sm-2 control-label">Jenis Layanan</label>
-            <div class="col-sm-6 col-md-4">
+            <label for="jnslayan" class="col-sm-3 control-label">Jenis Layanan</label>
+            <div class="col-sm-8 col-md-5">
                 <?php 
                     unset($option);
                     $option[''] = "-Pilih Jenis Layanan-";
@@ -29,8 +42,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="poliklinik" class="col-sm-2 control-label">Poliklinik</label>
-            <div class="col-sm-6 col-md-4">
+            <label for="poliklinik" class="col-sm-3 control-label">Poliklinik</label>
+            <div class="col-sm-8 col-md-5">
                 <?php 
                     unset($option);
                     $option[''] = '-Pilih Poliklinik-';                        
@@ -39,8 +52,8 @@
             </div>
         </div>
         <div class="form-group dokter">
-            <label for="dokter" class="col-sm-2 control-label">Dokter</label>
-            <div class="col-sm-6 col-md-4">
+            <label for="dokter" class="col-sm-3 control-label">Dokter</label>
+            <div class="col-sm-8 col-md-5">
                 <?php 
                     unset($option);
                     $option[''] = '-Pilih Dokter-';                        
@@ -49,8 +62,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="tglcekin" class="col-sm-2 control-label">Tgl. Pelayanan</label>
-            <div class="col-sm-6 col-md-4">
+            <label for="tglcekin" class="col-sm-3 control-label">Tgl. Pelayanan</label>
+            <div class="col-sm-8 col-md-5">
                 <?php 
                     unset($option);
                     $option[''] = '-Pilih Tanggal-';
@@ -59,8 +72,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="jamcekin" class="col-sm-2 control-label">Jam Pelayanan</label>
-            <div class="col-sm-6 col-md-4">
+            <label for="jamcekin" class="col-sm-3 control-label">Jam Pelayanan</label>
+            <div class="col-sm-8 col-md-5">
                 <?php 
                     unset($option);
                     $option[''] = '-Pilih Waktu-';

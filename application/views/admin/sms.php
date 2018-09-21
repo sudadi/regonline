@@ -8,7 +8,7 @@
             <small></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?=base_url('admin');?>"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="<?=base_url('admin');?>"><i class="fas fa-tachometer-alt"></i> Home</a></li>
             <li class="active"><a href="<?=base_url('admin/sms');?>">SMS</a></li>
         </ol>
     </section>
@@ -18,7 +18,7 @@
         <!-- Info boxes -->
         <div class="row">
             <div id="dvnotelp" class="col-sm-3 col-xs-12">
-                <?=form_button('tulissms', '<span class="fa fa-plus"></span> Tulis Pesan', 'class="btn btn-primary btn-block margin-bottom" data-toggle="modal" data-target="#modal-sms"') ;?>
+                <?=form_button('tulissms', '<span class="far fa-edit"></span> Tulis Pesan', 'class="btn btn-primary btn-block margin-bottom" data-toggle="modal" data-target="#modal-sms"') ;?>
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">No. Telp</h3>
@@ -37,7 +37,7 @@
                         </ul>
                   <div class="box-group text-center">
                        <?php echo $this->pagination->create_links();?>
-                      <button id="btnpulsa" class="btn btn-primary col-xs-12">Cek pulsa</button>
+                      <button id="btnpulsa" class="btn btn-primary col-xs-12"><i class="fas fa-search-dollar"></i> Cek pulsa</button>
                   </div>
                 </div>
                 </div>
@@ -53,7 +53,7 @@
                         <div class="box-body">
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a href="#"><i class="fa fa-circle text-red"></i> Belum Baca</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o text-green"></i> Sudah Baca</a></li>
+                                <li><a href="#"><i class="far fa-circle text-green"></i> Sudah Baca</a></li>
                             </ul>
                         </div>
                       <!-- /.box-body -->
@@ -78,14 +78,14 @@
                             <button type="button" id="btnbackxs" class="btn btn-primary btn-sm visible-xs text-bold">Back</button>
                             <!-- Check all button -->
                             <div class="hidden-xs">
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll"><i class="fa fa-square-o"></i></button>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll"><i class="far fa-square"></i></button>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm" id="btn_balas" title="Balas"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm" id="btn_terus" title="Teruskan"><i class="fa fa-share"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_balas" title="Balas"><i class="fas fa-reply"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_terus" title="Teruskan"><i class="fas fa-share"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh" title="Penyegaran"><i class="fa fa-refresh"></i></button>
+                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh" title="Penyegaran"><i class="fas fa-sync-alt"></i></button>
                             </div>
 <!--                        <div class="pull-right">
                                 
@@ -108,14 +108,14 @@
                     <div class="box-footer no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll1"><i class="fa fa-square-o"></i></button>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle" id="checkAll1"><i class="far fa-square"></i></button>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus1" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm" id="btn_balas1" title="Balas"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm" id="btn_terus1" title="Teruskan"><i class="fa fa-share"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_hapus1" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_balas1" title="Balas"><i class="fas fa-reply"></i></button>
+                                <button type="button" class="btn btn-default btn-sm" id="btn_terus1" title="Teruskan"><i class="fas fa-share"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh1" title="Penyegaran"><i class="fa fa-refresh"></i></button>
+                            <button type="button" class="btn btn-default btn-sm" id="btn_refresh1" title="Penyegaran"><i class="fas fa-sync-alt"></i></button>
 <!--                            <div class="pull-right">
                                  <?php echo $this->pagination->create_links();?>
                             </div>-->
@@ -152,8 +152,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kirim</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Kirim</button>
             </div>
         </div>
     </div>
@@ -190,8 +190,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                <button type="submit" name="kirimussd" value="trus" class="btn btn-primary"><i class="fa fa-send"></i> Kirim</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+                <button type="submit" name="kirimussd" value="trus" class="btn btn-primary"><i class="far fa-paper-plane"></i> Kirim</button>
             </div>
         </div>
     </div>

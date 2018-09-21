@@ -6,7 +6,7 @@
             <small> </small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?=base_url('admin');?>"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="<?=base_url('admin');?>"><i class="fas fa-tachometer-alt"></i> Home</a></li>
             <li class="active">Reservasi</li>
         </ol>
     </section>
@@ -20,10 +20,10 @@
                     <div class="box-body">
                         <div class="col-sm-12 no-padding">
                             <div class="form-group col-xs-6 col-sm-2">
-                                 <?=form_button(array('name'=>'wa'), '<span class="fa fa-whatsapp"></span> Reservasi WA', 'class="btn btn-success reservasi" onclick="showmodal(this);"');?>
+                                 <?=form_button(array('name'=>'wa'), '<span class="fab fa-whatsapp"></span> Reservasi WA', 'class="btn btn-success reservasi" onclick="showmodal(this);"');?>
                             </div>
                             <div class="from-group col-xs-6 col-sm-2">
-                                <?=form_button('sms', '<span class="fa fa-envelope-o"></span> Reservasi SMS', 'class="btn btn-primary reservasi" onclick="showmodal(this);"') ;?>
+                                <?=form_button('sms', '<span class="far fa-comments"></span> Reservasi SMS', 'class="btn btn-primary reservasi" onclick="showmodal(this);"') ;?>
                             </div>
                         </div>
                         <div class="clearfix"></div><p/>
@@ -46,10 +46,10 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>No. RM</th>
+                                            <th>No.RM</th>
                                             <th>Nama</th>
-                                            <th>No. Telp</th>
                                             <th>TL</th>
+                                            <th>No.Telp</th>
                                             <th>Klinik</th>
                                             <th>Dokter</th>
                                             <th>Jaminan</th>
@@ -73,8 +73,8 @@
                                             <td><?=$res->norm;?></td>
                                             <td class="text-nowrap"><?=$res->nama;?></td>
                                             <td><?=$res->tgl_lahir;?></td>
-                                            <td><?=$res->nama_klinik;?></td>
                                             <td><?=$res->notelp;?></td>
+                                            <td><?=$res->nama_klinik;?></td>
                                             <td class="text-nowrap"><?=$res->nama_dokter;?></td>
                                             <td><?=$res->nama_jaminan;?></td>
                                             <td><?=$res->jns_layan;?></td>

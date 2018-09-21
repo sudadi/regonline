@@ -7,6 +7,7 @@ class Reservasi extends CI_Controller {
         $this->load->model('mod_reservasi');
     }
     public function index() {
+        $this->session->sess_destroy();
         $this->load->model('mod_setting');
         $datainfo= $this->mod_setting->getinfo("status=1 and start <='".date('Y-m-d')."'");
         $data['page'] = 'reservasi/informasi';

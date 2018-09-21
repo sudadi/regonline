@@ -8,27 +8,16 @@
   <span class="logo-lg">Reservasi <b>RSO</b></span>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
-<nav class="navbar navbar-static-top">
+<nav class="navbar navbar-fixed-top">
   <!-- Sidebar toggle button-->
   <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
 	<span class="sr-only">Toggle navigation</span>
   </a>
-  
-  <div class="navbar-custom-menu">
-	<ul class="nav navbar-nav">         
-            <?php if (isset($namapas)) { ?>
-            <li class="nav-item">
-                <a class="nav-link"><b><?=explode(' ', $namapas)[0]." (".$norm;?>)</b></a>
-            </li>
-            <?php }  ?>
-	  <!-- User Account: style can be found in dropdown.less -->
-	  <li class="dropdown user user-menu">
-		<a href="http://rso.go.id">
-		  <img src="<?=base_url('assets/dist/img/rso.jpg');?>" class="user-image" alt="User Image">
-		  <span class="hidden-xs">RSO Online</span>
-		</a>            
-	  </li>
-	</ul>
+  <div class="visible-xs col-xs-10">
+        <a href="<?=base_url('reservasi');?>" class="logo">
+            <span class="logo-lg">Reservasi <b>RSO</b></span>
+        </a>
   </div>
+  
 </nav>
 </header>

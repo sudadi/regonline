@@ -6,7 +6,7 @@
             <small>Reservasi :: RSO</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Home</a></li>
             <li class="active">Dashboard</li>
         </ol>
     </section>
@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-light-blue"><i class="fa fa-send-o"></i></span>
+                    <span class="info-box-icon bg-light-blue"><i class="fab fa-telegram-plane"></i></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Telegram</span>
                         <span class="info-box-number"><?=$jmltele;?><small> Pasien</small></span>
@@ -23,7 +23,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-green"><i class="fa fa-whatsapp"></i></span>
+                    <span class="info-box-icon bg-green"><i class="fab fa-whatsapp"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Whatsapp</span>
                         <span class="info-box-number"><?=$jmlwa;?><small> Pasien</small></span>
@@ -33,7 +33,7 @@
             <div class="clearfix visible-sm-block"></div>
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-yellow"><i class="fa fa-envelope-o"></i></span>
+                    <span class="info-box-icon bg-yellow"><i class="far fa-comments"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">SMS</span>
                         <span class="info-box-number"><?=$jmlsms;?><small> Pasien</small></span>
@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="info-box">
-                    <span class="info-box-icon bg-red"><i class="fa fa-firefox"></i></span>
+                    <span class="info-box-icon bg-red"><i class="fab fa-chrome"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">WEB</span>
                         <span class="info-box-number"><?=$jmlweb;?><small> Pasien</small></span>

@@ -34,7 +34,7 @@
                ?>
            </div>
         </div>
-        <div class="form-group">
+<!--        <div class="form-group">
             <label for="sebab" class="col-sm-2 control-label">Sebab Sakit *</label>
             <div class="col-sm-4 col-md-4">
                 <?php 
@@ -46,7 +46,8 @@
                 echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
                 ?>
             </div>
-        </div>
+        </div>-->
+        <input type="hidden" name="sebab" value="9"/>
         <!-- /.box-body -->
       <div class="box-footer">
           <div class="form-group">

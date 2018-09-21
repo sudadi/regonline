@@ -8,7 +8,7 @@
             <small>Registrasi Online</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/');?>"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="<?= base_url('admin/');?>"><i class="fas fa-tachometer-alt"></i> Home</a></li>
             <li class="active">Laporan</li>
         </ol>
     </section>
