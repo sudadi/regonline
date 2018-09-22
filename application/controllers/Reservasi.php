@@ -229,7 +229,6 @@ class Reservasi extends CI_Controller {
         if ($this->session->userdata('status')=='3'){
             $datares= $this->mod_reservasi->getreserv("id_rsv=$idres");
             $this->load->library('ciqrcode');
-//            header("Content-Type: image/png");
             $namafile=$this->session->userdata('norm').$datares->nores.".png";
             $params['data'] = $this->session->userdata('norm').' '.$datares->nores;
             $params['level'] = 'H';

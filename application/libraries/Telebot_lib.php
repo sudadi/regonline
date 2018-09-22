@@ -188,4 +188,44 @@ class Telebot_lib
         ];
         $result = $this->apiRequest($method, $data);
     }
+    
+    public function sendApiPhoto($chatid, $photo) {
+        $method = 'sendVideo';
+        $data = [
+            'chat_id'   => $chatid,
+            'photo'     => $photo,
+        ];
+        $result = $this->apiRequest($method, $data);
+    }
+    
+    public function sendApiFile($chatid, $file, $type) {
+        //$file=new CURLFile(realpath($file));
+        //echo FCPATH;
+        //var_dump($file);
+        $file= "var/www/html/reservasi/qrcode/".$file;
+        if ($type=='video') {
+            $method="sendVideo";
+            $field = "chat_id=$chatid&video=$file";
+        } else if ($type == 'photo') {
+            $method="sendPhoto";
+            $field = "chat_id=$chatid&photo=$file";
+        } else {
+            $method="sendFile";
+            $field = "chat_id=$chatid&file=$file";
+        }
+        
+        $url = 'https://api.telegram.org/bot'.$this->config->item('token').'/'.$method;
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, "Content-Type: multipart/form-data;charset=utf-8");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_POST, true); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $field);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        $output = curl_exec ($ch);
+        curl_close ($ch);
+        var_dump($output); // show output
+        
+    }
 }

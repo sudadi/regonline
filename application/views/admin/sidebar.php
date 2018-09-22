@@ -43,12 +43,12 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="<?=base_url('admin/datadok');?>"><i class="fas fa-caret-right"></i> Data Dokter</a></li>
-                    <li><a href="<?=base_url('admin/dataklinik');?>"><i class="fas fa-caret-right"></i> Data Klinik</a></li>
-                    <li><a href="<?=base_url('admin/jadwal');?>"><i class="fas fa-caret-right"></i> Data Jadwal</a></li>
-                    <li><a href="<?=base_url('admin/libur');?>"><i class="fas fa-caret-right"></i> Data Libur</a></li>
-                    <li><a href="<?=base_url('auth');?>"><i class="fas fa-caret-right"></i> Data User</a></li>
-                    <li><a href="<?=base_url('admin/genset');?>"><i class="fas fa-caret-right"></i> General Setting</a></li>
+                    <li><a href="<?=base_url('admin/datadok');?>"><i class="fas fa-minus-square"></i></i> Data Dokter</a></li>
+                    <li><a href="<?=base_url('admin/dataklinik');?>"><i class="fas fa-minus-square"></i> Data Klinik</a></li>
+                    <li><a href="<?=base_url('admin/jadwal');?>"><i class="fas fa-minus-square"></i> Data Jadwal</a></li>
+                    <li><a href="<?=base_url('admin/libur');?>"><i class="fas fa-minus-square"></i></i> Data Libur</a></li>
+                    <li><a href="<?=base_url('auth');?>"><i class="fas fa-minus-square"></i> Data User</a></li>
+                    <li><a href="<?=base_url('admin/genset');?>"><i class="fas fa-minus-square"></i> General Setting</a></li>
                 </ul>
             </li>
         </ul>

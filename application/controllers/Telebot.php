@@ -130,6 +130,7 @@ class Telebot extends CI_Controller
     }
     
     private function casettl($chatid, $pesan, $text=null) {
+        $inkeyboard = FALSE;
         if ($tgl=date('Y/m/d', strtotime($pesan))){
             $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."' and tgl_lahir='".$tgl."'");
             if($datPas) $this->mod_telebot->updteleres($chatid, ['ttl'=>"$tgl",'status'=>'jaminan']);            
@@ -269,7 +270,7 @@ class Telebot extends CI_Controller
         $jams= $this->mod_reservasi->getjamcekin($this->dataResTele->jadwal_id, $this->dataResTele->tgl_res);
         $cekinjam = array_search($pesan[1], array_column($jams, 'idjam'));
         //var_dump($jams);
-        if (($cekinjam || $cekinjam===0) && ($this->mod_telebot->updteleres($chatid,array('jam_id'=>$pesan[1],'status'=>'Sukses')))){
+        if (($cekinjam || $cekinjam===0) && ($this->mod_telebot->updteleres($chatid,array('jam_id'=>$pesan[1],'status'=>'sukses')))){
             if ($this->mod_telebot->saveresbot($chatid)){
                 $text="*Selamat Reservasi Anda Berhasil!*";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
@@ -298,7 +299,15 @@ class Telebot extends CI_Controller
                 . "Jam     : \n*".date('H:i:s', strtotime($result[0]->waktu_rsv))."*\n\n"
                 . "*Mohon datang tepat waktu sesuai jadwal yang sudah ditentukan.*\n"
                 . "Terima Kasih";
-        $this->mod_telebot->updteleres($chatid, ['statmenu'=>'']);
+        $this->mod_telebot->updteleres($this->dataResTele->fromid, ['statmenu'=>'']);
+        $this->load->library('ciqrcode');
+        $namafile=$this->session->userdata('norm').$result[0]->nores.".png";
+        $params['data'] = $this->session->userdata('norm').' '.$result[0]->nores;
+        $params['level'] = 'H';
+        $params['size'] = 15;
+        $params['savename'] = FCPATH."/qrcode/".$namafile;
+        $this->ciqrcode->generate($params);
+        $this->telebot_lib->sendApiFile($this->dataResTele->fromid, $namafile, 'photo');
         return $text;
     }
 
@@ -310,7 +319,7 @@ class Telebot extends CI_Controller
         $pesan = trim($message['text']);
         $chatid = $message['chat']['id'];
         $fromid = $message['from']['id'];
-        $inkeyboard = FALSE;
+        $inkeyboard = $video = $photo = $text = FALSE;
         $this->telebot_lib->sendApiAction($chatid);
         $this->dataResTele= $this->mod_telebot->getrowteleres("fromid=$chatid");
         switch (true) {
@@ -341,7 +350,7 @@ class Telebot extends CI_Controller
                     $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
                         . "Maaf, Anda sudah melakukan reservasi.";
                     $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
-                    $this->showres();
+                    $text = $this->showres();
                 }else if ($this->dataResTele && ($this->dataResTele->status!=='ttl' && $this->dataResTele->status!=='norm')){
                     $this->mod_telebot->updteleres($chatid,['status'=>'ttl','jadwal_id'=>null,'jam_id'=>null,'tgl_res'=>null,
                         'klinik_id'=>null,'dokter_id'=>null,'jnslayan_id'=>null,'jaminan_id'=>null]);
@@ -371,7 +380,7 @@ class Telebot extends CI_Controller
                         ['text' => 'Video Tutorial', 'callback_data' => 'Bantuan : Video turorial|!video'],                        
                     ],
                     [
-                        ['text' => 'Jadwal Dokter', 'callback_data' => 'Bantuan : Jadwal dokter|jadwal'],
+                        ['text' => 'Jadwal Dokter', 'callback_data' => 'Bantuan : Jadwal dokter|!jadwal'],
                     ]
                 ];    
                 $this->mod_telebot->updteleres($chatid, ['statmenu'=>'bantuan']);
@@ -477,6 +486,8 @@ class Telebot extends CI_Controller
             $this->telebot_lib->sendApiKeyboard($chatid, $text, $inkeyboard, true);
         } else if ($video) {            
             $this->telebot_lib->sendApiVideo($chatid, $video);
+        } else if ($photo) {            
+            $this->telebot_lib->sendApiPhoto($chatid, $photo);
         } else {
             $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
         }
