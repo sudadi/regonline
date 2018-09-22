@@ -17,11 +17,11 @@ class Telebot extends CI_Controller
     private function greeting()
     {
         $jam = date("G",time());
-        if ($jam < 10 ) {$text = "Pagi";}
-        elseif($jam < 15 ) {$text = "Siang";}
-        elseif($jam < 18 ) {$text = "Sore";}
-        else {$text = "Malam";}
-        return $text;
+        if ($jam < 10 ) {$waktu = "Pagi";}
+        elseif($jam < 15 ) {$waktu = "Siang";}
+        elseif($jam < 18 ) {$waktu = "Sore";}
+        else {$waktu = "Malam";}
+        return $waktu;
     }
 
     public function __construct()
@@ -266,7 +266,7 @@ class Telebot extends CI_Controller
     
     private function casejam($chatid, $pesan, $text=null) {
         $pesan = explode('|', $pesan);
-        //var_dump($pesan);
+        $inkeyboard=false;
         $jams= $this->mod_reservasi->getjamcekin($this->dataResTele->jadwal_id, $this->dataResTele->tgl_res);
         $cekinjam = array_search($pesan[1], array_column($jams, 'idjam'));
         //var_dump($jams);
@@ -285,7 +285,7 @@ class Telebot extends CI_Controller
         return array($text, $inkeyboard);
     }
 
-    private function showres() {
+    public function showres() {
         $norm= $this->dataResTele->norm;
         $result = $this->mod_reservasi->getresfull("status=1 and norm=$norm");
         $hari = $this->hari_ID[date("N", strtotime($result[0]->waktu_rsv))];
@@ -328,7 +328,6 @@ class Telebot extends CI_Controller
                 $text = "Selamat Datang di bot RESERVASI Layanan Pasien\n"
                 ."*RS Ortopedi Prof.DR.R. Soeharso Surakarta*\n";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
-                $text='';
                 $keyboard = [
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
@@ -347,6 +346,7 @@ class Telebot extends CI_Controller
 
             case $pesan=='/reservasi' : 
                 if ($this->dataResTele && $this->dataResTele->status=='sukses' && $this->dataResTele->tgl_res > date('Y-m-d')){
+                    $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."'");
                     $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
                         . "Maaf, Anda sudah melakukan reservasi.";
                     $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
