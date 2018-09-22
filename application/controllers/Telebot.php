@@ -301,13 +301,14 @@ class Telebot extends CI_Controller
                 . "Terima Kasih";
         $this->mod_telebot->updteleres($this->dataResTele->fromid, ['statmenu'=>'']);
         $this->load->library('ciqrcode');
-        $namafile=$this->session->userdata('norm').$result[0]->nores.".png";
+        $namafile=$result[0]->norm.".png";
         $params['data'] = $this->session->userdata('norm').' '.$result[0]->nores;
         $params['level'] = 'H';
-        $params['size'] = 15;
+        $params['size'] = 10;
         $params['savename'] = FCPATH."/qrcode/".$namafile;
         $this->ciqrcode->generate($params);
-        $this->telebot_lib->sendApiFile($this->dataResTele->fromid, $namafile, 'photo');
+        sleep(1);
+        $this->telebot_lib->sendApiFile($this->dataResTele->fromid, $params['savename'], 'sendPhoto');
         return $text;
     }
 
@@ -319,7 +320,7 @@ class Telebot extends CI_Controller
         $pesan = trim($message['text']);
         $chatid = $message['chat']['id'];
         $fromid = $message['from']['id'];
-        $inkeyboard = $video = $photo = $text = FALSE;
+        $inkeyboard = $video = $photo = $text = '';
         $this->telebot_lib->sendApiAction($chatid);
         $this->dataResTele= $this->mod_telebot->getrowteleres("fromid=$chatid");
         switch (true) {
@@ -405,7 +406,7 @@ class Telebot extends CI_Controller
                 $this->mod_telebot->updteleres($chatid, ['statmenu'=>'hapusdata']);
                 break;
             
-            case explode('|',$pesan)[1]=='Ya yakin Batal':
+            case explode('|',$pesan)[1] == 'Ya yakin Batal':
                 if ($this->dataResTele->statmenu=='hapusdata' &&  $this->mod_telebot->delteleres($chatid)){              
                     $text="Proses reservasi sudah di batalkan.\n\n"
                         . "Silahkan Klik atau Ketik\n"
@@ -488,7 +489,7 @@ class Telebot extends CI_Controller
             $this->telebot_lib->sendApiVideo($chatid, $video);
         } else if ($photo) {            
             $this->telebot_lib->sendApiPhoto($chatid, $photo);
-        } else {
+        } else if ($text){
             $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
         }
     }
