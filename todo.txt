@@ -1,5 +1,5 @@
 telebot
-v cek data pasien sebelum reservasi, pastikan 1 id telegram 1 reservasi
--
--
+- ALTER TABLE `res_telebot` ADD `rsv_id` INT NOT NULL AFTER `jadwal_id`;
+- admin reservasi -> cek reservasi sebelum entri baru.
+- admin reservasi -> default input field disesuaikan.
 -

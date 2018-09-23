@@ -305,7 +305,7 @@ class Telebot extends CI_Controller
         $params['data'] = $this->session->userdata('norm').' '.$result[0]->nores;
         $params['level'] = 'H';
         $params['size'] = 10;
-        $params['savename'] = FCPATH."/qrcode/".$namafile;
+        $params['savename'] = FCPATH."qrcode/".$namafile;
         $this->ciqrcode->generate($params);
         sleep(1);
         $this->telebot_lib->sendApiFile($this->dataResTele->fromid, $params['savename'], 'sendPhoto');
@@ -327,13 +327,13 @@ class Telebot extends CI_Controller
 
             case $pesan == '/start' :
                 $text = "Selamat Datang di bot RESERVASI Layanan Pasien\n"
-                ."*RS Ortopedi Prof.DR.R. Soeharso Surakarta*\n";
+                ."*RS Ortopedi Prof. DR. R. Soeharso Surakarta*\n";
                 $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
                 $keyboard = [
                     ['/reservasi'],
                     ['/ketentuan', '/bantuan'],
                 ];
-                $msg = "Silahkan ketik atau klik\n"
+                $text = "*Silahkan ketik atau klik*\n"
                         . "/reservasi - mulai/mengulang proses reservasi.\n"
                         . "/ketentuan - melihat syarat & ketentuan.\n"
                         . "/bantuan - petunjuk melakukan reservasi.\n"
@@ -342,7 +342,8 @@ class Telebot extends CI_Controller
                         . "/hidemenu - menutup tombol menu(keyboard).\n"
                         . "/hapusdata - menghapus id & data yg terdaftar di Bot Reservasi RSO.\n"
                         . "/start - menampilkan menu ini.";
-                $this->telebot_lib->sendApiKeyboard($chatid, $msg, $keyboard);
+                $this->telebot_lib->sendApiKeyboard($chatid, $text, $keyboard);
+                $text ='';
                 break;
 
             case $pesan=='/reservasi' : 
@@ -406,11 +407,13 @@ class Telebot extends CI_Controller
                 $this->mod_telebot->updteleres($chatid, ['statmenu'=>'hapusdata']);
                 break;
             
-            case explode('|',$pesan)[1] == 'Ya yakin Batal':
-                if ($this->dataResTele->statmenu=='hapusdata' &&  $this->mod_telebot->delteleres($chatid)){              
+            case (explode('|',$pesan)[1] && explode('|',$pesan)[1] == 'Ya yakin Batal'):
+                if ($this->dataResTele->statmenu=='hapusdata' &&  $this->mod_telebot->delteleres($chatid)){
+                    if($this->db->update('res_treservasi', array('status'=>4), 'id_rsv='.$this->dataResTele->rsv_id)) {
                     $text="Proses reservasi sudah di batalkan.\n\n"
                         . "Silahkan Klik atau Ketik\n"
-                        . "/reservasi untuk mulai reservasi";               
+                        . "/reservasi untuk mulai reservasi";
+                    }
                 } else {
                 	$text= "Maaf data reservasi tidak ditemukan.";
                 }

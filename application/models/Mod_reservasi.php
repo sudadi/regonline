@@ -88,7 +88,7 @@
     }
     function getdipakai($idjadwal,$tglcekin,$jamcekin) {
         $this->db->from('vreservasi');
-        $this->db->where("id_jadwal='$idjadwal' and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
+        $this->db->where("status = 1 and id_jadwal='$idjadwal' and DATE(waktu_rsv)='$tglcekin' and TIME(waktu_rsv)='$jamcekin'");
         return $this->db->count_all_results();
     }
     function getkuotajam($idjadwal) {

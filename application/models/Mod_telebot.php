@@ -43,8 +43,9 @@ class Mod_telebot extends CI_Model {
                 'jns_jaminan_id'=>$dataTele->jaminan_id,
                 'sebab_id'=>9,
                 'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'TG');
-        if ($this->mod_reservasi->saveres($datares,$kdpoli)){
-            
+        $idres = $this->mod_reservasi->saveres($datares,$kdpoli);
+        if ($idres){
+            $this->updteleres($chatid, ['rsv_id'=>$idres]);
             return TRUE;
         }
     }
