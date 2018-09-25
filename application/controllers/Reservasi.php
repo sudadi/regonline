@@ -233,7 +233,7 @@ class Reservasi extends CI_Controller {
             $params['data'] = $this->session->userdata('norm').' '.$datares->nores;
             $params['level'] = 'H';
             $params['size'] = 15;
-            $params['savename'] = FCPATH."/qrcode/".$namafile;
+            $params['savename'] = FCPATH."qrcode/".$namafile;
             $this->ciqrcode->generate($params);
 
             $data['page'] = 'reservasi/finish';
