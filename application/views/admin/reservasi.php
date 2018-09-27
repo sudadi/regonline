@@ -31,7 +31,7 @@
                             <div class="box-header with-border">
                                 <?=form_open('admin/reservasi', 'method="GET" class="form-horizontal'); ?>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-1">Tgl. Res.</label>
+                                    <label class="control-label col-sm-2">Tgl. Res.</label>
                                     <div class="col-sm-2">
                                         <?=form_input(array('name'=>'filtglres','type'=>'date'),$filtglres,'class="form-control"');?>
                                     </div>
@@ -137,7 +137,7 @@
                             $option[''] = '-Pilih Jenis Pasien-';
                             $option[2] = 'Pasien Umum';
                             $option[5] = 'Pasien BPJS';
-                            echo form_dropdown('jnsjaminan', $option, '', 'class="form-control" id="jnsjaminan" required');
+                            echo form_dropdown('jnsjaminan', $option, '5', 'class="form-control" id="jnsjaminan" required');
                         ?>
                     </div>
                     <label for="jnslayan" class="col-sm-2 control-label">Jenis Layanan</label>
@@ -147,7 +147,7 @@
                             $option[''] = "-Pilih Jenis Layanan-";
                             $option[1] = 'Reguler';
                             $option[2] = 'Eksekutif';
-                            echo form_dropdown('jnslayan', $option, '', 'class="form-control" id="jnslayan" required');
+                            echo form_dropdown('jnslayan', $option, '1', 'class="form-control" id="jnslayan" required');
                         ?>
                     </div>
                 </div>
@@ -204,7 +204,7 @@
                             foreach ($ssakit as $key => $value){
                                 $option[$value['id_sebab']] = $value['sebab'];
                             } 
-                            echo form_dropdown('sebab', $option, '', 'class="form-control" id="sebab" required');
+                            echo form_dropdown('sebab', $option, '9', 'class="form-control" id="sebab" required');
                         ?>
                     </div>
                 </div>
@@ -293,10 +293,21 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    $("input*[name='nama']").val(data.nama);
-                    $("input*[name='notelp']").val(data.notelp);
-                    //console.log($("input*[name='nama']").val(data.nama));
-                    $("#jnsjaminan").focus();
+                    if (data.id_rsv){
+                        alert("Pasien Sudah Terdaftar \n\
+                        No.RM   :"+data.norm+" \n\
+                        Nama    :"+data.nama+" \n\
+                        Jaminan :"+data.nama_jaminan+" \n\
+                        Layanan :"+data.jns_layan+" \n\
+                        Klinik  :"+data.nama_klinik+" \n\
+                        Dokter  :"+data.nama_dokter+" \n\
+                        Jadwal  :"+data.waktu_rsv+" ");
+                    } else {
+                        $("input*[name='nama']").val(data.nama);
+                        $("input*[name='notelp']").val(data.notelp);
+                        //console.log($("input*[name='nama']").val(data.nama));
+                        $("#jnsjaminan").focus();
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown){
                     alert('Error : Data tidak ditemukan..!');

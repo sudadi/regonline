@@ -127,8 +127,8 @@ class Admin extends CI_Controller
             $filtglres = $this->input->get('filtglres');
             $where = "date(waktu_rsv)='$filtglres'";
         } else {
-            $filtglres = date('Y-m-d');
-            $where = "waktu_rsv >='$filtglres'";
+            $filtglres = date('Y-m-d', strtotime("+1 days", now()));
+            $where = "date(waktu_rsv) ='$filtglres'";
         }
         if ($this->input->get('hapus')){
             $this->db->delete("res_treservasi", "id_rsv={$this->input->get('hapus')}");
@@ -149,6 +149,8 @@ class Admin extends CI_Controller
                 } else {
                     $this->session->set_flashdata('error', 'Update data GAGAL');
                 }
+            } else if ($this->mod_reservasi->getreserv("norm={$this->input->post('norm')} and status=1")){
+                $this->session->set_flashdata('error', 'Pasien Sudah Terdaftar. Silahkan cek kembali.');
             } else if ($this->input->post('saveres')){
                 $datatgl= explode("|",$this->input->post('tglcekin'));
                 $waktursv=date('Y/m/d H:i:s', strtotime($datatgl[2].$this->input->post('jamcekin')));
@@ -201,11 +203,14 @@ class Admin extends CI_Controller
         echo json_encode($data); 
     }
     public function ajaxpasien($norm) {
-        $this->load->model('mod_reservasi');
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-        $data = $this->mod_reservasi->cekdatpas("norm='{$norm}'");
+        $this->load->model('mod_reservasi');
+        $data = $this->mod_reservasi->getreserv("norm=$norm and status=1");
+        if (!$data){
+            $data = $this->mod_reservasi->cekdatpas("norm='{$norm}'");
+        }
         echo json_encode($data);
     }
     public function datares() {
