@@ -54,7 +54,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wysihtml5/0.3.0/wysihtml5.min.js"></script> -->
     <script src="<?=base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
 </head>
-<body class="hold-transition skin-black fixed sidebar-mini">
+<body class="fixed skin-black  sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
     <header class="main-header">
@@ -62,7 +62,7 @@
             <span class="logo-mini"><b>R</b>SO</span>
             <span class="logo-lg"><b>Reservasi</b>Online</span>
         </a>
-        <nav class="navbar navbar-fixed-top">
+        <nav class="navbar navbar-static-top">
             <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fas fa-bars"></i>

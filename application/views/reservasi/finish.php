@@ -4,7 +4,7 @@
         <h3 class="box-title">Reservasi Berhasil <small>(finish)</small></h3>
     </div>
     <div class="box-body" id="printableArea">
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4 col-xs-12 no-padding">
         <div class="box box-widget widget-user-2">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-green-gradient">
@@ -58,8 +58,13 @@
                 </div>
             </div>
             <div class="form-group col-xs-12"></div>
+            <div class="form-group">
+            <div class="pull-left">
+                <a href="<?=base_url();?>"><button class="btn btn-danger" value="batal"><i class="fa fa-history"></i> Batalkan Reservasi</button></a>
+            </div>
             <div class="pull-right">
-                <a href="<?=base_url();?>"><button class="btn btn-success" value="Selesai">Selesai</button></a>
+                <a href="<?=base_url();?>"><button class="btn btn-success" value="selesai"><i class="fa fa-sign-out"></i> Selesai</button></a>
+            </div>
             </div>
           </div>
         </div>
