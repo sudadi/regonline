@@ -55,7 +55,7 @@
                   <button type="button" name="back" id="back" class="btn btn-warning"><i class="fa fa-reply"></i> Kembali</button>
               </div>
               <div class="col-xs-6 col-sm-2">
-                  <button type="submit" name="reserv" id="reserv" class="btn btn-info pull-right"><i class="fa fa-send-o"></i> Reservasi</button>
+                  <button type="submit" name="reserv" value="trus" id="reserv" class="btn btn-info pull-right"><i class="fa fa-send-o"></i> Reservasi</button>
               </div>
           </div>
       </div>
