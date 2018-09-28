@@ -61,7 +61,7 @@
             <?=form_open($action, ['id'=>"formfinish"]);?>
             <div class="form-group">
                 <div class="pull-left">
-                    <button class="btn btn-danger" name="batal" onclick="$('#modal-batalres').modal();"><i class="fa fa-history"></i> Batalkan Reservasi</button>
+                    <button class="btn btn-danger" name="batal" onclick="return $('#modal-batalres').modal();"><i class="fa fa-history"></i> Batalkan Reservasi</button>
                 </div>
                 <div class="pull-right">
                     <button class="btn btn-success" name="finish" value="selesai"><i class="fa fa-sign-out"></i> Selesai</button>
