@@ -61,7 +61,7 @@
             <?=form_open($action, ['id'=>"formfinish"]);?>
             <div class="form-group">
                 <div class="pull-left">
-                    <button class="btn btn-danger" name="batal" value="batal" onclick="return confirm('Yakin membatalkan reservasi ini ?')"><i class="fa fa-history"></i> Batalkan Reservasi</button>
+                    <button class="btn btn-danger" name="batal" onclick="$('#modal-batalres').modal();"><i class="fa fa-history"></i> Batalkan Reservasi</button>
                 </div>
                 <div class="pull-right">
                     <button class="btn btn-success" name="finish" value="selesai"><i class="fa fa-sign-out"></i> Selesai</button>
@@ -81,6 +81,26 @@
             akan langsung tertampil halaman ini.</p>
         </div>
     </div>
+</div>
+<div class="modal fade" id="modal-batalres">
+    <?=form_open($action, 'id="formbatalres"'); ?>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Batal Reservasi</h4>
+            </div>
+            <div class="modal-body">
+                <p>Yakin membatalkan Reservasi ini..?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Tidak</button>
+                <button type="submit" name="batalres" value="true" class="btn btn-primary"><i class="fa fa-check-square-o"></i> YA Yakin</button>
+            </div>
+        </div>
+    </div>
+    <?=form_close(); ?>
 </div>
 <script>
     function printDiv(divName) {

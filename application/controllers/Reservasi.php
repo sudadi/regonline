@@ -232,7 +232,7 @@ class Reservasi extends CI_Controller {
     }
     public function finish() {
         if ($this->session->userdata('status')=='3' && $this->session->userdata('idres')){
-            if ($this->input->post('batal')){
+            if ($this->input->post('batalres')){
                 if($this->db->update('res_treservasi', ['status'=>4], ['id_rsv'=>$this->session->userdata('idres')])) {
                     $this->session->set_flashdata('info',"Proses reservasi sudah di batalkan.\n\n");
                     redirect('reservasi','refresh');
