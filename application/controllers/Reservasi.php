@@ -63,7 +63,7 @@ class Reservasi extends CI_Controller {
     }
     public function step2 () {
         if ($this->session->userdata('status')=='1' || $this->session->userdata('status')=='2') {
-            if ($this->input->post() && $this->session->userdata('status')=='1'){
+            if ($this->input->post('step3') && $this->session->userdata('status')=='1'){
                 $jnsjaminan= $this->mod_reservasi->getjnspasien($this->input->post('jnsjaminan'));
                 $dokter= $this->mod_reservasi->getdokterbyid($this->input->post('dokter'));
                 $klinik= $this->mod_reservasi->getklinik("id_klinik={$this->input->post('poliklinik')}");
@@ -179,7 +179,7 @@ class Reservasi extends CI_Controller {
 //    }
     public function step3() {
         if ($this->session->userdata('status')=='2') {
-            if ($this->input->post('step3')){
+            if ($this->input->post('reserv')){
                 $waktursv=$this->session->userdata('waktursv');
                 $idklinik=$this->session->userdata('idklinik');
                 $kdpoli=$this->session->userdata('kdpoli');
