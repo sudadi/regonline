@@ -85,7 +85,7 @@
       <!-- /.box-body -->
       <div class="box-footer">
           <div class="col-sm-12 col-md-6">
-            <button type="submit" class="btn btn-info pull-right">Lanjut</button>
+              <button type="submit" name="step3" value="3" class="btn btn-info pull-right">Lanjut</button>
           </div>
       </div>
       <!-- /.box-footer -->

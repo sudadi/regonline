@@ -50,7 +50,8 @@ class Reservasi extends CI_Controller {
                 $this->session->set_userdata('status', '3');
                 $dataklinik=$this->mod_reservasi->getklinik("id_klinik={$dataresv->id_klinik}");
                 $this->session->set_userdata('nmklinik',$dataklinik[0]->nama_klinik);
-                redirect ('reservasi/finish/'.$dataresv->id_rsv);
+                $this->session->set_userdata('idres', $dataresv->id_rsv);
+                redirect ('reservasi/finish/');
             } else {
                 $this->session->set_flashdata('success', 'Data valid');
                 $this->session->set_userdata('status', '1');
@@ -178,7 +179,7 @@ class Reservasi extends CI_Controller {
 //    }
     public function step3() {
         if ($this->session->userdata('status')=='2') {
-            if ($this->input->post()){
+            if ($this->input->post('step3')){
                 $waktursv=$this->session->userdata('waktursv');
                 $idklinik=$this->session->userdata('idklinik');
                 $kdpoli=$this->session->userdata('kdpoli');
@@ -187,14 +188,18 @@ class Reservasi extends CI_Controller {
                 'waktu_rsv'=>$waktursv,'jadwal_id'=>$this->session->userdata('idjadwal'),
                 'jns_jaminan_id'=>$this->session->userdata('idjaminan'),
                 'sebab_id'=>$this->input->post('sebab'),
-                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'WEB');
+                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'WEB', 'identity'=>$this->input->post('notelp'));
                 $idres=$this->mod_reservasi->saveres($datares,$kdpoli);
                 if ($idres) {
                     $this->load->model('mod_sms');
                     $this->mod_sms->sendkonfirm($idres);
+                    $this->session->set_userdata('idres', $idres);
                     $this->session->set_userdata('status', '3');
+                    if($this->session->userdata('notelp') !== $this->input->post('notelp')){
+                        $this->mod_reservasi->updtpasien(['notelp'=>$this->input->post('notelp')], ['norm'=>$norm]);
+                    }
                     $this->session->set_flashdata('success', 'Reservasi berhasil, data sudah tersimpan');
-                redirect('reservasi/finish/'.$idres);
+                    redirect('reservasi/finish/');
                 } else {
                     $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
                 }             
@@ -225,9 +230,17 @@ class Reservasi extends CI_Controller {
             redirect('reservasi');
         }
     }
-    public function finish($idres) {
-        if ($this->session->userdata('status')=='3'){
-            $datares= $this->mod_reservasi->getreserv("id_rsv=$idres");
+    public function finish() {
+        if ($this->session->userdata('status')=='3' && $this->session->userdata('idres')){
+            if ($this->input->post('batal')){
+                if($this->db->update('res_treservasi', ['status'=>4], ['id_rsv'=>$this->session->userdata('idres')])) {
+                    $this->session->set_flashdata('info',"Proses reservasi sudah di batalkan.\n\n");
+                    redirect('reservasi','refresh');
+                }
+            } else if ($this->input->post('finish')){
+                redirect('reservasi','refresh');
+            }
+            $datares= $this->mod_reservasi->getreserv("id_rsv={$this->session->userdata('idres')}");
             $this->load->library('ciqrcode');
             $namafile=$this->session->userdata('norm').".png";
             $params['data'] = $this->session->userdata('norm').' '.$datares->nores;
@@ -239,7 +252,7 @@ class Reservasi extends CI_Controller {
             $data['page'] = 'reservasi/finish';
             $data['contenthead'] = true;
             $data['linkbc'] = 'reservasi';
-            $data['action'] = site_url('reservasi');
+            $data['action'] = site_url('reservasi/finish');
             $data['content']['norm']= $this->session->userdata('norm');
             $data['content']['namapas']=$this->session->userdata('namapas');
             $data['content']['nmklinik']=$this->session->userdata('nmklinik');

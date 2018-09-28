@@ -58,14 +58,16 @@
                 </div>
             </div>
             <div class="form-group col-xs-12"></div>
+            <?=form_open($action, ['id'=>"formfinish"]);?>
             <div class="form-group">
-            <div class="pull-left">
-                <a href="<?=base_url();?>"><button class="btn btn-danger" value="batal"><i class="fa fa-history"></i> Batalkan Reservasi</button></a>
+                <div class="pull-left">
+                    <button class="btn btn-danger" name="batal" value="batal" onclick="return confirm('Yakin membatalkan reservasi ini ?')"><i class="fa fa-history"></i> Batalkan Reservasi</button>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-success" name="finish" value="selesai"><i class="fa fa-sign-out"></i> Selesai</button>
+                </div>
             </div>
-            <div class="pull-right">
-                <a href="<?=base_url();?>"><button class="btn btn-success" value="selesai"><i class="fa fa-sign-out"></i> Selesai</button></a>
-            </div>
-            </div>
+            <?=form_close(); ?>
           </div>
         </div>
     </div> 
@@ -84,11 +86,8 @@
     function printDiv(divName) {
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
-
      document.body.innerHTML = printContents;
-
      window.print();
-
      document.body.innerHTML = originalContents;
 }
 </script>

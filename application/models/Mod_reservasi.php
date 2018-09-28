@@ -5,7 +5,10 @@
     }
     function cekdatpas($where){
         return $this->db->get_where('res_tpasien', $where)->row();
-    }	
+    }
+    function updtpasien($set, $where) {
+        return $this->db->update('res_tpasien', $set, $where);
+    }
     function cekreserv($norm, $status){
         $this->db->join('res_jadwal', 'res_treservasi.jadwal_id=res_jadwal.id_jadwal');
         $this->db->join('res_refklinik', 'res_refklinik.id_klinik=res_jadwal.klinik_id');

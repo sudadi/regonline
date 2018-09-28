@@ -42,7 +42,7 @@ class Mod_telebot extends CI_Model {
                 'waktu_rsv'=>$waktu,'jadwal_id'=>$dataTele->jadwal_id,
                 'jns_jaminan_id'=>$dataTele->jaminan_id,
                 'sebab_id'=>9,
-                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'TG');
+                'status'=>1, 'user_id'=>2, 'jenis_rsv'=>'TG', 'identity'=>$chatid);
         $idres = $this->mod_reservasi->saveres($datares,$kdpoli);
         if ($idres){
             $this->updteleres($chatid, ['rsv_id'=>$idres]);
