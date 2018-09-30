@@ -31,13 +31,16 @@
                             <div class="box-header with-border">
                                 <?=form_open('admin/reservasi', 'method="GET" class="form-horizontal'); ?>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">Tgl. Res.</label>
-                                    <div class="col-sm-2">
-                                        <?=form_input(array('name'=>'filtglres','type'=>'date'),$filtglres,'class="form-control"');?>
+                                    <label class="control-label col-sm-2">Entry Date</label>
+                                    <div class="col-sm-3">
+                                        <?=form_input(array('name'=>'filtglres','type'=>'text','id'=>'filtglres'),'','class="form-control"');?>
                                     </div>
                                     <div class="col-sm-2">                                        
                                         <?=form_button(array('name'=>'view','type'=>'submit'), '<span class="fa fa-eye"></span> View', 'class="btn btn-primary"');?>
                                     </div>
+                                    <?php echo form_input(['name'=>'start','id'=>'start','type'=>'hidden']);
+                                        echo form_input(['name'=>'stop', 'id'=>'stop','type'=>'hidden']);
+                                    ?>
                                 </div>
                                 <?=form_close();?>
                             </div>
@@ -252,6 +255,14 @@
     <?=form_close(); ?>
 </div>
 <script>
+    $(function() {
+        $('input[name="filtglres"]').daterangepicker({
+            opens: 'left'
+        }, function(start, end, label) {
+            $("#start").val(start.format('YYYY-MM-DD'));
+            $("#stop").val(end.format('YYYY-MM-DD'));
+        });
+    });
     function clearform(){
         $('#norm').val('');
         $('input[name*=nama]').val('');

@@ -115,7 +115,16 @@ class Admin extends CI_Controller
     public function ajaxdashres() {
         if ($this->input->is_ajax_request()) {
             $this->load->model('mod_reservasi');
-            $data=$this->mod_reservasi->getgraphres('first_update BETWEEN (NOW() - INTERVAL 15 DAY) AND NOW()');
+            $data=$this->mod_reservasi->getgraphres('first_update BETWEEN (NOW() - INTERVAL 8 DAY) AND NOW()');
+            echo json_encode($data);
+        } else {
+            exit('No direct script access allowed');
+        }
+    }
+    public function ajaxdashres2() {
+        if ($this->input->is_ajax_request()) {
+            $this->load->model('mod_reservasi');
+            $data=$this->mod_reservasi->getgraphres('waktu_rsv BETWEEN NOW() AND (NOW() + INTERVAL 8 DAY)');
             echo json_encode($data);
         } else {
             exit('No direct script access allowed');
@@ -123,18 +132,13 @@ class Admin extends CI_Controller
     }
     public function reservasi() {
         $this->load->model('mod_reservasi');
-        if ($this->input->get('filtglres')){
+        if ($this->input->get('start') && $this->input->get('stop')){
             $filtglres = $this->input->get('filtglres');
-            $where = "date(waktu_rsv)='$filtglres'";
-        } else {
-            $filtglres = date('Y-m-d', strtotime("+1 days", now()));
-            $where = "date(waktu_rsv) ='$filtglres'";
-        }
-        if ($this->input->get('hapus')){
+            $where = "date(first_update) between '{$this->input->get('start')}' and '{$this->input->get('stop')}'";
+        } else if ($this->input->get('hapus')){
             $this->db->delete("res_treservasi", "id_rsv={$this->input->get('hapus')}");
             redirect('admin/reservasi');
-        }
-        if ($this->input->post()){
+        } else if ($this->input->post()){
             $this->load->model('mod_sms');
             if ($this->input->post('savestat')){
                 $idres= $this->input->post('idres');
@@ -185,6 +189,9 @@ class Admin extends CI_Controller
                 }
             }
             redirect('admin/reservasi');
+        } else {
+            $filtglres = date('Y-m-d');
+            $where = "date(first_update) ='$filtglres'";
         }
         $data['page']='admin/reservasi';
         $data['content']['dokter']= $this->mod_setting->getdokter(0,1000);
