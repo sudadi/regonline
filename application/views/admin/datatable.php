@@ -9,7 +9,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= base_url('admin/');?>"><i class="fas fa-tachometer-alt"></i> Home</a></li>
-            <li class="active">Laporan</li>
+            <li class="active">Data Table</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -19,18 +19,21 @@
             <div class="col-md-12 col-sm-12 col-xs-12 ">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Reservasi <small> SMS/WA</small></h3>
+                        <h3 class="box-title">Data Reservasi <small> TABEL</small></h3>
                     </div>
                     <div class="box-body">
                         <?=form_open('admin/reservasi', 'method="GET" class="form-horizontal'); ?>
                         <div class="form-group">
-                            <label class="control-label col-sm-1">Tgl. Res.</label>
-                            <div class="col-sm-2">
-                                <?=form_input(array('name'=>'filtglres','type'=>'date'),'','class="form-control"');?>
+                            <label class="control-label col-sm-2">Res. Date</label>
+                            <div class="col-sm-3">
+                                <?=form_input(array('name'=>'filtglres','type'=>'text'),'','class="form-control"');?>
                             </div>
                             <div class="col-sm-2">                                        
                                 <?=form_button(array('name'=>'view','type'=>'submit'), '<span class="fa fa-eye"></span> View', 'class="btn btn-primary"');?>
                             </div>
+                            <?php echo form_input(['name'=>'start','id'=>'start','type'=>'hidden']);
+                                echo form_input(['name'=>'stop', 'id'=>'stop','type'=>'hidden']);
+                            ?>
                         </div>
                         <?=form_close();?>
                         <div class="clearfix"></div><p/>
@@ -99,3 +102,13 @@
         </div>
     </section>
 </div>
+<script>
+    $(function() {
+        $('input[name="filtglres"]').daterangepicker({
+            opens: 'left'
+        }, function(start, end, label) {
+            $("#start").val(start.format('YYYY-MM-DD'));
+            $("#stop").val(end.format('YYYY-MM-DD'));
+        });
+    });
+</script>

@@ -302,15 +302,19 @@ class Admin extends CI_Controller
     }
     public function datatable() {
         $this->load->model('mod_reservasi');
-        $where = "waktu_rsv>='".date('Y-m-d'."'");
-        $data['page']='admin/laporan';
+        $where = "waktu_rsv ='".date('Y-m-d')."'";
+        if ($this->input->get('start') && $this->input->get('stop')){
+            $filtglres = $this->input->get('filtglres');
+            $where = "date(waktu_rsv) between '{$this->input->get('start')}' and '{$this->input->get('stop')}'";
+        }
+        $data['page']='admin/datatable';
         $data['content']['datares']= $this->mod_reservasi->getresfull($where);
         $this->load->view('admin/main', $data);
     }
-    public function datagraph() {
+    public function datachart() {
         $this->load->model('mod_reservasi');
         $where = "waktu_rsv>='".date('Y-m-d'."'");
-        $data['page']='admin/laporan';
+        $data['page']='admin/datachart';
         $data['content']['datares']= $this->mod_reservasi->getresfull($where);
         $this->load->view('admin/main', $data);
     }
@@ -588,5 +592,17 @@ class Admin extends CI_Controller
             $data = ['status'=>!$stat];
         }
         echo json_encode($data);
+    }
+    public function posthelp() {
+        $data['page']='admin/posthelp';
+        $data['content']['datahelp']='';
+        $data['content']['action']='admin/posthelp';
+        $this->load->view('admin/main', $data);
+    }
+    public function postsk() {
+        $data['page']='admin/postsk';
+        $data['content']['datask']='';
+        $data['content']['action']='admin/postsk';
+        $this->load->view('admin/main', $data);
     }
 }
