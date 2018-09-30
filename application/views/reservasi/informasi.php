@@ -22,7 +22,7 @@
             </span>
             <span class="description">Publikasi <?=$info->start;?></span>                
             </div>
-            <p class="text-justify">
+            <p>
                 <?=$info->content;?>
             </p>
             <ul class="list-inline">
