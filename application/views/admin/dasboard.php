@@ -54,7 +54,7 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">2 Weekly Recap Report</h3>
+                        <h3 class="box-title">Weekly Recap Report</h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             <div class="btn-group">
@@ -68,10 +68,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p class="text-center">
-                                    <strong>Reservation Entry Date</strong>
+                                    <strong>Reservation Entry</strong>
                                 </p>
                                 <div class="chart">
-                                    <canvas id="reservasiChart" style="height: 180px;"></canvas>
+                                    <canvas id="entryChart" style="height: 180px;"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p class="text-center">
-                                    <strong>Reservation Destination Date</strong>
+                                    <strong>Reservation Destination</strong>
                                 </p>
                                 <div class="chart">
                                     <canvas id="reservasiChart" style="height: 180px;"></canvas>
@@ -219,7 +219,7 @@ $(document).ready(function(){
                     }
                 }
             };
-            var ctx = document.getElementById('reservasiChart').getContext('2d');
+            var ctx = document.getElementById('entryChart').getContext('2d');
             var LineGraph = new Chart(ctx, chartdata);
         },
         error : function(data) { }
@@ -242,5 +242,83 @@ $(document).ready(function(){
     $("#spanweb").addClass(getClass(web));
     $("#spansms").addClass(getClass(sms));
     $("#spantele").addClass(getClass(tele));
+    
+    $.ajax({
+        url : "<?=base_url('admin/ajaxdashres2');?>",
+        type : "GET",
+        dataType: "JSON",
+        success : function(data){
+            console.log(data);
+            var tgl = [];
+            var SMS = [];
+            var WA = [];
+            var WEB = [];
+            var TG = [];
+            for(var i in data) {
+                tgl.push(data[i].tgl);
+                SMS.push(data[i].SMS);
+                WA.push(data[i].WA);
+                WEB.push(data[i].WEB);
+                TG.push(data[i].TG);
+            }
+            var chartdata = {
+                type: 'line',
+                data:{
+                    labels: tgl,
+                    datasets: [ {
+                        label: "TG",
+                        fill: false,
+                        lineTension: 0.3,
+                        backgroundColor: "rgb(60, 141, 188, 0.75)",
+                        borderColor: "rgba(60, 141, 188, 0.6)",
+                        pointHoverBackgroundColor: "rgba(60, 141, 188, 0.75)",
+                        pointHoverBorderColor: "rgba(60, 141, 188, 0.75)",
+                        data: TG
+                      }, {
+                        label: "WA",
+                        fill: false,
+                        lineTension: 0.3,
+                        backgroundColor: "rgb(0, 153, 51, 0.75)",
+                        borderColor: "rgb(0, 153, 51, 0.6)",
+                        pointHoverBackgroundColor: "rgba(0, 153, 51, 0.5)",
+                        pointHoverBorderColor: "rgba(0, 153, 51, 0.5)",
+                        data: WA
+                      }, {
+                        label: "SMS",
+                        fill: false,
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(255, 133, 27, 0.75)",
+                        borderColor: "rgba(255, 133, 27, 0.6)",
+                        pointHoverBackgroundColor: "rgba(255, 133, 27, 1)",
+                        pointHoverBorderColor: "rgba(255, 133, 27, 1)",
+                        data: SMS
+                      }, {
+                        label: "WEB",
+                        fill: false,
+                        lineTension: 0.3,
+                        backgroundColor: "rgb(204, 0, 0, 0.75)",
+                        borderColor: "rgba(204, 0, 0, 0.6)",
+                        pointHoverBackgroundColor: "rgba(204, 0, 0, 0.75)",
+                        pointHoverBorderColor: "rgba(204, 0, 0, 0.75)",
+                        data: WEB
+                      }
+                    ]
+                }, 
+                options: {
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    }
+                }
+            };
+            var ctx = document.getElementById('reservasiChart').getContext('2d');
+            var LineGraph = new Chart(ctx, chartdata);
+        },
+        error : function(data) { }
+    });
 });		
 </script>
