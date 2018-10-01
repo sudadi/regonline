@@ -348,11 +348,13 @@ class Telebot extends CI_Controller
 
             case $pesan=='/reservasi' : 
                 if ($this->dataResTele && $this->dataResTele->status=='sukses' && $this->dataResTele->tgl_res > date('Y-m-d')){
-                    $datPas = $this->mod_reservasi->cekdatpas("norm='".$this->dataResTele->norm."'");
-                    $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
-                        . "Maaf, Anda sudah melakukan reservasi.";
-                    $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
-                    $text = $this->showres();
+                    $dataRes = $this->mod_reservasi->getreserv("norm='".$this->dataResTele->norm."' and status = 1");
+                    if ($dataRes){
+                        $text = "Selamat {$this->greeting()} *{$datPas->nama}* \n\n"
+                            . "Maaf, Anda sudah melakukan reservasi.";
+                        $this->telebot_lib->sendApiMsg($chatid, $text, false, 'Markdown');
+                        $text = $this->showres();
+                    }
                 }else if ($this->dataResTele && ($this->dataResTele->status!=='ttl' && $this->dataResTele->status!=='norm')){
                     $this->mod_telebot->updteleres($chatid,['status'=>'ttl','jadwal_id'=>null,'jam_id'=>null,'tgl_res'=>null,
                         'klinik_id'=>null,'dokter_id'=>null,'jnslayan_id'=>null,'jaminan_id'=>null]);
